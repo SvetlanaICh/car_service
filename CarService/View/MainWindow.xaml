@@ -7,6 +7,72 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <TabControl x:Name="tabControl"  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Height="85">
+            <TabItem Header="Сортировка">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Колонка" Grid.Row="0" Grid.Column="0"/>
+                    <ComboBox x:Name="comboBox" Grid.Row="1" Grid.Column="0"/>
+                    <Label Content="Режим" Grid.Row="0" Grid.Column="1"/>
+                    <ComboBox x:Name="comboBox1" Grid.Row="1" Grid.Column="1"/>
+                    <Button  Content="Применить" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Фильтрация">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Колонка" Grid.Row="0" Grid.Column="0"/>
+                    <ComboBox x:Name="comboBox2" Grid.Row="1" Grid.Column="0"/>
+                    <Label Content="Значение" Grid.Row="0" Grid.Column="1"/>
+                    <ComboBox x:Name="comboBox3" Grid.Row="1" Grid.Column="1"/>
+                    <Button Content="Применить" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Поиск">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Колонка" Grid.Row="0" Grid.Column="0"/>
+                    <ComboBox x:Name="comboBox4" Grid.Row="1" Grid.Column="0"/>
+                    <Label Content="Значение" Grid.Row="0" Grid.Column="1"/>
+                    <TextBox x:Name="textBox" Grid.Row="1" Grid.Column="1"/>
+                    <Button Content="Применить" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <DataGrid x:Name="dataGrid" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" AutoGenerateColumns="True" ItemsSource="{Binding OrdersAll}">
+        </DataGrid>
     </Grid>
 </Window>
