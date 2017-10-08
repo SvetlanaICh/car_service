@@ -72,7 +72,35 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <DataGrid x:Name="dataGrid" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" AutoGenerateColumns="True" ItemsSource="{Binding OrdersAll}">
+        <DataGrid x:Name="dataGrid" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" AutoGenerateColumns="False" ItemsSource="{Binding OrdersAll}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID заказа"  Binding="{Binding Path=IdOrder}"/>
+                <DataGridTextColumn Header="Марка авто"  Binding="{Binding Path=CarBrand}"/>
+                <DataGridTextColumn Header="Модель авто"  Binding="{Binding Path=CarModel}"/>
+                <DataGridTextColumn Header="Год выпуска авто"  Binding="{Binding Path=ReleaseYear}"/>
+                <DataGridTextColumn Header="Тип трансмиссии"  Binding="{Binding Path=TransmissionType}"/>
+                <DataGridTextColumn Header="Мощность двигателя"  Binding="{Binding Path=EnginePower}"/>
+                <DataGridTextColumn Header="Наименование работ"  Binding="{Binding Path=NameOperation}"/>
+                <DataGridTextColumn Header="Время начала работ"  Binding="{Binding Path=BeginTime}"/>
+                <DataGridTextColumn Header="Время окончания работ"  Binding="{Binding Path=EndTime}"/>
+                <DataGridTextColumn Header="Стоимость работ"  Binding="{Binding Path=Price}"/>
+            </DataGrid.Columns>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="ToolTip">
+                        <Setter.Value>
+                            <StackPanel>
+                                <TextBlock Text="Владелец:" />
+                                <TextBlock Text="{Binding PersonLastName}" />
+                                <TextBlock Text="{Binding PersonFirstName}" />
+                                <TextBlock Text="{Binding PersonMiddleName}" />
+                                <TextBlock Text="{Binding PersonBirthYear}" />
+                                <TextBlock Text="{Binding PersonPhone}" />
+                            </StackPanel>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </DataGrid.RowStyle>
         </DataGrid>
     </Grid>
 </Window>
