@@ -5,18 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CarService"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="506.528" Width="1118">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+        <StackPanel>
 
-        <TabControl x:Name="tabControl"  Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Height="85">
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Height="85" Width="Auto" Orientation="Horizontal">
+            <TabControl x:Name="tabControl" MinWidth="500">
             <TabItem Header="Сортировка">
                 <Grid Background="#FFE5E5E5">
                     <Grid.RowDefinitions>
@@ -29,10 +23,15 @@
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Content="Колонка" Grid.Row="0" Grid.Column="0"/>
-                    <ComboBox x:Name="comboBox" Grid.Row="1" Grid.Column="0"/>
+                    <ComboBox x:Name="comboBox" Grid.Row="1" Grid.Column="0" 
+                              ItemsSource="{Binding ConditionColumns}" DisplayMemberPath="Value" 
+                              SelectedItem="{Binding CurrentSortColumn, UpdateSourceTrigger=PropertyChanged}"/>
                     <Label Content="Режим" Grid.Row="0" Grid.Column="1"/>
-                    <ComboBox x:Name="comboBox1" Grid.Row="1" Grid.Column="1"/>
-                    <Button  Content="Применить" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2"/>
+                    <ComboBox x:Name="comboBox1" Grid.Row="1" Grid.Column="1" 
+                              ItemsSource="{Binding SortModes}" DisplayMemberPath="Value" 
+                              SelectedItem="{Binding CurrentSortMode}"/>
+                    <Button  Content="Применить" Command="{Binding Sort}" 
+                             Grid.Row="0" Grid.RowSpan="2" Grid.Column="2"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Фильтрация">
@@ -47,10 +46,15 @@
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Content="Колонка" Grid.Row="0" Grid.Column="0"/>
-                    <ComboBox x:Name="comboBox2" Grid.Row="1" Grid.Column="0"/>
+                    <ComboBox x:Name="comboBox2" Grid.Row="1" Grid.Column="0" 
+                              ItemsSource="{Binding ConditionColumns}" DisplayMemberPath="Value" 
+                              SelectedItem="{Binding CurrentFilterColumn, UpdateSourceTrigger=PropertyChanged}"/>
                     <Label Content="Значение" Grid.Row="0" Grid.Column="1"/>
-                    <ComboBox x:Name="comboBox3" Grid.Row="1" Grid.Column="1"/>
-                    <Button Content="Применить" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" />
+                    <ComboBox x:Name="comboBox3" Grid.Row="1" Grid.Column="1"  
+                              ItemsSource="{Binding FilterValues}" DisplayMemberPath="ColumnVisibleName"  
+                              SelectedItem="{Binding CurrentFilterValue, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button Command="{Binding Filter}" Content="Применить" 
+                            Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" />
                 </Grid>
             </TabItem>
             <TabItem Header="Поиск">
@@ -65,42 +69,54 @@
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Label Content="Колонка" Grid.Row="0" Grid.Column="0"/>
-                    <ComboBox x:Name="comboBox4" Grid.Row="1" Grid.Column="0"/>
+                    <ComboBox x:Name="comboBox4" Grid.Row="1" Grid.Column="0" 
+                              ItemsSource="{Binding ConditionColumns}" DisplayMemberPath="Value"  
+                              SelectedItem="{Binding CurrentSearchColumn, UpdateSourceTrigger=PropertyChanged}"/>
                     <Label Content="Значение" Grid.Row="0" Grid.Column="1"/>
-                    <TextBox x:Name="textBox" Grid.Row="1" Grid.Column="1"/>
-                    <Button Content="Применить" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2"/>
+                    <TextBox x:Name="textBox" Grid.Row="1" Grid.Column="1" 
+                             Text="{Binding SearchValue, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button Command="{Binding Search}" Content="Применить" 
+                            Grid.Row="0" Grid.RowSpan="2" Grid.Column="2"/>
                 </Grid>
             </TabItem>
         </TabControl>
-        <DataGrid x:Name="dataGrid" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" AutoGenerateColumns="False" ItemsSource="{Binding OrdersAll}">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="ID заказа"  Binding="{Binding Path=IdOrder}"/>
-                <DataGridTextColumn Header="Марка авто"  Binding="{Binding Path=CarBrand}"/>
-                <DataGridTextColumn Header="Модель авто"  Binding="{Binding Path=CarModel}"/>
-                <DataGridTextColumn Header="Год выпуска авто"  Binding="{Binding Path=ReleaseYear}"/>
-                <DataGridTextColumn Header="Тип трансмиссии"  Binding="{Binding Path=TransmissionType}"/>
-                <DataGridTextColumn Header="Мощность двигателя"  Binding="{Binding Path=EnginePower}"/>
-                <DataGridTextColumn Header="Наименование работ"  Binding="{Binding Path=NameOperation}"/>
-                <DataGridTextColumn Header="Время начала работ"  Binding="{Binding Path=BeginTime}"/>
-                <DataGridTextColumn Header="Время окончания работ"  Binding="{Binding Path=EndTime}"/>
-                <DataGridTextColumn Header="Стоимость работ"  Binding="{Binding Path=Price}"/>
-            </DataGrid.Columns>
-            <DataGrid.RowStyle>
-                <Style TargetType="DataGridRow">
-                    <Setter Property="ToolTip">
-                        <Setter.Value>
-                            <StackPanel>
-                                <TextBlock Text="Владелец:" />
-                                <TextBlock Text="{Binding PersonLastName}" />
-                                <TextBlock Text="{Binding PersonFirstName}" />
-                                <TextBlock Text="{Binding PersonMiddleName}" />
-                                <TextBlock Text="{Binding PersonBirthYear}" />
-                                <TextBlock Text="{Binding PersonPhone}" />
-                            </StackPanel>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </DataGrid.RowStyle>
-        </DataGrid>
+            <Button Command="{Binding ShowStatistics}" Content="Статистика" 
+                    Width="100" HorizontalAlignment="Right"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Height="Auto">
+            <DataGrid x:Name="dataGrid"  AutoGenerateColumns="False" 
+                      ItemsSource="{Binding OrdersAll, UpdateSourceTrigger=PropertyChanged}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID заказа"  Binding="{Binding Path=IdOrder}"/>
+                    <DataGridTextColumn Header="Марка авто"  Binding="{Binding Path=CarBrand}"/>
+                    <DataGridTextColumn Header="Модель авто"  Binding="{Binding Path=CarModel}"/>
+                    <DataGridTextColumn Header="Год выпуска авто"  Binding="{Binding Path=ReleaseYear}"/>
+                    <DataGridTextColumn Header="Тип трансмиссии"  Binding="{Binding Path=TransmissionType}"/>
+                    <DataGridTextColumn Header="Мощность двигателя"  Binding="{Binding Path=EnginePower}"/>
+                    <DataGridTextColumn Header="Наименование работ"  Binding="{Binding Path=NameOperation}"/>
+                    <DataGridTextColumn Header="Время начала работ"  Binding="{Binding Path=BeginTime}"/>
+                    <DataGridTextColumn Header="Время окончания работ"  Binding="{Binding Path=EndTime}"/>
+                    <DataGridTextColumn Header="Стоимость работ"  Binding="{Binding Path=Price}"/>
+                </DataGrid.Columns>
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="ToolTip">
+                            <Setter.Value>
+                                <StackPanel>
+                                    <TextBlock Text="Владелец:" />
+                                    <TextBlock Text="{Binding PersonLastName}" />
+                                    <TextBlock Text="{Binding PersonFirstName}" />
+                                    <TextBlock Text="{Binding PersonMiddleName}" />
+                                    <TextBlock Text="{Binding PersonBirthYear}" />
+                                    <TextBlock Text="{Binding PersonPhone}" />
+                                </StackPanel>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGrid.RowStyle>
+            </DataGrid>
+            
+        </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>

@@ -1,7 +1,6 @@
 D:\Osnova\Techno\CodingAll\ProjectsAll\C-Sharp\MSVS2015\car_service\CarService\bin\Debug\CarService.exe.config
 D:\Osnova\Techno\CodingAll\ProjectsAll\C-Sharp\MSVS2015\car_service\CarService\bin\Debug\CarService.exe
 D:\Osnova\Techno\CodingAll\ProjectsAll\C-Sharp\MSVS2015\car_service\CarService\bin\Debug\CarService.pdb
-D:\Osnova\Techno\CodingAll\ProjectsAll\C-Sharp\MSVS2015\car_service\CarService\obj\Debug\CarService.csprojResolveAssemblyReference.cache
 D:\Osnova\Techno\CodingAll\ProjectsAll\C-Sharp\MSVS2015\car_service\CarService\obj\Debug\View\MainWindow.g.cs
 D:\Osnova\Techno\CodingAll\ProjectsAll\C-Sharp\MSVS2015\car_service\CarService\obj\Debug\App.g.cs
 D:\Osnova\Techno\CodingAll\ProjectsAll\C-Sharp\MSVS2015\car_service\CarService\obj\Debug\CarService_MarkupCompile.cache
@@ -15,3 +14,7 @@ D:\Osnova\Techno\CodingAll\ProjectsAll\C-Sharp\MSVS2015\car_service\CarService\o
 D:\Osnova\Techno\CodingAll\ProjectsAll\C-Sharp\MSVS2015\car_service\CarService\bin\Debug\EntityFramework.dll
 D:\Osnova\Techno\CodingAll\ProjectsAll\C-Sharp\MSVS2015\car_service\CarService\bin\Debug\EntityFramework.xml
 D:\Osnova\Techno\CodingAll\ProjectsAll\C-Sharp\MSVS2015\car_service\CarService\obj\Debug\CarService_Content.g.cs
+D:\Osnova\Techno\CodingAll\ProjectsAll\C-Sharp\MSVS2015\car_service\CarService\obj\Debug\View\StatisticsWindow.g.cs
+D:\Osnova\Techno\CodingAll\ProjectsAll\C-Sharp\MSVS2015\car_service\CarService\obj\Debug\View\StatisticsWindow.baml
+D:\Osnova\Techno\CodingAll\ProjectsAll\C-Sharp\MSVS2015\car_service\CarService\bin\Debug\System.Windows.Controls.DataVisualization.Toolkit.dll
+D:\Osnova\Techno\CodingAll\ProjectsAll\C-Sharp\MSVS2015\car_service\CarService\bin\Debug\System.Windows.Controls.DataVisualization.Toolkit.xml
