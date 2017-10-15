@@ -34,29 +34,24 @@ namespace CarService.ViewModel
 
         static public int OrderExtendedCompareBeginTime(OrderExtended oe1, OrderExtended oe2)
         {
+            if (oe1.BeginTime == null || oe2.BeginTime == null)
+                return (-1) * Nullable.Compare(oe1.BeginTime, oe2.BeginTime);
+
             return DateTime.Compare( (DateTime)oe1.BeginTime, (DateTime)oe2.BeginTime );
         }
 
         static public int OrderExtendedComparePrice(OrderExtended oe1, OrderExtended oe2)
         {
-            if (oe1.Price == null && oe2.Price == null)
-                return 0;
-            if (oe1.Price == null && oe2.Price != null)
-                return 1;
-            if (oe1.Price != null && oe2.Price == null)
-                return -1;
+            if (oe1.Price == null || oe2.Price == null)
+                return (-1) * Nullable.Compare(oe1.Price, oe2.Price);
 
             return decimal.Compare( (decimal)oe1.Price, (decimal)oe2.Price );
         }
 
         static public int OrderExtendedCompareEndTime(OrderExtended oe1, OrderExtended oe2)
         {
-            if (oe1.EndTime == null && oe2.EndTime == null)
-                return 0;
-            if (oe1.EndTime == null && oe2.EndTime != null)
-                return 1;
-            if (oe1.EndTime != null && oe2.EndTime == null)
-                return -1;
+            if (oe1.EndTime == null || oe2.EndTime == null)
+                return (-1)*Nullable.Compare(oe1.EndTime, oe2.EndTime);
 
             return DateTime.Compare((DateTime)oe1.BeginTime, (DateTime)oe2.BeginTime);
         }
@@ -76,20 +71,30 @@ namespace CarService.ViewModel
             return string.Compare(oe1.NameOperation, oe2.NameOperation);
         }
 
-        /*static public int OrderExtendedCompareIdOrder(OrderExtended oe1, OrderExtended oe2)
+        static public int OrderExtendedCompareIdOrder(OrderExtended oe1, OrderExtended oe2)
         {
-
+            return oe1.IdOrder.CompareTo(oe2.IdOrder);
         }
 
         static public int OrderExtendedCompareReleaseYear(OrderExtended oe1, OrderExtended oe2)
         {
+            if (oe1.ReleaseYear == null || oe2.ReleaseYear == null)
+                return (-1) * Nullable.Compare(oe1.ReleaseYear, oe2.ReleaseYear);
 
+            int i1 = (int)oe1.ReleaseYear;
+            int i2 = (int)oe2.ReleaseYear;
+            return i1.CompareTo(i2);
         }
 
         static public int OrderExtendedCompareEnginePower(OrderExtended oe1, OrderExtended oe2)
         {
+            if (oe1.EnginePower == null || oe2.EnginePower == null)
+                return (-1) * Nullable.Compare(oe1.EnginePower, oe2.EnginePower);
 
-        }*/
+            int i1 = (int)oe1.EnginePower;
+            int i2 = (int)oe2.EnginePower;
+            return i1.CompareTo(i2);
+        }
     }
 
     class QueriesDB
@@ -144,24 +149,24 @@ namespace CarService.ViewModel
                 
             switch (condition)
             {
-                /*case "IdOrder":
+                case "IdOrder":
                     result.Sort(OrderExtended.OrderExtendedCompareIdOrder);
-                    break;*/
+                    break;
                 case "CarBrand":
                     result.Sort(OrderExtended.OrderExtendedCompareCarBrand);
                     break;
                 case "CarModel":
                     result.Sort(OrderExtended.OrderExtendedCompareCarModel);
                     break;
-                /*case "ReleaseYear":
+                case "ReleaseYear":
                     result.Sort(OrderExtended.OrderExtendedCompareReleaseYear);
-                    break;*/
+                    break;
                 case "TransmissionType":
                     result.Sort(OrderExtended.OrderExtendedCompareTransmissionType);
                     break;
-                /*case "EnginePower":
+                case "EnginePower":
                     result.Sort(OrderExtended.OrderExtendedCompareEnginePower);
-                    break;*/
+                    break;
                 case "NameOperation":
                     result.Sort(OrderExtended.OrderExtendedCompareNameOperation);
                     break;
