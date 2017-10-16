@@ -51,7 +51,7 @@
                               SelectedItem="{Binding CurrentFilterColumn, UpdateSourceTrigger=PropertyChanged}"/>
                     <Label Content="Значение" Grid.Row="0" Grid.Column="1"/>
                     <ComboBox x:Name="comboBox3" Grid.Row="1" Grid.Column="1"  
-                              ItemsSource="{Binding FilterValues}" DisplayMemberPath="ColumnVisibleName"  
+                              ItemsSource="{Binding FilterValues, UpdateSourceTrigger=PropertyChanged}"  
                               SelectedItem="{Binding CurrentFilterValue, UpdateSourceTrigger=PropertyChanged}"/>
                     <Button Command="{Binding Filter}" Content="Применить" 
                             Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" />

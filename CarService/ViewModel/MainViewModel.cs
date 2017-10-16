@@ -28,7 +28,8 @@ namespace CarService.ViewModel
         private int currentPage;        
 
         public ObservableCollection< KeyValuePair<string, string> > ConditionColumns { get; private set; }
-        public ObservableCollection< KeyValuePair<string, string> > FilterValues { get; private set; }
+        public List<string> FilterValues { get; private set; }
+        public string CurrentFilterValue { get; set; }
         public string SearchValue { get; set; }
         public List< KeyValuePair<bool, string> > SortModes { get; set; }
         public KeyValuePair<bool, string> CurrentSortMode { get; set; }
@@ -172,6 +173,14 @@ namespace CarService.ViewModel
             set
             {
                 currentFilterColumn = value;
+
+                FilterValues = DB.GetFilterValues(CurrentFilterColumn.Key);
+                OnPropertyChanged("FilterValues");
+                if (FilterValues != null && FilterValues.Count > 0)
+                {
+                    CurrentFilterValue = FilterValues[0];
+                    OnPropertyChanged("CurrentFilterValue");
+                }
                 OnPropertyChanged("CurrentFilterColumn");
             }
         }
@@ -198,7 +207,10 @@ namespace CarService.ViewModel
 
         private void DoFilter()
         {
-            
+            if (CurrentFilterValue == null)
+                return;
+            DB.MakeSearch(CurrentFilterColumn.Key, CurrentFilterValue);
+            CreateOrdersAll();
         }
 
         private void DoSearch()

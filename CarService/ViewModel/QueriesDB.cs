@@ -81,6 +81,24 @@ namespace CarService.ViewModel
             }
             resultCurrent = result;
         }
+                
+        public List<string> GetFilterValues(string filter_column)
+        {
+            List<string> res_str = new List<string> { };
+
+            var res_var = from r in result
+                          select r.GetType().GetProperty(filter_column).GetValue(r);
+            
+            foreach (var rv in res_var)
+            {
+                if (rv == null)
+                    res_str.Add(null);
+                else
+                    res_str.Add( rv.ToString() );
+            }          
+
+            return res_str.Distinct().ToList();
+        }
 
         public void MakeSort(string condition, bool is_ascending)
         {
