@@ -18,4 +18,3 @@ D:\Osnova\Techno\CodingAll\ProjectsAll\C-Sharp\MSVS2015\car_service\CarService\o
 D:\Osnova\Techno\CodingAll\ProjectsAll\C-Sharp\MSVS2015\car_service\CarService\obj\Debug\View\StatisticsWindow.baml
 D:\Osnova\Techno\CodingAll\ProjectsAll\C-Sharp\MSVS2015\car_service\CarService\bin\Debug\System.Windows.Controls.DataVisualization.Toolkit.dll
 D:\Osnova\Techno\CodingAll\ProjectsAll\C-Sharp\MSVS2015\car_service\CarService\bin\Debug\System.Windows.Controls.DataVisualization.Toolkit.xml
-D:\Osnova\Techno\CodingAll\ProjectsAll\C-Sharp\MSVS2015\car_service\CarService\obj\Debug\CarService.csprojResolveAssemblyReference.cache
