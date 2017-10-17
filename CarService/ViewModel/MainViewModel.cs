@@ -54,7 +54,7 @@ namespace CarService.ViewModel
                 //CurrentPage = 1;
                 DB.CreateAll();
                 RowCount = 10; //
-                CheckButtonsEnabled();
+                //CheckButtonsEnabled();
             }
 
             Sort = new Command(DoSort);
@@ -107,7 +107,7 @@ namespace CarService.ViewModel
 
                 CreateOrdersAll();
 
-                CheckButtonsEnabled();
+                //CheckButtonsEnabled();
                 OnPropertyChanged("RowCount");
             }
         }
@@ -127,10 +127,10 @@ namespace CarService.ViewModel
                 if (CurrentPage < 1 || CurrentPage > (DB.ResultAll.Count)) //
                     return;
 
-                OrdersCurrentPage = DB.ResultAll[CurrentPage - 1];
-                
+                OrdersCurrentPage = DB.ResultAll[CurrentPage - 1];                
             }
             OnPropertyChanged("OrdersCurrentPage");
+            CheckButtonsEnabled();
         }
         
         public int CurrentPage

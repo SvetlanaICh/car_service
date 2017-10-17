@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CarService"
         mc:Ignorable="d"
-        Title="MainWindow" Height="506.528" Width="1118">
+        Title="MainWindow" Height="550" Width="1200">
     <Grid>
         <StackPanel>
 
@@ -83,7 +83,7 @@
             <Button Command="{Binding ShowStatistics}" Content="Статистика" 
                     Width="100" HorizontalAlignment="Right"/>
         </StackPanel>
-        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Height="Auto">
+        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Height="Auto" Width="Auto">
             <DataGrid x:Name="dataGrid"  AutoGenerateColumns="False" 
                       ItemsSource="{Binding OrdersCurrentPage, UpdateSourceTrigger=PropertyChanged}">
                 <DataGrid.Columns>

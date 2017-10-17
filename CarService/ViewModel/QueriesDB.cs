@@ -184,7 +184,7 @@ namespace CarService.ViewModel
                 case "EnginePower":
                     short value_s;
                     if (short.TryParse(value, out value_s))
-                        resultCurrent = result.FindAll(OrderExtended => OrderExtended.ReleaseYear == value_s);
+                        resultCurrent = result.FindAll(OrderExtended => OrderExtended.EnginePower == value_s);
                     break;
                 case "NameOperation":
                     resultCurrent = result.FindAll(OrderExtended => OrderExtended.NameOperation == value);
@@ -210,76 +210,80 @@ namespace CarService.ViewModel
             }
         }
 
-        public List<KeyValuePair<string, int>> GetDataForDiagram1()
+        public List<KeyValuePair<string, int>> GetDataForDiagramCarBrand()
         {
-            List<KeyValuePair<string, int>> I1 = new List<KeyValuePair<string, int>> { };
+            List<KeyValuePair<string, int>> data = new List<KeyValuePair<string, int>> { };
 
-            var query1 =
-                from res in result.Distinct()
-                orderby res.CarBrand
-                group res by new { CarBrand = res.CarBrand } into g
+            var query = from r in result
+                        group r by r.CarBrand into g
+                        select new
+                        {
+                            CarBrandCount = g.Count(),
+                            CarBrand = g.Key
+                        };
 
-                select new
-                {
-                    CarBrandCount = g.Count(),
-                    CarBrand = g.Key.CarBrand
-                };
-
-            foreach (var x in query1)
-            {
-                I1.Add(new KeyValuePair<string, int>(x.CarBrand, x.CarBrandCount));
-            }
+            foreach (var x in query)
+                data.Add(new KeyValuePair<string, int>(x.CarBrand, x.CarBrandCount));
             
-            return I1;
+            return data;
+        }
+                      
+        public List<KeyValuePair<string, int>> GetDataForDiagramMonth() 
+        {
+            List<KeyValuePair<string, int>> data = new List<KeyValuePair<string, int>> { };
+
+            var orders_without_null = from r in result
+                              where r.BeginTime != null
+                              select r;
+
+            int year_current = DateTime.Now.Year;
+
+            var orders_new = from o in orders_without_null
+                             where o.BeginTime.Value.Year == year_current
+                             select new
+                             {
+                                 MonthInt = o.BeginTime.Value.Month,
+                                 ID = o.IdOrder,
+                                 MonthStr = ((DateTime)o.BeginTime).ToString("MMMM")                                 
+                             };
+
+            var query = from o in orders_new
+                        group o by o.MonthStr into g
+                               select new { Month = g.Key, MonthCount = g.Count() };
+
+            foreach (var x in query)
+                data.Add(new KeyValuePair<string, int>(x.Month, x.MonthCount));
+
+            return data;
         }
 
-        public List<KeyValuePair<string, int>> GetDataForDiagram2() //Изменить, не соответствует заданию
+        public List<KeyValuePair<string, int>> GetDataForDiagramPrice(ref List<int> values)
         {
-            List<KeyValuePair<string, int>> I1 = new List<KeyValuePair<string, int>> { };
+            List<KeyValuePair<string, int>> data = new List<KeyValuePair<string, int>> { };
 
-            var query1 =
-                from res in result.Distinct()
-                orderby res.BeginTime
-                group res by new { BeginTime = res.BeginTime } into g
+            var orders_without_null = from r in result
+                                      where r.Price != null
+                                      select r;
 
-                select new
-                {
-                    BeginTimeCount = g.Count(),
-                    BeginTime = g.Key.BeginTime
-                };
-
-            foreach (var x in query1)
+            for (int i = 0; i <= (values.Count - 2); i++)
             {
-                DateTime dt = (DateTime)x.BeginTime;
-                string dt_str = dt.ToString();
-                I1.Add(new KeyValuePair<string, int>(dt_str, x.BeginTimeCount));
+                int i1 = values[i];
+                int i2 = values[i + 1];
+                string s = string.Format("Цена от {0} до {1}", i1, i2);
+                int count = (from o in orders_without_null
+                             where o.Price >= i1 && o.Price < i2
+                             select o).Count();
+                data.Add(new KeyValuePair<string, int>(s, count));
             }
 
-            return I1;
+            int i3 = values[ values.Count - 1 ];
+            string s2 = string.Format("Цена от {0}", i3);
+            int count2 = (from o in orders_without_null
+                         where o.Price >= i3
+                         select o).Count();
+            data.Add(new KeyValuePair<string, int>(s2, count2));
+
+            return data;
         }
-
-        public List<KeyValuePair<string, int>> GetDataForDiagram3() //Изменить, не соответствует заданию
-        {
-            List<KeyValuePair<string, int>> I1 = new List<KeyValuePair<string, int>> { };
-
-            var query1 =
-                from res in result.Distinct()
-                orderby res.Price
-                group res by new { Price = res.Price } into g
-
-                select new
-                {
-                    PriceCount = g.Count(),
-                    Price = g.Key.Price
-                };
-
-            foreach (var x in query1)
-            {
-                decimal? price_dc = x.Price;
-                I1.Add(new KeyValuePair<string, int>(price_dc.ToString(), x.PriceCount));
-            }
-
-            return I1;
-        }        
     }
 }

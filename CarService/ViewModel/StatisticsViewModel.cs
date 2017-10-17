@@ -17,6 +17,7 @@ namespace CarService.ViewModel
 
         private KeyValuePair<int, string> currentDiagramMode;
         private KeyValuePair<int, string> currentDiagramType;
+        private string titleOfDiagramSerie;
 
         public Visibility IsLineVisible { get; set; }
         public Visibility IsColumnVisible { get; set; }
@@ -83,6 +84,16 @@ namespace CarService.ViewModel
             }
         }
 
+        public string TitleOfDiagramSerie
+        {
+            get { return titleOfDiagramSerie; }
+            set
+            {
+                titleOfDiagramSerie = value;
+                OnPropertyChanged("TitleOfDiagramSerie");
+            }
+        }
+
         private void SetDiagramVisibility()
         {
             switch (CurrentDiagramMode.Key)
@@ -113,13 +124,18 @@ namespace CarService.ViewModel
             switch (CurrentDiagramType.Key)
             {
                 case 0:
-                    DiagramData = DB.GetDataForDiagram1();
+                    TitleOfDiagramSerie = "Марки авто";
+                    DiagramData = DB.GetDataForDiagramCarBrand();
                     break;
                 case 1:
-                    DiagramData = DB.GetDataForDiagram2();
+                    int year_current = DateTime.Now.Year;
+                    TitleOfDiagramSerie = string.Format("Год {0}", year_current);
+                    DiagramData = DB.GetDataForDiagramMonth();
                     break;
                 case 2:
-                    DiagramData = DB.GetDataForDiagram3();
+                    TitleOfDiagramSerie = "Цены";
+                    List<int> values = new List<int> { 0, 1000, 5000, 10000 };
+                    DiagramData = DB.GetDataForDiagramPrice( ref values);
                     break;
                 default:
                     Console.WriteLine("Не сработало...");

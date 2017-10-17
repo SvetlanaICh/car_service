@@ -10,58 +10,67 @@
         Title="StatisticsWindow" Height="400" Width="600">
     <Grid>
         <StackPanel>
-        <Grid MinWidth="300" MinHeight="300">
-            <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                
-            </Grid.ColumnDefinitions>
-            <DVC:Chart Canvas.Top="80" Canvas.Left="10" Name="mcChart"
-           Grid.Column="0" Grid.Row="0"
-           Background="LightSteelBlue" 
-           Visibility="{Binding IsLineVisible, UpdateSourceTrigger=PropertyChanged}">
-            <DVC:Chart.Series>
-                <DVC:BarSeries Title="Experience"  ItemsSource="{Binding DiagramData}"
-                    IndependentValueBinding="{Binding Path=Key}"  
-                    DependentValueBinding="{Binding Path=Value}">
-                </DVC:BarSeries>
-            </DVC:Chart.Series>
-        </DVC:Chart>
+            <Grid MinWidth="300" MinHeight="300">
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+            
+                <DVC:Chart 
+                    Canvas.Top="80" Canvas.Left="10" Name="mcChart"
+                    Grid.Column="0" Grid.Row="0"
+                    Background="LightSteelBlue" 
+                    Visibility="{Binding IsLineVisible, UpdateSourceTrigger=PropertyChanged}">
+                    <DVC:Chart.Series>
+                        <DVC:BarSeries 
+                            Title="{Binding TitleOfDiagramSerie, UpdateSourceTrigger=PropertyChanged}"  
+                            ItemsSource="{Binding DiagramData}"
+                            IndependentValueBinding="{Binding Path=Key}"  
+                            DependentValueBinding="{Binding Path=Value}">
+                        </DVC:BarSeries>
+                    </DVC:Chart.Series>
+                </DVC:Chart>
 
-        <DVC:Chart Canvas.Top="80" Canvas.Left="10" Name="mcChart2" 
-           Grid.Column="0" Grid.Row="0"
-           Background="LightSteelBlue" 
-           Visibility="{Binding IsColumnVisible, UpdateSourceTrigger=PropertyChanged}">
-            <DVC:Chart.Series>
-                <DVC:ColumnSeries Title="Experience"  ItemsSource="{Binding DiagramData}"
-                    IndependentValueBinding="{Binding Path=Key}"  
-                    DependentValueBinding="{Binding Path=Value}">
-                </DVC:ColumnSeries>
-            </DVC:Chart.Series>
-        </DVC:Chart>
+                <DVC:Chart 
+                    Canvas.Top="80" Canvas.Left="10" Name="mcChart2" 
+                    Grid.Column="0" Grid.Row="0"
+                    Background="LightSteelBlue" 
+                    Visibility="{Binding IsColumnVisible, UpdateSourceTrigger=PropertyChanged}">
+                    <DVC:Chart.Series>
+                    <DVC:ColumnSeries 
+                        Title="{Binding TitleOfDiagramSerie, UpdateSourceTrigger=PropertyChanged}"  
+                        ItemsSource="{Binding DiagramData}"
+                        IndependentValueBinding="{Binding Path=Key}"  
+                        DependentValueBinding="{Binding Path=Value}">
+                    </DVC:ColumnSeries>
+                </DVC:Chart.Series>
+                </DVC:Chart>
 
-        <DVC:Chart Canvas.Top="80" Canvas.Left="10" Name="mcChart3"
-           Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2"
-           Background="LightSteelBlue" 
-           Visibility="{Binding IsPieVisible, UpdateSourceTrigger=PropertyChanged}">
-            <DVC:Chart.Series>
-                <DVC:PieSeries Title="Experience"  ItemsSource="{Binding DiagramData}"
-                    IndependentValueBinding="{Binding Path=Key}"  
-                    DependentValueBinding="{Binding Path=Value}">
-                </DVC:PieSeries>
-            </DVC:Chart.Series>
-        </DVC:Chart>
-        </Grid>
-        <StackPanel Orientation="Horizontal">
-            <ComboBox ItemsSource="{Binding DiagramModes}" DisplayMemberPath="Value" 
-                      SelectedItem="{Binding CurrentDiagramMode, UpdateSourceTrigger=PropertyChanged}"/>
-
-            <ComboBox ItemsSource="{Binding DiagramTypes}" DisplayMemberPath="Value" 
-                      SelectedItem="{Binding CurrentDiagramType, UpdateSourceTrigger=PropertyChanged}"/>
-        </StackPanel>
+                <DVC:Chart 
+                    Canvas.Top="80" Canvas.Left="10" Name="mcChart3"
+                    Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2"
+                    Background="LightSteelBlue" 
+                    Visibility="{Binding IsPieVisible, UpdateSourceTrigger=PropertyChanged}">
+                    <DVC:Chart.Series>
+                        <DVC:PieSeries 
+                            Title="{Binding TitleOfDiagramSerie, UpdateSourceTrigger=PropertyChanged}"  
+                            ItemsSource="{Binding DiagramData}"
+                            IndependentValueBinding="{Binding Path=Key}"  
+                            DependentValueBinding="{Binding Path=Value}">
+                        </DVC:PieSeries>
+                    </DVC:Chart.Series>
+                </DVC:Chart>
+            
+            </Grid>
+            
+            <StackPanel Orientation="Horizontal">
+                <ComboBox ItemsSource="{Binding DiagramTypes}" DisplayMemberPath="Value" 
+                          SelectedItem="{Binding CurrentDiagramType, UpdateSourceTrigger=PropertyChanged}"/>
+                <ComboBox ItemsSource="{Binding DiagramModes}" DisplayMemberPath="Value" 
+                          SelectedItem="{Binding CurrentDiagramMode, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
         </StackPanel>
     </Grid>
     
