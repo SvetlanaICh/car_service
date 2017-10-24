@@ -20,7 +20,7 @@ namespace CarService.Model
         public int CarId { get; set; }
         public int OperationId { get; set; }
     
-        public virtual Car Cars { get; set; }
-        public virtual Operation Operations { get; set; }
+        public virtual Car Car { get; set; }
+        public virtual Operation Operation { get; set; }
     }
 }

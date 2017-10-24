@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="dbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="car_serviceModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Cars">
           <Key>
             <PropertyRef Name="IdCar" />
@@ -70,7 +70,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Orders_Operations">
+        <Association Name="FK_Orders_Operation">
           <End Role="Operations" Type="Self.Operations" Multiplicity="1" />
           <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
           <ReferentialConstraint>
@@ -82,7 +82,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="dbModelStoreContainer">
+        <EntityContainer Name="car_serviceModelStoreContainer">
           <EntitySet Name="Cars" EntityType="Self.Cars" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Operations" EntityType="Self.Operations" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
@@ -95,7 +95,7 @@
             <End Role="Cars" EntitySet="Cars" />
             <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
-          <AssociationSet Name="FK_Orders_Operations" Association="Self.FK_Orders_Operations">
+          <AssociationSet Name="FK_Orders_Operation" Association="Self.FK_Orders_Operation">
             <End Role="Operations" EntitySet="Operations" />
             <End Role="Orders" EntitySet="Orders" />
           </AssociationSet>
@@ -104,7 +104,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="car_serviceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Car">
           <Key>
             <PropertyRef Name="IdCar" />
@@ -116,7 +116,7 @@
           <Property Name="TransmissionType" Type="String" MaxLength="8" FixedLength="true" Unicode="false" />
           <Property Name="EnginePower" Type="Int16" />
           <Property Name="PersonId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Persons" Relationship="Self.FK_Cars_Persons" FromRole="Cars" ToRole="Persons" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_Cars_Persons" FromRole="Cars" ToRole="Persons" />
           <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Cars" FromRole="Cars" ToRole="Orders" />
         </EntityType>
         <EntityType Name="Operation">
@@ -126,7 +126,7 @@
           <Property Name="IdOperation" Type="Int32" Nullable="false" />
           <Property Name="NameOperation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Price" Type="Decimal" Precision="10" Scale="4" />
-          <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Operations" FromRole="Operations" ToRole="Orders" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Operation" FromRole="Operations" ToRole="Orders" />
         </EntityType>
         <EntityType Name="Order">
           <Key>
@@ -137,8 +137,8 @@
           <Property Name="EndTime" Type="DateTime" Precision="0" />
           <Property Name="CarId" Type="Int32" Nullable="false" />
           <Property Name="OperationId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Cars" Relationship="Self.FK_Orders_Cars" FromRole="Orders" ToRole="Cars" />
-          <NavigationProperty Name="Operations" Relationship="Self.FK_Orders_Operations" FromRole="Orders" ToRole="Operations" />
+          <NavigationProperty Name="Car" Relationship="Self.FK_Orders_Cars" FromRole="Orders" ToRole="Cars" />
+          <NavigationProperty Name="Operation" Relationship="Self.FK_Orders_Operation" FromRole="Orders" ToRole="Operations" />
         </EntityType>
         <EntityType Name="Person">
           <Key>
@@ -153,8 +153,8 @@
           <NavigationProperty Name="Cars" Relationship="Self.FK_Cars_Persons" FromRole="Persons" ToRole="Cars" />
         </EntityType>
         <Association Name="FK_Cars_Persons">
-          <End Role="Persons" Type="dbModel.Person" Multiplicity="1" />
-          <End Role="Cars" Type="dbModel.Car" Multiplicity="*" />
+          <End Role="Persons" Type="Self.Person" Multiplicity="1" />
+          <End Role="Cars" Type="Self.Car" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Persons">
               <PropertyRef Name="IdPerson" />
@@ -165,8 +165,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Orders_Cars">
-          <End Role="Cars" Type="dbModel.Car" Multiplicity="1" />
-          <End Role="Orders" Type="dbModel.Order" Multiplicity="*" />
+          <End Role="Cars" Type="Self.Car" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Cars">
               <PropertyRef Name="IdCar" />
@@ -176,9 +176,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Orders_Operations">
-          <End Role="Operations" Type="dbModel.Operation" Multiplicity="1" />
-          <End Role="Orders" Type="dbModel.Order" Multiplicity="*" />
+        <Association Name="FK_Orders_Operation">
+          <End Role="Operations" Type="Self.Operation" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Operations">
               <PropertyRef Name="IdOperation" />
@@ -188,11 +188,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="dbEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="CarSet" EntityType="dbModel.Car" />
-          <EntitySet Name="OperationSet" EntityType="dbModel.Operation" />
-          <EntitySet Name="OrderSet" EntityType="dbModel.Order" />
-          <EntitySet Name="PersonSet" EntityType="dbModel.Person" />
+        <EntityContainer Name="car_serviceEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CarSet" EntityType="Self.Car" />
+          <EntitySet Name="OperationSet" EntityType="Self.Operation" />
+          <EntitySet Name="OrderSet" EntityType="Self.Order" />
+          <EntitySet Name="PersonSet" EntityType="Self.Person" />
           <AssociationSet Name="FK_Cars_Persons" Association="Self.FK_Cars_Persons">
             <End Role="Persons" EntitySet="PersonSet" />
             <End Role="Cars" EntitySet="CarSet" />
@@ -201,7 +201,7 @@
             <End Role="Cars" EntitySet="CarSet" />
             <End Role="Orders" EntitySet="OrderSet" />
           </AssociationSet>
-          <AssociationSet Name="FK_Orders_Operations" Association="Self.FK_Orders_Operations">
+          <AssociationSet Name="FK_Orders_Operation" Association="Self.FK_Orders_Operation">
             <End Role="Operations" EntitySet="OperationSet" />
             <End Role="Orders" EntitySet="OrderSet" />
           </AssociationSet>
@@ -211,9 +211,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="dbModelStoreContainer" CdmEntityContainer="dbEntities">
+        <EntityContainerMapping StorageEntityContainer="car_serviceModelStoreContainer" CdmEntityContainer="car_serviceEntities">
           <EntitySetMapping Name="CarSet">
-            <EntityTypeMapping TypeName="dbModel.Car">
+            <EntityTypeMapping TypeName="car_serviceModel.Car">
               <MappingFragment StoreEntitySet="Cars">
                 <ScalarProperty Name="IdCar" ColumnName="IdCar" />
                 <ScalarProperty Name="CarBrand" ColumnName="CarBrand" />
@@ -226,7 +226,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="OperationSet">
-            <EntityTypeMapping TypeName="dbModel.Operation">
+            <EntityTypeMapping TypeName="car_serviceModel.Operation">
               <MappingFragment StoreEntitySet="Operations">
                 <ScalarProperty Name="IdOperation" ColumnName="IdOperation" />
                 <ScalarProperty Name="NameOperation" ColumnName="NameOperation" />
@@ -235,7 +235,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="OrderSet">
-            <EntityTypeMapping TypeName="dbModel.Order">
+            <EntityTypeMapping TypeName="car_serviceModel.Order">
               <MappingFragment StoreEntitySet="Orders">
                 <ScalarProperty Name="IdOrder" ColumnName="IdOrder" />
                 <ScalarProperty Name="BeginTime" ColumnName="BeginTime" />
@@ -246,7 +246,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PersonSet">
-            <EntityTypeMapping TypeName="dbModel.Person">
+            <EntityTypeMapping TypeName="car_serviceModel.Person">
               <MappingFragment StoreEntitySet="Persons">
                 <ScalarProperty Name="IdPerson" ColumnName="IdPerson" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
@@ -271,7 +271,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="true" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />

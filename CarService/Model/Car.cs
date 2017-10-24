@@ -27,7 +27,7 @@ namespace CarService.Model
         public Nullable<short> EnginePower { get; set; }
         public int PersonId { get; set; }
     
-        public virtual Person Persons { get; set; }
+        public virtual Person Person { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
     }
 }

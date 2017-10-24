@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="car_serviceModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Cars">
+    <Key>
+      <PropertyRef Name="IdCar" />
+    </Key>
+    <Property Name="IdCar" Type="int" Nullable="false" />
+    <Property Name="CarBrand" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="CarModel" Type="varchar" MaxLength="50" />
+    <Property Name="ReleaseYear" Type="smallint" />
+    <Property Name="TransmissionType" Type="char" MaxLength="8" />
+    <Property Name="EnginePower" Type="smallint" />
+    <Property Name="PersonId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Operations">
+    <Key>
+      <PropertyRef Name="IdOperation" />
+    </Key>
+    <Property Name="IdOperation" Type="int" Nullable="false" />
+    <Property Name="NameOperation" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Price" Type="smallmoney" />
+  </EntityType>
+  <EntityType Name="Orders">
+    <Key>
+      <PropertyRef Name="IdOrder" />
+    </Key>
+    <Property Name="IdOrder" Type="int" Nullable="false" />
+    <Property Name="BeginTime" Type="smalldatetime" />
+    <Property Name="EndTime" Type="smalldatetime" />
+    <Property Name="CarId" Type="int" Nullable="false" />
+    <Property Name="OperationId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Persons">
+    <Key>
+      <PropertyRef Name="IdPerson" />
+    </Key>
+    <Property Name="IdPerson" Type="int" Nullable="false" />
+    <Property Name="LastName" Type="varchar" MaxLength="40" Nullable="false" />
+    <Property Name="FirstName" Type="varchar" MaxLength="20" />
+    <Property Name="MiddleName" Type="varchar" MaxLength="20" />
+    <Property Name="BirthYear" Type="smallint" />
+    <Property Name="Phone" Type="char" MaxLength="12" />
+  </EntityType>
+  <Association Name="FK_Cars_Persons">
+    <End Role="Persons" Type="Self.Persons" Multiplicity="1" />
+    <End Role="Cars" Type="Self.Cars" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Persons">
+        <PropertyRef Name="IdPerson" />
+      </Principal>
+      <Dependent Role="Cars">
+        <PropertyRef Name="PersonId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Orders_Cars">
+    <End Role="Cars" Type="Self.Cars" Multiplicity="1" />
+    <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Cars">
+        <PropertyRef Name="IdCar" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="CarId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Orders_Operation">
+    <End Role="Operations" Type="Self.Operations" Multiplicity="1" />
+    <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Operations">
+        <PropertyRef Name="IdOperation" />
+      </Principal>
+      <Dependent Role="Orders">
+        <PropertyRef Name="OperationId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="car_serviceModelStoreContainer">
+    <EntitySet Name="Cars" EntityType="Self.Cars" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Operations" EntityType="Self.Operations" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Persons" EntityType="Self.Persons" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Cars_Persons" Association="Self.FK_Cars_Persons">
+      <End Role="Persons" EntitySet="Persons" />
+      <End Role="Cars" EntitySet="Cars" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Orders_Cars" Association="Self.FK_Orders_Cars">
+      <End Role="Cars" EntitySet="Cars" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Orders_Operation" Association="Self.FK_Orders_Operation">
+      <End Role="Operations" EntitySet="Operations" />
+      <End Role="Orders" EntitySet="Orders" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

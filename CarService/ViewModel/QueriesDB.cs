@@ -54,7 +54,7 @@ namespace CarService.ViewModel
 
         public void CreateAll()
         {
-            using (dbEntities db = new dbEntities())
+            using (car_serviceEntities db = new car_serviceEntities())
             {
                 result = (from or in db.OrderSet
                           join c in db.CarSet on or.CarId equals c.IdCar
