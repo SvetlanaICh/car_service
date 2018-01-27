@@ -4,19 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CarService.ViewModel
+namespace CarService.Model
 {
-    class OrderExtended
+    class OrderExtended : Order
     {
-        public int IdOrder { get; set; }
+        //public int IdOrder { get; set; }
         public string CarBrand { get; set; }
         public string CarModel { get; set; }
         public short? ReleaseYear { get; set; }
         public string TransmissionType { get; set; }
         public short? EnginePower { get; set; }
         public string NameOperation { get; set; }
-        public DateTime? BeginTime { get; set; }
-        public DateTime? EndTime { get; set; }
+        //public DateTime? BeginTime { get; set; }
+        //public DateTime? EndTime { get; set; }
         public decimal? Price { get; set; }
         public string PersonLastName { get; set; }
         public string PersonFirstName { get; set; }

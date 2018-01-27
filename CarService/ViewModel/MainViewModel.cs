@@ -1,41 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using CarService1.ViewModel;
+using CarService.Helpers;
 using CarService.View;
-using System.Windows.Data;
-using System.Windows;
-using System.Globalization;
+using CarService.Model;
 
 namespace CarService.ViewModel
 {
     class MainViewModel : INotifyPropertyChanged
-    {
-        private QueriesDB DB;
-        private StatisticsWindow statisticsWindow;
-        private List<OrderExtended> ordersCurrentPage;
+    {        
+        public PaginalData DBNew { get; set; }
+
+        private StatisticsWindow statisticsWindow;        
         private KeyValuePair<string, string> currentSortColumn;
         private KeyValuePair<string, string> currentFilterColumn;
         private KeyValuePair<string, string> currentSearchColumn;
-        private int rowCount;
-        private int currentPage;        
+
+        //private int rowCount;
+        public int RowCount
+        {
+            get { return DBNew.RowCount; }
+            set
+            {
+                DBNew.RowCount = value;
+            }
+        }
+        public List<OrderExtended> ResultCurrent { get; set; }
+        public string PageStatus { get; set; }
+        public bool HasPrevious { get; set; }
+        public bool HasNext { get; set; }
+        
+
 
         public ObservableCollection< KeyValuePair<string, string> > ConditionColumns { get; private set; }
         public List<string> FilterValues { get; private set; }
         public string CurrentFilterValue { get; set; }
         public string SearchValue { get; set; }
         public List< KeyValuePair<bool, string> > SortModes { get; set; }
-        public KeyValuePair<bool, string> CurrentSortMode { get; set; }
-        public bool PreviousIsEnabled { get; set; }
-        public bool NextIsEnabled { get; set; }
-        public string PageStatus { set; get; }
+        public KeyValuePair<bool, string> CurrentSortMode { get; set; }                
 
         public ICommand Sort { get; private set; }
         public ICommand Filter { get; private set; }
@@ -46,24 +50,18 @@ namespace CarService.ViewModel
 
         public MainViewModel()
         {
-            statisticsWindow = new StatisticsWindow();
-            //currentPage = 1;
-            DB = new QueriesDB();
-            if (DB != null)
-            {
-                //CurrentPage = 1;
-                DB.CreateAll();
-                RowCount = 10; //
-                //CheckButtonsEnabled();
-            }
+            CreatePaginalData();
 
             Sort = new Command(DoSort);
             Filter = new Command(DoFilter);
             Search = new Command(DoSearch);
             ShowStatistics = new Command(DoShowStatistics);
-            Previous = new Command(DoPrevious);
-            Next = new Command(DoNext);
 
+            CreateSortFilterSearchpPoperties();
+        }
+
+        private void CreateSortFilterSearchpPoperties()
+        {
             ConditionColumns = new ObservableCollection<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string> ("IdOrder", "ID заказа"),
@@ -84,79 +82,62 @@ namespace CarService.ViewModel
                 new KeyValuePair<bool, string>(false, "По убыванию")
             };
 
-            if (ConditionColumns != null)
+            if ( !Usefully.IsNullOrEmpty(ConditionColumns) )
             {
                 CurrentSortColumn = ConditionColumns[0];
                 CurrentFilterColumn = ConditionColumns[0];
                 CurrentSearchColumn = ConditionColumns[0];
             }
 
-            if (SortModes != null)
+            if ( !Usefully.IsNullOrEmpty(SortModes) )
                 CurrentSortMode = SortModes[0];
         }
 
-
-        public int RowCount
+        private void CreatePaginalData()
         {
-            get { return rowCount; }
-            set
+            DBNew = new PaginalData();
+
+            if (DBNew == null)
+                return;
+
+            Previous = new Command(DBNew.DoPrevious);
+            Next = new Command(DBNew.DoNext);
+
+            DBNew.PropertyChanged += (o, e) =>
             {
-                rowCount = 10;
-                if (value != 0)
-                    rowCount = value;
-
-                CreateOrdersAll();
-
-                //CheckButtonsEnabled();
-                OnPropertyChanged("RowCount");
-            }
-        }
-
-        private void CreateOrdersAll()
-        {
-            OrdersCurrentPage = null;
-            if (RowCount != 0 && DB != null)
-            {
-                DB.CreateResultAll(RowCount);
-                CurrentPage = 1;
-
-                if (DB.ResultAll == null)
-                    return;
-                if (DB.ResultAll.Count == 0)
-                    return;
-                if (CurrentPage < 1 || CurrentPage > (DB.ResultAll.Count)) //
+                if (o == null || e == null)
                     return;
 
-                OrdersCurrentPage = DB.ResultAll[CurrentPage - 1];                
-            }
-            OnPropertyChanged("OrdersCurrentPage");
-            CheckButtonsEnabled();
-        }
-        
-        public int CurrentPage
-        {
-            get { return currentPage; }
-            set
-            {
-                //
-                currentPage = value;
-                OnPropertyChanged("CurrentPage");
-                PageStatus = string.Format("Стр.{0} из {1}", CurrentPage, DB.GetPageCount(rowCount));
-                OnPropertyChanged("PageStatus");
-            }
-        }       
+                switch (e.PropertyName)
+                {
+                    case "ResultCurrent":
+                        ResultCurrent = DBNew.ResultCurrent;
+                        OnPropertyChanged("ResultCurrent");
+                        break;
+                    case "PageStatus":
+                        PageStatus = DBNew.PageStatus;
+                        OnPropertyChanged("PageStatus");
+                        break;
+                    case "HasPrevious":
+                        HasPrevious = DBNew.HasPrevious;
+                        OnPropertyChanged("HasPrevious");
+                        break;
+                    case "HasNext":
+                        HasNext = DBNew.HasNext;
+                        OnPropertyChanged("HasNext");
+                        break;
+                    case "RowCount":
+                        //RowCount = DBNew.RowCount;
+                        OnPropertyChanged("RowCount");
+                        break;
+                    default:
+                        break;
+                }
+            };
 
-        public List<OrderExtended> OrdersCurrentPage
-        {
-            get { return ordersCurrentPage; }
-            set
-            {
-                ordersCurrentPage = null;
-                ordersCurrentPage = value;
-                OnPropertyChanged("OrdersCurrentPage");
-            }
+            DBNew.RefreshProperties();
         }
-  
+
         public KeyValuePair<string, string> CurrentSortColumn
         {
             get { return currentSortColumn; }
@@ -174,9 +155,9 @@ namespace CarService.ViewModel
             {
                 currentFilterColumn = value;
 
-                FilterValues = DB.GetFilterValues(CurrentFilterColumn.Key);
+                FilterValues = ServiceDB.GetFilterValues(CurrentFilterColumn.Key);
                 OnPropertyChanged("FilterValues");
-                if (FilterValues != null && FilterValues.Count > 0)
+                if ( !Usefully.IsNullOrEmpty(FilterValues) )
                 {
                     CurrentFilterValue = FilterValues[0];
                     OnPropertyChanged("CurrentFilterValue");
@@ -200,17 +181,17 @@ namespace CarService.ViewModel
 
         private void DoSort()
         {
-            OrdersCurrentPage = null;
-            DB.MakeSort(CurrentSortColumn.Key, CurrentSortMode.Key);
-            CreateOrdersAll();
+            if (DBNew != null)
+                DBNew.MakeSort(CurrentSortColumn.Key, CurrentSortMode.Key);
         }
 
         private void DoFilter()
         {
             if (CurrentFilterValue == null)
                 return;
-            DB.MakeSearch(CurrentFilterColumn.Key, CurrentFilterValue);
-            CreateOrdersAll();
+
+            if (DBNew != null)
+                DBNew.MakeSearch(CurrentFilterColumn.Key, CurrentFilterValue);
         }
 
         private void DoSearch()
@@ -218,70 +199,23 @@ namespace CarService.ViewModel
             if (SearchValue == null)
                 return;
 
-            DB.MakeSearch(CurrentSearchColumn.Key, SearchValue);
-            CreateOrdersAll();
-        }
-
-        private void DoPrevious()
-        {
-            if (DB == null)
-                return;
-            if (DB.ResultAll == null)
-                return;
-            if (DB.ResultAll.Count == 0)
-                return;
-
-            if (CurrentPage > 1)
-                CurrentPage--;
-
-            OrdersCurrentPage = DB.ResultAll[CurrentPage-1];
-            OnPropertyChanged("CurrentPage");
-
-            CheckButtonsEnabled();
-        }
-        private void DoNext()
-        {
-            if (DB == null)
-                return;
-            if (DB.ResultAll == null)
-                return;
-            if (DB.ResultAll.Count == 0)
-                return;
-
-            if (CurrentPage < DB.GetPageCount(rowCount))
-                CurrentPage++;
-
-            OrdersCurrentPage = DB.ResultAll[CurrentPage-1];
-            OnPropertyChanged("CurrentPage");
-
-            CheckButtonsEnabled();
-        }
-
-        private void CheckButtonsEnabled()
-        {
-            PreviousIsEnabled = false;
-            NextIsEnabled = false;
-
-            if (DB == null)
-                return;
-            if (DB.ResultAll == null)
-                return;
-            if (DB.ResultAll.Count == 0)
-                return;
-
-            if (CurrentPage > 1)
-                PreviousIsEnabled = true;
-            if (CurrentPage < DB.GetPageCount(rowCount))
-                NextIsEnabled = true;
-
-            OnPropertyChanged("PreviousIsEnabled");
-            OnPropertyChanged("NextIsEnabled");
+            if (DBNew != null)
+                DBNew.MakeSearch(CurrentSearchColumn.Key, SearchValue);
         }
 
         private void DoShowStatistics()
         {
             statisticsWindow = new StatisticsWindow();
-            statisticsWindow.Show();
+
+            if (statisticsWindow == null)
+                return;
+
+            statisticsWindow.Closed += (o, e) =>
+            {
+                statisticsWindow = null;
+            };
+            
+            statisticsWindow.ShowDialog();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

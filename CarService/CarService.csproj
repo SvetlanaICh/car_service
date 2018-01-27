@@ -82,9 +82,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helpers\Usefully.cs" />
     <Compile Include="Model\Car.cs">
       <DependentUpon>Model2.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\DataHandler.cs" />
     <Compile Include="Model\Model2.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -106,10 +108,12 @@
     <Compile Include="Model\Order.cs">
       <DependentUpon>Model2.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\PaginalData.cs" />
     <Compile Include="Model\Person.cs">
       <DependentUpon>Model2.tt</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\OrderExtended.cs" />
+    <Compile Include="Model\OrderExtended.cs" />
+    <Compile Include="Model\ServiceDB.cs" />
     <Compile Include="ViewModel\StatisticsViewModel.cs" />
     <Compile Include="View\StatisticsWindow.xaml.cs">
       <DependentUpon>StatisticsWindow.xaml</DependentUpon>
@@ -122,9 +126,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ViewModel\Command.cs" />
+    <Compile Include="Helpers\Command.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\QueriesDB.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

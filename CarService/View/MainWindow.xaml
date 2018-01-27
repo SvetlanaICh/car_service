@@ -85,7 +85,7 @@
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Height="Auto" Width="Auto">
             <DataGrid x:Name="dataGrid"  AutoGenerateColumns="False" 
-                      ItemsSource="{Binding OrdersCurrentPage, UpdateSourceTrigger=PropertyChanged}">
+                      ItemsSource="{Binding ResultCurrent, UpdateSourceTrigger=PropertyChanged}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID заказа"  Binding="{Binding Path=IdOrder}"/>
                     <DataGridTextColumn Header="Марка авто"  Binding="{Binding Path=CarBrand}"/>
@@ -120,10 +120,10 @@
             <StackPanel Orientation="Horizontal">
                 <Label Content="Навигация:"/>
                 <Label Content="{Binding PageStatus, UpdateSourceTrigger=PropertyChanged}"/>
-                <Button Content="Предыдущая" Command="{Binding Previous}" IsEnabled="{Binding PreviousIsEnabled, UpdateSourceTrigger=PropertyChanged}"/>
-                <Button Content="Следующая" Command="{Binding Next}" IsEnabled="{Binding NextIsEnabled, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Content="Предыдущая" Command="{Binding Previous}" IsEnabled="{Binding HasPrevious, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Content="Следующая" Command="{Binding Next}" IsEnabled="{Binding HasNext, UpdateSourceTrigger=PropertyChanged}"/>
                 <Label Content="Записей на странице:"/>
-                <TextBox Text="{Binding RowCount, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Text="{Binding RowCount, UpdateSourceTrigger=LostFocus}"/>
             </StackPanel>
         </StackPanel>
     </Grid>

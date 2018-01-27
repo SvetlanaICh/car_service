@@ -1,20 +1,15 @@
-﻿using CarService1.ViewModel;
+﻿using CarService.Helpers;
+using CarService.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 
 namespace CarService.ViewModel
 {
     class StatisticsViewModel : INotifyPropertyChanged
     {
-        QueriesDB DB;
-
         private KeyValuePair<int, string> currentDiagramMode;
         private KeyValuePair<int, string> currentDiagramType;
         private string titleOfDiagramSerie;
@@ -29,8 +24,6 @@ namespace CarService.ViewModel
 
         public StatisticsViewModel()
         {
-            DB = new QueriesDB();
-
             DiagramData = new List<KeyValuePair<string, int>> { };
 
             DiagramModes = new List<KeyValuePair<int, string>>
@@ -47,10 +40,10 @@ namespace CarService.ViewModel
                 new KeyValuePair<int, string>(2, "Заказы - цены")
             };
 
-            if ( DiagramModes != null )
+            if (!Usefully.IsNullOrEmpty(DiagramModes))
                 CurrentDiagramMode = DiagramModes[0];
 
-            if (DiagramTypes != null)
+            if (!Usefully.IsNullOrEmpty(DiagramTypes))
                 CurrentDiagramType = DiagramTypes[0];
 
             SetDiagramVisibility();
@@ -125,17 +118,17 @@ namespace CarService.ViewModel
             {
                 case 0:
                     TitleOfDiagramSerie = "Марки авто";
-                    DiagramData = DB.GetDataForDiagramCarBrand();
+                    DiagramData = ServiceDB.GetDataForDiagramCarBrand();
                     break;
                 case 1:
                     int year_current = DateTime.Now.Year;
                     TitleOfDiagramSerie = string.Format("Год {0}", year_current);
-                    DiagramData = DB.GetDataForDiagramMonth();
+                    DiagramData = ServiceDB.GetDataForDiagramMonth();
                     break;
                 case 2:
                     TitleOfDiagramSerie = "Цены";
                     List<int> values = new List<int> { 0, 1000, 5000, 10000 };
-                    DiagramData = DB.GetDataForDiagramPrice( ref values);
+                    DiagramData = ServiceDB.GetDataForDiagramPrice( ref values);
                     break;
                 default:
                     Console.WriteLine("Не сработало...");

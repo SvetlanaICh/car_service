@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace CarService1.ViewModel
+namespace CarService.Helpers
 {
     class Command : ICommand
     {
