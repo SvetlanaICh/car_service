@@ -9,15 +9,22 @@ using System.Threading.Tasks;
 
 namespace CarService.Model
 {
-    class DataHandler : INotifyPropertyChanged
+    class DataHandler : IDataHandler
     {
+        private IQueriesDB queriesDB;
         private List<OrderExtended> result_all;
 
         public List<OrderExtended> Result { get; set; }
 
-        public DataHandler()
+		public DataHandler(IQueriesDB queriesDBIn)
         {
-            result_all = ServiceDB.GetAllOrderExtended();
+            queriesDB = queriesDBIn;
+            Create();
+        }
+
+        public void Create()
+        {
+            result_all = queriesDB.GetResultAll();
             Result = result_all;
         }
 

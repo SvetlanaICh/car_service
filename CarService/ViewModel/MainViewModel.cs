@@ -9,11 +9,12 @@ using CarService.Model;
 
 namespace CarService.ViewModel
 {
-    class MainViewModel : INotifyPropertyChanged
-    {        
-        public PaginalData DBNew { get; set; }
-
-        private StatisticsWindow statisticsWindow;        
+    public class MainViewModel : INotifyPropertyChanged
+    {
+        private IStatisticsShower statisticsShower;
+        private IPaginalData paginalData;
+        private IQueriesDB queriesDB;
+     
         private KeyValuePair<string, string> currentSortColumn;
         private KeyValuePair<string, string> currentFilterColumn;
         private KeyValuePair<string, string> currentSearchColumn;
@@ -21,10 +22,16 @@ namespace CarService.ViewModel
         //private int rowCount;
         public int RowCount
         {
-            get { return DBNew.RowCount; }
+            get
+            {
+                if (paginalData != null)
+                    return paginalData.RowCount;
+                return 0;   // ?
+            }
             set
             {
-                DBNew.RowCount = value;
+                if (paginalData != null)
+                    paginalData.RowCount = value;
             }
         }
         public List<OrderExtended> ResultCurrent { get; set; }
@@ -48,19 +55,25 @@ namespace CarService.ViewModel
         public ICommand Previous { get; private set; }
         public ICommand Next { get; private set; }
 
-        public MainViewModel()
+        public MainViewModel(   IStatisticsShower statisticsShowerIn
+                                , IPaginalData paginalDataIn
+                                , IQueriesDB queriesDBIn
+                            )
         {
-            CreatePaginalData();
+            statisticsShower = statisticsShowerIn;
+            queriesDB = queriesDBIn;
+
+            CreatePaginalData(paginalDataIn);
 
             Sort = new Command(DoSort);
             Filter = new Command(DoFilter);
             Search = new Command(DoSearch);
             ShowStatistics = new Command(DoShowStatistics);
 
-            CreateSortFilterSearchpPoperties();
+            CreateSortFilterSearchPoperties();
         }
 
-        private void CreateSortFilterSearchpPoperties()
+        private void CreateSortFilterSearchPoperties()
         {
             ConditionColumns = new ObservableCollection<KeyValuePair<string, string>>
             {
@@ -93,17 +106,17 @@ namespace CarService.ViewModel
                 CurrentSortMode = SortModes[0];
         }
 
-        private void CreatePaginalData()
+        private void CreatePaginalData(IPaginalData paginalDataIn)
         {
-            DBNew = new PaginalData();
+            paginalData = paginalDataIn;
 
-            if (DBNew == null)
+            if (paginalData == null)
                 return;
 
-            Previous = new Command(DBNew.DoPrevious);
-            Next = new Command(DBNew.DoNext);
+            Previous = new Command(paginalData.DoPrevious);
+            Next = new Command(paginalData.DoNext);
 
-            DBNew.PropertyChanged += (o, e) =>
+            paginalData.PropertyChanged += (o, e) =>
             {
                 if (o == null || e == null)
                     return;
@@ -111,23 +124,23 @@ namespace CarService.ViewModel
                 switch (e.PropertyName)
                 {
                     case "ResultCurrent":
-                        ResultCurrent = DBNew.ResultCurrent;
+                        ResultCurrent = paginalData.ResultCurrent;
                         OnPropertyChanged("ResultCurrent");
                         break;
                     case "PageStatus":
-                        PageStatus = DBNew.PageStatus;
+                        PageStatus = paginalData.PageStatus;
                         OnPropertyChanged("PageStatus");
                         break;
                     case "HasPrevious":
-                        HasPrevious = DBNew.HasPrevious;
+                        HasPrevious = paginalData.HasPrevious;
                         OnPropertyChanged("HasPrevious");
                         break;
                     case "HasNext":
-                        HasNext = DBNew.HasNext;
+                        HasNext = paginalData.HasNext;
                         OnPropertyChanged("HasNext");
                         break;
                     case "RowCount":
-                        //RowCount = DBNew.RowCount;
+                        //RowCount = paginalData.RowCount;
                         OnPropertyChanged("RowCount");
                         break;
                     default:
@@ -135,7 +148,7 @@ namespace CarService.ViewModel
                 }
             };
 
-            DBNew.RefreshProperties();
+            paginalData.RefreshProperties();
         }
 
         public KeyValuePair<string, string> CurrentSortColumn
@@ -155,7 +168,9 @@ namespace CarService.ViewModel
             {
                 currentFilterColumn = value;
 
-                FilterValues = ServiceDB.GetFilterValues(CurrentFilterColumn.Key);
+                if (queriesDB != null)
+                    FilterValues = queriesDB.GetFilterValues(CurrentFilterColumn.Key);
+
                 OnPropertyChanged("FilterValues");
                 if ( !Usefully.IsNullOrEmpty(FilterValues) )
                 {
@@ -181,8 +196,8 @@ namespace CarService.ViewModel
 
         private void DoSort()
         {
-            if (DBNew != null)
-                DBNew.MakeSort(CurrentSortColumn.Key, CurrentSortMode.Key);
+            if (paginalData != null)
+                paginalData.MakeSort(CurrentSortColumn.Key, CurrentSortMode.Key);
         }
 
         private void DoFilter()
@@ -190,8 +205,8 @@ namespace CarService.ViewModel
             if (CurrentFilterValue == null)
                 return;
 
-            if (DBNew != null)
-                DBNew.MakeSearch(CurrentFilterColumn.Key, CurrentFilterValue);
+            if (paginalData != null)
+                paginalData.MakeSearch(CurrentFilterColumn.Key, CurrentFilterValue);
         }
 
         private void DoSearch()
@@ -199,23 +214,14 @@ namespace CarService.ViewModel
             if (SearchValue == null)
                 return;
 
-            if (DBNew != null)
-                DBNew.MakeSearch(CurrentSearchColumn.Key, SearchValue);
+            if (paginalData != null)
+                paginalData.MakeSearch(CurrentSearchColumn.Key, SearchValue);
         }
 
         private void DoShowStatistics()
         {
-            statisticsWindow = new StatisticsWindow();
-
-            if (statisticsWindow == null)
-                return;
-
-            statisticsWindow.Closed += (o, e) =>
-            {
-                statisticsWindow = null;
-            };
-            
-            statisticsWindow.ShowDialog();
+            if (statisticsShower != null)
+                statisticsShower.StatisticsShow();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

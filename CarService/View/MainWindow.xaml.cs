@@ -24,8 +24,12 @@ namespace CarService
         public MainWindow()
         {
             InitializeComponent();
+        }
 
-            DataContext = new MainViewModel();
+        public MainWindow(MainViewModel mainViewModelIn)
+        {
+            InitializeComponent();
+            DataContext = mainViewModelIn;
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CarService.Model
 {
-    class OrderExtended : Order
+    public class OrderExtended : Order
     {
         //public int IdOrder { get; set; }
         public string CarBrand { get; set; }

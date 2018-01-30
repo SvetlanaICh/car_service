@@ -23,7 +23,12 @@ namespace CarService.View
         public StatisticsWindow()
         {
             InitializeComponent();
-            DataContext = new StatisticsViewModel();
+        }
+
+        public StatisticsWindow(StatisticsViewModel statisticsViewModelIn)
+        {
+            InitializeComponent();
+            DataContext = statisticsViewModelIn;
         }
     }
 }

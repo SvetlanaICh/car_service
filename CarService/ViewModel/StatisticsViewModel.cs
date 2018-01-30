@@ -8,8 +8,9 @@ using System.Windows;
 
 namespace CarService.ViewModel
 {
-    class StatisticsViewModel : INotifyPropertyChanged
+    public class StatisticsViewModel : INotifyPropertyChanged
     {
+        IDiagramData diagramData;
         private KeyValuePair<int, string> currentDiagramMode;
         private KeyValuePair<int, string> currentDiagramType;
         private string titleOfDiagramSerie;
@@ -22,8 +23,10 @@ namespace CarService.ViewModel
         public List< KeyValuePair<int, string> > DiagramModes { get; set; }
         public List< KeyValuePair<int, string> > DiagramTypes { get; set; }
 
-        public StatisticsViewModel()
+        public StatisticsViewModel(IDiagramData diagramDataIn)
         {
+            diagramData = diagramDataIn;
+
             DiagramData = new List<KeyValuePair<string, int>> { };
 
             DiagramModes = new List<KeyValuePair<int, string>>
@@ -114,21 +117,24 @@ namespace CarService.ViewModel
 
         private void SetDiagramData()
         {
+            if (diagramData == null)
+                return;
+
             switch (CurrentDiagramType.Key)
             {
                 case 0:
                     TitleOfDiagramSerie = "Марки авто";
-                    DiagramData = ServiceDB.GetDataForDiagramCarBrand();
+                    DiagramData = diagramData.GetDataForDiagramCarBrand();
                     break;
                 case 1:
                     int year_current = DateTime.Now.Year;
                     TitleOfDiagramSerie = string.Format("Год {0}", year_current);
-                    DiagramData = ServiceDB.GetDataForDiagramMonth();
+                    DiagramData = diagramData.GetDataForDiagramMonth();
                     break;
                 case 2:
                     TitleOfDiagramSerie = "Цены";
                     List<int> values = new List<int> { 0, 1000, 5000, 10000 };
-                    DiagramData = ServiceDB.GetDataForDiagramPrice( ref values);
+                    DiagramData = diagramData.GetDataForDiagramPrice( ref values);
                     break;
                 default:
                     Console.WriteLine("Не сработало...");

@@ -1,22 +1,29 @@
 ﻿using CarService.Helpers;
-using CarService.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace CarService.Model
 {
-    class ServiceDB
+    class ServiceDB : IServiceDB
     {
-        public static List<OrderExtended> GetAllOrderExtended()
+        private Icar_serviceEntitiesFactory carServiceEntitiesFactory;
+
+        public ServiceDB(Icar_serviceEntitiesFactory carServiceEntitiesFactoryIn)
+        {
+            carServiceEntitiesFactory = carServiceEntitiesFactoryIn;
+        }
+
+        public List<OrderExtended> GetResultAll()
         {
             List<OrderExtended> result = null;
 
             try
             {
-                using (car_serviceEntities db = new car_serviceEntities())
+                using (car_serviceEntities db = carServiceEntitiesFactory.Build())
                 {
                     result = (from or in db.OrderSet
                               join c in db.CarSet on or.CarId equals c.IdCar
@@ -49,13 +56,14 @@ namespace CarService.Model
                 result = null;
                 return null;
             }
-
+            
             return result;
         }
 
-        public static List<string> GetFilterValues(string filter_column)
+
+        public List<string> GetFilterValues(string filter_column)
         {
-            List<OrderExtended> result = GetAllOrderExtended();
+            List<OrderExtended> result = GetResultAll();
             if ( Usefully.IsNullOrEmpty(result) )
                 return null;
             List<string> res_str = new List<string>();
@@ -80,9 +88,9 @@ namespace CarService.Model
             }
         }
 
-        public static List<KeyValuePair<string, int>> GetDataForDiagramCarBrand()
+        public List<KeyValuePair<string, int>> GetDataForDiagramCarBrand()
         {
-            List<OrderExtended> result = GetAllOrderExtended();
+            List<OrderExtended> result = GetResultAll();
             if (Usefully.IsNullOrEmpty(result))
                 return null;            
 
@@ -105,9 +113,9 @@ namespace CarService.Model
             return data;
         }
 
-        public static List<KeyValuePair<string, int>> GetDataForDiagramMonth()
+        public List<KeyValuePair<string, int>> GetDataForDiagramMonth()
         {
-            List<OrderExtended> result = GetAllOrderExtended();
+            List<OrderExtended> result = GetResultAll();
             if ( Usefully.IsNullOrEmpty(result) )
                 return null;            
 
@@ -144,9 +152,9 @@ namespace CarService.Model
             return data;
         }
 
-        public static List<KeyValuePair<string, int>> GetDataForDiagramPrice(ref List<int> values)
+        public List<KeyValuePair<string, int>> GetDataForDiagramPrice(ref List<int> values)
         {
-            List<OrderExtended> result = GetAllOrderExtended();
+            List<OrderExtended> result = GetResultAll();
             if (Usefully.IsNullOrEmpty(result))
                 return null;
             if (Usefully.IsNullOrEmpty(values))
@@ -180,5 +188,6 @@ namespace CarService.Model
 
             return data;
         }
+
     }
 }

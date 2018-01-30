@@ -10,10 +10,10 @@ using CarService.Helpers;
 
 namespace CarService.Model
 {
-    class PaginalData : INotifyPropertyChanged
+    public class PaginalData : IPaginalData
     {
         private List<List<OrderExtended>> resultAll { get; set; }
-        private DataHandler myDataHandler;
+        private IDataHandler myDataHandler;
         private int rowCount = 10;
         private int currentPageReal;
 
@@ -121,9 +121,9 @@ namespace CarService.Model
             }
         }
 
-        public PaginalData()
+        public PaginalData(IDataHandler DataHandler)
         {
-            myDataHandler = new DataHandler();
+            myDataHandler = DataHandler;
             rowCount = 15;
             CreateResultAll();
         }
@@ -224,11 +224,32 @@ namespace CarService.Model
             }
         }
 
+        public List<OrderExtended> Result
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName]string prop = "")
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
+        }
+
+        public void Create()
+        {
+            if (myDataHandler != null)
+                myDataHandler.Create();
+
+            CreateResultAll();
         }
     }
 }
