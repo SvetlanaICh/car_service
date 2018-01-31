@@ -78,6 +78,20 @@ namespace CarService.ViewModel
         public ICommand Search { get; private set; }
         public ICommand ShowStatistics { get; private set; }
 
+		private ICommand refresh;
+		public ICommand Refresh
+		{
+			get
+			{
+				return refresh ??
+				  (refresh = new Command(() =>
+				  {
+					  if (paginalData != null)
+						  paginalData.Create();
+				  }));
+			}
+		}
+
 		private ICommand previous;
 		public ICommand Previous
 		{

@@ -80,8 +80,10 @@
                 </Grid>
             </TabItem>
         </TabControl>
-            <Button Command="{Binding ShowStatistics}" Content="Статистика" 
-                    Width="100" HorizontalAlignment="Right"/>
+				<Button Command="{Binding Refresh}" Content="Обновить" 
+                    Width="150" HorizontalAlignment="Right"/>
+				<Button Command="{Binding ShowStatistics}" Content="Статистика" 
+                    Width="150" HorizontalAlignment="Right"/>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Width="Auto">
 				<ScrollViewer CanContentScroll="True" Height="450">
