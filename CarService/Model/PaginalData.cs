@@ -17,13 +17,10 @@ namespace CarService.Model
         private int rowCount = 10;
         private int currentPageReal;
 
-        public List<OrderExtended> ResultCurrent
-        {
-            get
-            {
-                return GetRusultCurrent();
-            }
-        } 
+		public List<OrderExtended> Result
+		{
+			get { return GetRusultCurrent(); }
+		} 
         
         private List<OrderExtended> GetRusultCurrent()
         {
@@ -64,7 +61,7 @@ namespace CarService.Model
                     //OnPropertyChanged("CurrentPageReal");
                     OnPropertyChanged("CurrentPageDisplayed");
                     OnPropertyChanged("PageStatus");
-                    OnPropertyChanged("ResultCurrent");
+                    OnPropertyChanged("Result");
                     OnPropertyChanged("HasPrevious");
                     OnPropertyChanged("HasNext");
                     return;
@@ -82,7 +79,7 @@ namespace CarService.Model
                 //OnPropertyChanged("CurrentPageReal");
                 OnPropertyChanged("CurrentPageDisplayed");
                 OnPropertyChanged("PageStatus");
-                OnPropertyChanged("ResultCurrent");
+                OnPropertyChanged("Result");
                 OnPropertyChanged("HasPrevious");
                 OnPropertyChanged("HasNext");
             }
@@ -130,17 +127,16 @@ namespace CarService.Model
 
         public void RefreshProperties()
         {
-            //OnPropertyChanged("RowCount");
-
-            //OnPropertyChanged("CurrentPageReal");
+            OnPropertyChanged("RowCount");            
             OnPropertyChanged("CurrentPageDisplayed");
             OnPropertyChanged("PageStatus");
-            OnPropertyChanged("ResultCurrent");
+            OnPropertyChanged("Result");
             OnPropertyChanged("HasPrevious");
             OnPropertyChanged("HasNext");
-        }
+			//OnPropertyChanged("CurrentPageReal");
+		}
 
-        private void CreateResultAll(int page_current = 0) //Заполнение листа листов + задание текущей страницы 
+		private void CreateResultAll(int page_current = 0) //Заполнение листа листов + задание текущей страницы 
         {
             if (myDataHandler == null)
                 return;
@@ -224,18 +220,7 @@ namespace CarService.Model
             }
         }
 
-        public List<OrderExtended> Result
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName]string prop = "")

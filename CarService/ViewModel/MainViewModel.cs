@@ -6,6 +6,7 @@ using System.Windows.Input;
 using CarService.Helpers;
 using CarService.View;
 using CarService.Model;
+using System.Windows;
 
 namespace CarService.ViewModel
 {
@@ -14,13 +15,37 @@ namespace CarService.ViewModel
         private IStatisticsShower statisticsShower;
         private IPaginalData paginalData;
         private IQueriesDB queriesDB;
-     
-        private KeyValuePair<string, string> currentSortColumn;
+		private IPaginalDataCreator paginalDataCreator;
+
+
+		private KeyValuePair<string, string> currentSortColumn;
         private KeyValuePair<string, string> currentFilterColumn;
         private KeyValuePair<string, string> currentSearchColumn;
 
-        //private int rowCount;
-        public int RowCount
+		private bool hasNavigation;
+		public bool HasNavigation
+		{
+			get { return hasNavigation; }
+			set
+			{
+				hasNavigation = value;
+
+				if (hasNavigation)
+					NavigationVisibility = Visibility.Visible;
+				else
+					NavigationVisibility = Visibility.Hidden;
+				
+				OnPropertyChanged("NavigationVisibility");
+				OnPropertyChanged("HasNavigation");
+				CreatePaginalData();
+			}
+		}
+
+		public Visibility NavigationVisibility { get; private set; }
+
+
+		//private int rowCount;
+		public int RowCount
         {
             get
             {
@@ -52,20 +77,48 @@ namespace CarService.ViewModel
         public ICommand Filter { get; private set; }
         public ICommand Search { get; private set; }
         public ICommand ShowStatistics { get; private set; }
-        public ICommand Previous { get; private set; }
-        public ICommand Next { get; private set; }
 
-        public MainViewModel(   IStatisticsShower statisticsShowerIn
-                                , IPaginalData paginalDataIn
-                                , IQueriesDB queriesDBIn
+		private ICommand previous;
+		public ICommand Previous
+		{
+			get
+			{
+				return previous ??
+				  (previous = new Command( () =>
+				  {
+					  if (paginalData != null)
+						  paginalData.DoPrevious();
+				  } )
+				  );
+			}
+		}
+
+		private ICommand next;
+		public ICommand Next
+		{
+			get
+			{
+				return next ??
+				  (next = new Command(() =>
+				 {
+					 if (paginalData != null)
+						 paginalData.DoNext();
+				 }));
+			}
+		}
+
+		public MainViewModel(   IStatisticsShower statisticsShowerIn
+                                , IPaginalDataCreator paginalDataCreatorIn
+								, IQueriesDB queriesDBIn
                             )
         {
             statisticsShower = statisticsShowerIn;
             queriesDB = queriesDBIn;
+			paginalDataCreator = paginalDataCreatorIn;
 
-            CreatePaginalData(paginalDataIn);
+			HasNavigation = false;   //It calls CreatePaginalData()
 
-            Sort = new Command(DoSort);
+			Sort = new Command(DoSort);
             Filter = new Command(DoFilter);
             Search = new Command(DoSearch);
             ShowStatistics = new Command(DoShowStatistics);
@@ -106,15 +159,15 @@ namespace CarService.ViewModel
                 CurrentSortMode = SortModes[0];
         }
 
-        private void CreatePaginalData(IPaginalData paginalDataIn)
+        private void CreatePaginalData()
         {
-            paginalData = paginalDataIn;
+			if (paginalDataCreator == null)
+				return;
+
+			paginalData = paginalDataCreator.GetPaginalData(HasNavigation);
 
             if (paginalData == null)
                 return;
-
-            Previous = new Command(paginalData.DoPrevious);
-            Next = new Command(paginalData.DoNext);
 
             paginalData.PropertyChanged += (o, e) =>
             {
@@ -123,8 +176,8 @@ namespace CarService.ViewModel
 
                 switch (e.PropertyName)
                 {
-                    case "ResultCurrent":
-                        ResultCurrent = paginalData.ResultCurrent;
+                    case "Result":
+                        ResultCurrent = paginalData.Result;
                         OnPropertyChanged("ResultCurrent");
                         break;
                     case "PageStatus":

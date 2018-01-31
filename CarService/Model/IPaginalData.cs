@@ -8,7 +8,6 @@ namespace CarService.Model
 {
     public interface IPaginalData : IDataHandler
     {
-        List<OrderExtended> ResultCurrent { get; }
         int RowCount { get; set; }
         int CurrentPageDisplayed { get; }
         string PageStatus { get; }

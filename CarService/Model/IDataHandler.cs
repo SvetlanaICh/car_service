@@ -9,7 +9,7 @@ namespace CarService.Model
 {
     public interface IDataHandler : INotifyPropertyChanged
     {
-        List<OrderExtended> Result { get; set; }
+        List<OrderExtended> Result { get; }
 
         void Create();
         void MakeSort(string condition, bool is_ascending);

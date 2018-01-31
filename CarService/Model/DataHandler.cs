@@ -14,7 +14,7 @@ namespace CarService.Model
         private IQueriesDB queriesDB;
         private List<OrderExtended> result_all;
 
-        public List<OrderExtended> Result { get; set; }
+        public List<OrderExtended> Result { get; private set; }
 
 		public DataHandler(IQueriesDB queriesDBIn)
         {
@@ -30,7 +30,9 @@ namespace CarService.Model
 
         public void MakeSort(string condition, bool is_ascending)
         {
-            if (condition == null)
+			result_all = queriesDB.GetResultAll();
+
+			if (condition == null)
                 return;
             if (result_all == null)
                 return;
@@ -80,7 +82,9 @@ namespace CarService.Model
 
         public void MakeSearch(string condition, string value)
         {
-            if (condition == null || value == null)
+			result_all = queriesDB.GetResultAll();
+
+			if (condition == null || value == null)
                 return;
             if (result_all == null)
                 return;
