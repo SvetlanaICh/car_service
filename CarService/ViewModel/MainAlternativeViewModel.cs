@@ -132,7 +132,7 @@ namespace CarService.ViewModel
 				if (hasNavigation)
 					NavigationVisibility = Visibility.Visible;
 				else
-					NavigationVisibility = Visibility.Hidden;
+					NavigationVisibility = Visibility.Collapsed;
 				
 				OnPropertyChanged("NavigationVisibility");
 				OnPropertyChanged("HasNavigation");

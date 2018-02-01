@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CarService"
         mc:Ignorable="d"
-        Title="MainAlternativeWindow" Height="650" Width="1200" Top="0" Left="0">
+        Title="Автосервис: заказы" Height="650" Width="1200" Top="0" Left="0">
     <Grid Margin="10, 10, 10, 10">
-        <StackPanel>
+		<DockPanel Width="Auto" Height="Auto" LastChildFill="True">
 
-			<DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Height="100" 
+			<DockPanel DockPanel.Dock="Top" Height="100" 
 					Width="Auto" Margin="0, 0, 0, 5">
 				<Grid DockPanel.Dock="Left" MinWidth="800">
 					<Grid.RowDefinitions>
@@ -21,14 +21,14 @@
 						<ColumnDefinition></ColumnDefinition>
 					</Grid.ColumnDefinitions>
 
-					<Grid Grid.Row="0" Grid.Column="0">
+					<Grid Grid.Row="0" Grid.Column="0" Margin="0, 0, 5, 0">
 						<Grid.RowDefinitions>
 							<RowDefinition></RowDefinition>
 						</Grid.RowDefinitions>
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition></ColumnDefinition>
 						</Grid.ColumnDefinitions>
-						<RadioButton  Content="Все заказы" 
+						<RadioButton  Content="Все заказы" VerticalAlignment="Center"
 									Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" 
 									IsChecked="{Binding DefaultMode, UpdateSourceTrigger=PropertyChanged}"/>
 					</Grid>
@@ -36,27 +36,28 @@
 					<Grid Grid.Row="0" Grid.Column="1">
 						<Grid.RowDefinitions>
 							<RowDefinition></RowDefinition>
-							<RowDefinition Height="Auto"/>
+							<RowDefinition/>
 						</Grid.RowDefinitions>
 						<Grid.ColumnDefinitions>
 							<ColumnDefinition></ColumnDefinition>
 							<ColumnDefinition></ColumnDefinition>
 							<ColumnDefinition></ColumnDefinition>
 						</Grid.ColumnDefinitions>
-						<RadioButton  Content="Сортировка" 
+						<RadioButton  Content="Сортировка" VerticalAlignment="Center"
 							Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" 
 							IsChecked="{Binding SortMode, UpdateSourceTrigger=PropertyChanged}"/>
 						<Label Content="Колонка" Grid.Row="0" Grid.Column="1"/>
 						<ComboBox x:Name="comboBox" Grid.Row="1" Grid.Column="1" Width="160"
                             ItemsSource="{Binding ConditionColumns}" DisplayMemberPath="Value" 
-                            SelectedItem="{Binding CurrentSortColumn, UpdateSourceTrigger=PropertyChanged}"/>
+                            SelectedItem="{Binding CurrentSortColumn, UpdateSourceTrigger=PropertyChanged}"
+							Margin="0, 0, 5, 0"/>
 						<Label Content="Режим" Grid.Row="0" Grid.Column="2"/>
 						<ComboBox x:Name="comboBox1" Grid.Row="1" Grid.Column="2" Width="120"
                             ItemsSource="{Binding SortModes}" DisplayMemberPath="Value" 
                             SelectedItem="{Binding CurrentSortMode}"/>
 					</Grid>
 
-					<Grid Grid.Row="1" Grid.Column="0">
+					<Grid Grid.Row="1" Grid.Column="0" Margin="0, 0, 5, 0">
 						<Grid.RowDefinitions>
 							<RowDefinition></RowDefinition>
 							<RowDefinition></RowDefinition>
@@ -66,13 +67,14 @@
 							<ColumnDefinition></ColumnDefinition>
 							<ColumnDefinition></ColumnDefinition>
 						</Grid.ColumnDefinitions>
-						<RadioButton Content="Фильтрация" 
+						<RadioButton Content="Фильтрация" VerticalAlignment="Center"
                             Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" 
 							IsChecked="{Binding FilterMode, UpdateSourceTrigger=PropertyChanged}"/>
 						<Label Content="Колонка" Grid.Row="0" Grid.Column="1"/>
 						<ComboBox x:Name="comboBox2" Grid.Row="1" Grid.Column="1" Width="160"
                             ItemsSource="{Binding ConditionColumns}" DisplayMemberPath="Value" 
-                            SelectedItem="{Binding CurrentFilterColumn, UpdateSourceTrigger=PropertyChanged}"/>
+                            SelectedItem="{Binding CurrentFilterColumn, UpdateSourceTrigger=PropertyChanged}"
+							Margin="0, 0, 5, 0"/>
 						<Label Content="Значение" Grid.Row="0" Grid.Column="2"/>
 						<ComboBox x:Name="comboBox3" Grid.Row="1" Grid.Column="2" Width="120"  
                             ItemsSource="{Binding FilterValues, UpdateSourceTrigger=PropertyChanged}"  
@@ -89,13 +91,14 @@
 							<ColumnDefinition></ColumnDefinition>
 							<ColumnDefinition></ColumnDefinition>
 						</Grid.ColumnDefinitions>
-						<RadioButton Content="Поиск" 
+						<RadioButton Content="Поиск" VerticalAlignment="Center"
 							Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
 							IsChecked="{Binding SearchMode, UpdateSourceTrigger=PropertyChanged}"/>
 						<Label Content="Колонка" Grid.Row="0" Grid.Column="1"/>
 						<ComboBox x:Name="comboBox4" Grid.Row="1" Grid.Column="1" Width="160"
-                              ItemsSource="{Binding ConditionColumns}" DisplayMemberPath="Value"  
-                              SelectedItem="{Binding CurrentSearchColumn, UpdateSourceTrigger=PropertyChanged}"/>
+                            ItemsSource="{Binding ConditionColumns}" DisplayMemberPath="Value"  
+                            SelectedItem="{Binding CurrentSearchColumn, UpdateSourceTrigger=PropertyChanged}"
+							Margin="0, 0, 5, 0"/>
 						<Label Content="Значение" Grid.Row="0" Grid.Column="2"/>
 						<TextBox x:Name="textBox" Grid.Row="1" Grid.Column="2" Width="120"
                              Text="{Binding SearchValue, UpdateSourceTrigger=PropertyChanged}"/>
@@ -103,13 +106,31 @@
 
 				</Grid>
 
-				<Button DockPanel.Dock="Right"
+				<Button DockPanel.Dock="Right" VerticalAlignment="Top"
 					Command="{Binding ShowStatistics}" Content="Статистика" 
                     Width="120" Height="70" HorizontalAlignment="Right"/>
-        </DockPanel>
-			
-        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Width="Auto">
-				<ScrollViewer CanContentScroll="True" Height="450">
+			</DockPanel>
+
+			<StackPanel DockPanel.Dock="Bottom">
+				<CheckBox Content="Постраничный просмотр" Margin="0, 5, 0, 5"  
+					IsChecked="{Binding HasNavigation, UpdateSourceTrigger=PropertyChanged}"/>
+				<StackPanel Orientation="Horizontal" 
+							Visibility="{Binding NavigationVisibility, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
+					<Label Content="Навигация:"/>
+					<Label Content="{Binding PageStatus, UpdateSourceTrigger=PropertyChanged}"/>
+					<Button Content="Предыдущая" Command="{Binding Previous}" 
+							IsEnabled="{Binding HasPrevious, UpdateSourceTrigger=PropertyChanged}"
+							Margin="0, 0, 5, 0"/>
+					<Button Content="Следующая" Command="{Binding Next}" 
+							IsEnabled="{Binding HasNext, UpdateSourceTrigger=PropertyChanged}"/>
+					<Label Content="Записей на странице:"/>
+					<TextBox Text="{Binding RowCount, UpdateSourceTrigger=LostFocus}"/>
+				</StackPanel>
+			</StackPanel>
+
+			<ScrollViewer Width="Auto" Height="{Binding Path=ActualHeight, 
+				RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}}"
+				VerticalScrollBarVisibility="Auto">
 					<DataGrid x:Name="dataGrid" AutoGenerateColumns="False" 							  
 					ItemsSource="{Binding ResultCurrent, UpdateSourceTrigger=PropertyChanged}">
 						<DataGrid.Columns>
@@ -142,20 +163,7 @@
 						</DataGrid.RowStyle>
 					</DataGrid>
 			</ScrollViewer>
-			<CheckBox Content="Постраничный просмотр"  
-					IsChecked="{Binding HasNavigation, UpdateSourceTrigger=PropertyChanged}"/>
-			</StackPanel>
-            <StackPanel Orientation="Horizontal" 
-						Visibility="{Binding NavigationVisibility, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
-                <Label Content="Навигация:"/>
-                <Label Content="{Binding PageStatus, UpdateSourceTrigger=PropertyChanged}"/>
-                <Button Content="Предыдущая" Command="{Binding Previous}" 
-						IsEnabled="{Binding HasPrevious, UpdateSourceTrigger=PropertyChanged}"/>
-                <Button Content="Следующая" Command="{Binding Next}" 
-						IsEnabled="{Binding HasNext, UpdateSourceTrigger=PropertyChanged}"/>
-                <Label Content="Записей на странице:"/>
-                <TextBox Text="{Binding RowCount, UpdateSourceTrigger=LostFocus}"/>
-            </StackPanel>
-        </StackPanel>
+									
+		</DockPanel>
     </Grid>
 </Window>
