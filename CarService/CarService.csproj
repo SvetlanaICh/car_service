@@ -129,10 +129,18 @@
     <Compile Include="Model\OrderExtended.cs" />
     <Compile Include="Model\ServiceDB.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModel\MainAlternativeViewModel.cs" />
     <Compile Include="ViewModel\StatisticsViewModel.cs" />
+    <Compile Include="View\MainAlternativeWindow.xaml.cs">
+      <DependentUpon>MainAlternativeWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\StatisticsWindow.xaml.cs">
       <DependentUpon>StatisticsWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\MainAlternativeWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

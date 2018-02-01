@@ -83,12 +83,12 @@ namespace CarService.Model
         public void MakeSearch(string condition, string value)
         {
 			result_all = queriesDB.GetResultAll();
+			Result = null;
 
 			if (condition == null || value == null)
                 return;
             if (result_all == null)
-                return;
-            Result = null;
+                return;           
 
             switch (condition)
             {

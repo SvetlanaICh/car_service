@@ -1,0 +1,161 @@
+﻿<Window x:Class="CarService.MainAlternativeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CarService"
+        mc:Ignorable="d"
+        Title="MainAlternativeWindow" Height="650" Width="1200" Top="0" Left="0">
+    <Grid Margin="10, 10, 10, 10">
+        <StackPanel>
+
+			<DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Height="100" 
+					Width="Auto" Margin="0, 0, 0, 5">
+				<Grid DockPanel.Dock="Left" MinWidth="800">
+					<Grid.RowDefinitions>
+						<RowDefinition></RowDefinition>
+						<RowDefinition></RowDefinition>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition></ColumnDefinition>
+						<ColumnDefinition></ColumnDefinition>
+					</Grid.ColumnDefinitions>
+
+					<Grid Grid.Row="0" Grid.Column="0">
+						<Grid.RowDefinitions>
+							<RowDefinition></RowDefinition>
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition></ColumnDefinition>
+						</Grid.ColumnDefinitions>
+						<RadioButton  Content="Все заказы" 
+									Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" 
+									IsChecked="{Binding DefaultMode, UpdateSourceTrigger=PropertyChanged}"/>
+					</Grid>
+
+					<Grid Grid.Row="0" Grid.Column="1">
+						<Grid.RowDefinitions>
+							<RowDefinition></RowDefinition>
+							<RowDefinition Height="Auto"/>
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition></ColumnDefinition>
+							<ColumnDefinition></ColumnDefinition>
+							<ColumnDefinition></ColumnDefinition>
+						</Grid.ColumnDefinitions>
+						<RadioButton  Content="Сортировка" 
+							Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" 
+							IsChecked="{Binding SortMode, UpdateSourceTrigger=PropertyChanged}"/>
+						<Label Content="Колонка" Grid.Row="0" Grid.Column="1"/>
+						<ComboBox x:Name="comboBox" Grid.Row="1" Grid.Column="1" Width="160"
+                            ItemsSource="{Binding ConditionColumns}" DisplayMemberPath="Value" 
+                            SelectedItem="{Binding CurrentSortColumn, UpdateSourceTrigger=PropertyChanged}"/>
+						<Label Content="Режим" Grid.Row="0" Grid.Column="2"/>
+						<ComboBox x:Name="comboBox1" Grid.Row="1" Grid.Column="2" Width="120"
+                            ItemsSource="{Binding SortModes}" DisplayMemberPath="Value" 
+                            SelectedItem="{Binding CurrentSortMode}"/>
+					</Grid>
+
+					<Grid Grid.Row="1" Grid.Column="0">
+						<Grid.RowDefinitions>
+							<RowDefinition></RowDefinition>
+							<RowDefinition></RowDefinition>
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition></ColumnDefinition>
+							<ColumnDefinition></ColumnDefinition>
+							<ColumnDefinition></ColumnDefinition>
+						</Grid.ColumnDefinitions>
+						<RadioButton Content="Фильтрация" 
+                            Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" 
+							IsChecked="{Binding FilterMode, UpdateSourceTrigger=PropertyChanged}"/>
+						<Label Content="Колонка" Grid.Row="0" Grid.Column="1"/>
+						<ComboBox x:Name="comboBox2" Grid.Row="1" Grid.Column="1" Width="160"
+                            ItemsSource="{Binding ConditionColumns}" DisplayMemberPath="Value" 
+                            SelectedItem="{Binding CurrentFilterColumn, UpdateSourceTrigger=PropertyChanged}"/>
+						<Label Content="Значение" Grid.Row="0" Grid.Column="2"/>
+						<ComboBox x:Name="comboBox3" Grid.Row="1" Grid.Column="2" Width="120"  
+                            ItemsSource="{Binding FilterValues, UpdateSourceTrigger=PropertyChanged}"  
+                            SelectedItem="{Binding CurrentFilterValue, UpdateSourceTrigger=PropertyChanged}"/>
+					</Grid>
+
+					<Grid Grid.Row="1" Grid.Column="1">
+						<Grid.RowDefinitions>
+							<RowDefinition></RowDefinition>
+							<RowDefinition></RowDefinition>
+						</Grid.RowDefinitions>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition></ColumnDefinition>
+							<ColumnDefinition></ColumnDefinition>
+							<ColumnDefinition></ColumnDefinition>
+						</Grid.ColumnDefinitions>
+						<RadioButton Content="Поиск" 
+							Grid.Row="0" Grid.RowSpan="2" Grid.Column="0"
+							IsChecked="{Binding SearchMode, UpdateSourceTrigger=PropertyChanged}"/>
+						<Label Content="Колонка" Grid.Row="0" Grid.Column="1"/>
+						<ComboBox x:Name="comboBox4" Grid.Row="1" Grid.Column="1" Width="160"
+                              ItemsSource="{Binding ConditionColumns}" DisplayMemberPath="Value"  
+                              SelectedItem="{Binding CurrentSearchColumn, UpdateSourceTrigger=PropertyChanged}"/>
+						<Label Content="Значение" Grid.Row="0" Grid.Column="2"/>
+						<TextBox x:Name="textBox" Grid.Row="1" Grid.Column="2" Width="120"
+                             Text="{Binding SearchValue, UpdateSourceTrigger=PropertyChanged}"/>
+					</Grid>
+
+				</Grid>
+
+				<Button DockPanel.Dock="Right"
+					Command="{Binding ShowStatistics}" Content="Статистика" 
+                    Width="120" Height="70" HorizontalAlignment="Right"/>
+        </DockPanel>
+			
+        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Width="Auto">
+				<ScrollViewer CanContentScroll="True" Height="450">
+					<DataGrid x:Name="dataGrid" AutoGenerateColumns="False" 							  
+					ItemsSource="{Binding ResultCurrent, UpdateSourceTrigger=PropertyChanged}">
+						<DataGrid.Columns>
+							<DataGridTextColumn Header="ID заказа"  Binding="{Binding Path=IdOrder}"/>
+							<DataGridTextColumn Header="Марка авто"  Binding="{Binding Path=CarBrand}"/>
+							<DataGridTextColumn Header="Модель авто"  Binding="{Binding Path=CarModel}"/>
+							<DataGridTextColumn Header="Год выпуска авто"  Binding="{Binding Path=ReleaseYear}"/>
+							<DataGridTextColumn Header="Тип трансмиссии"  Binding="{Binding Path=TransmissionType}"/>
+							<DataGridTextColumn Header="Мощность двигателя"  Binding="{Binding Path=EnginePower}"/>
+							<DataGridTextColumn Header="Наименование работ"  Binding="{Binding Path=NameOperation}"/>
+							<DataGridTextColumn Header="Время начала работ"  Binding="{Binding Path=BeginTime}"/>
+							<DataGridTextColumn Header="Время окончания работ"  Binding="{Binding Path=EndTime}"/>
+							<DataGridTextColumn Header="Стоимость работ"  Binding="{Binding Path=Price}"/>
+						</DataGrid.Columns>
+						<DataGrid.RowStyle>
+							<Style TargetType="DataGridRow">
+								<Setter Property="ToolTip">
+									<Setter.Value>
+										<StackPanel>
+											<TextBlock Text="Владелец:" />
+											<TextBlock Text="{Binding PersonLastName}" />
+											<TextBlock Text="{Binding PersonFirstName}" />
+											<TextBlock Text="{Binding PersonMiddleName}" />
+											<TextBlock Text="{Binding PersonBirthYear}" />
+											<TextBlock Text="{Binding PersonPhone}" />
+										</StackPanel>
+									</Setter.Value>
+								</Setter>
+							</Style>
+						</DataGrid.RowStyle>
+					</DataGrid>
+			</ScrollViewer>
+			<CheckBox Content="Постраничный просмотр"  
+					IsChecked="{Binding HasNavigation, UpdateSourceTrigger=PropertyChanged}"/>
+			</StackPanel>
+            <StackPanel Orientation="Horizontal" 
+						Visibility="{Binding NavigationVisibility, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
+                <Label Content="Навигация:"/>
+                <Label Content="{Binding PageStatus, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Content="Предыдущая" Command="{Binding Previous}" 
+						IsEnabled="{Binding HasPrevious, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Content="Следующая" Command="{Binding Next}" 
+						IsEnabled="{Binding HasNext, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Content="Записей на странице:"/>
+                <TextBox Text="{Binding RowCount, UpdateSourceTrigger=LostFocus}"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

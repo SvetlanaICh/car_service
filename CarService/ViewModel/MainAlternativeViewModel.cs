@@ -10,19 +10,118 @@ using System.Windows;
 
 namespace CarService.ViewModel
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainAlternativeViewModel : INotifyPropertyChanged
     {
         private IStatisticsShower statisticsShower;
         private IPaginalData paginalData;
         private IQueriesDB queriesDB;
 		private IPaginalDataCreator paginalDataCreator;
 
-
 		private KeyValuePair<string, string> currentSortColumn;
         private KeyValuePair<string, string> currentFilterColumn;
         private KeyValuePair<string, string> currentSearchColumn;
-
+		private bool defaultMode;
+		private bool sortMode;
+		private bool filterMode;
+		private bool searchMode;
 		private bool hasNavigation;
+		private string currentFilterValue;
+		private string searchValue;
+		private KeyValuePair<bool, string> currentSortMode;
+		//private int rowCount;
+		private ICommand previous;
+		private ICommand next;
+
+		public Visibility NavigationVisibility { get; private set; }
+		public List<OrderExtended> ResultCurrent { get; set; }
+		public string PageStatus { get; set; }
+		public bool HasPrevious { get; set; }
+		public bool HasNext { get; set; }
+		public ObservableCollection<KeyValuePair<string, string>> ConditionColumns { get; private set; }
+		public List<string> FilterValues { get; private set; }
+		public List<KeyValuePair<bool, string>> SortModes { get; set; }
+
+		public bool DefaultMode
+		{
+			get { return defaultMode; }
+			set
+			{
+				defaultMode = value;
+
+				if (defaultMode)
+				{
+					SortMode = false;
+					FilterMode = false;
+					SearchMode = false;
+
+					if (paginalData != null)
+						paginalData.Create();
+				}
+				
+				OnPropertyChanged("DefaultMode");
+			}
+		}
+		
+		public bool SortMode
+		{
+			get { return sortMode; }
+			set
+			{
+				sortMode = value;
+
+				if (sortMode)
+				{
+					DefaultMode = false;
+					FilterMode = false;
+					SearchMode = false;
+
+					DoSort();
+				}
+
+				OnPropertyChanged("SortMode");
+			}
+		}
+		
+		public bool FilterMode
+		{
+			get { return filterMode; }
+			set
+			{
+				filterMode = value;
+
+				if (filterMode)
+				{
+					DefaultMode = false;
+					SortMode = false;
+					SearchMode = false;
+
+					DoFilter();
+				}
+
+				OnPropertyChanged("FilterMode");
+			}
+		}
+		
+		public bool SearchMode
+		{
+			get { return searchMode; }
+			set
+			{
+				searchMode = value;
+
+				if (searchMode)
+				{
+					DefaultMode = false;
+					SortMode = false;
+					FilterMode = false;
+
+					DoSearch();
+				}
+
+				OnPropertyChanged("SearchMode");
+			}
+		}
+		
 		public bool HasNavigation
 		{
 			get { return hasNavigation; }
@@ -40,11 +139,7 @@ namespace CarService.ViewModel
 				CreatePaginalData();
 			}
 		}
-
-		public Visibility NavigationVisibility { get; private set; }
-
-
-		//private int rowCount;
+				
 		public int RowCount
         {
             get
@@ -59,40 +154,97 @@ namespace CarService.ViewModel
                     paginalData.RowCount = value;
             }
         }
-        public List<OrderExtended> ResultCurrent { get; set; }
-        public string PageStatus { get; set; }
-        public bool HasPrevious { get; set; }
-        public bool HasNext { get; set; }
-        
 
-
-        public ObservableCollection< KeyValuePair<string, string> > ConditionColumns { get; private set; }
-        public List<string> FilterValues { get; private set; }
-        public string CurrentFilterValue { get; set; }
-        public string SearchValue { get; set; }
-        public List< KeyValuePair<bool, string> > SortModes { get; set; }
-        public KeyValuePair<bool, string> CurrentSortMode { get; set; }                
-
-        public ICommand Sort { get; private set; }
-        public ICommand Filter { get; private set; }
-        public ICommand Search { get; private set; }
-        public ICommand ShowStatistics { get; private set; }
-
-		private ICommand refresh;
-		public ICommand Refresh
+		public string CurrentFilterValue
 		{
-			get
+			get { return currentFilterValue; }
+			set
 			{
-				return refresh ??
-				  (refresh = new Command(() =>
-				  {
-					  if (paginalData != null)
-						  paginalData.Create();
-				  }));
+				currentFilterValue = value;
+
+				if (FilterMode)
+					DoFilter();
+			}
+		}
+		
+		public string SearchValue
+		{
+			get { return searchValue; }
+			set
+			{
+				searchValue = value;
+
+				if (SearchMode)
+					DoSearch();
+			}
+		}
+        		
+		public KeyValuePair<bool, string> CurrentSortMode
+		{
+			get { return currentSortMode; }
+			set
+			{
+				currentSortMode = value;
+
+				if (SortMode)
+					DoSort();
+			}				
+		}
+
+		public KeyValuePair<string, string> CurrentSortColumn
+		{
+			get { return currentSortColumn; }
+			set
+			{
+				currentSortColumn = value;
+				OnPropertyChanged("CurrentSortColumn");
+
+				if (SortMode)
+					DoSort();
 			}
 		}
 
-		private ICommand previous;
+		public KeyValuePair<string, string> CurrentFilterColumn
+		{
+			get { return currentFilterColumn; }
+			set
+			{
+				currentFilterColumn = value;
+
+				if (queriesDB != null)
+					FilterValues = queriesDB.GetFilterValues(CurrentFilterColumn.Key);
+
+				OnPropertyChanged("FilterValues");
+				if (!Usefully.IsNullOrEmpty(FilterValues))
+				{
+					CurrentFilterValue = FilterValues[0];
+					OnPropertyChanged("CurrentFilterValue");
+				}
+				OnPropertyChanged("CurrentFilterColumn");
+
+				if (FilterMode)
+					DoFilter();
+			}
+		}
+
+		public KeyValuePair<string, string> CurrentSearchColumn
+		{
+			get { return currentSearchColumn; }
+			set
+			{
+				currentSearchColumn = value;
+
+				OnPropertyChanged("CurrentSearchColumn");
+				SearchValue = null;
+				OnPropertyChanged("SearchValue");
+
+				if (SearchMode)
+					DoSearch();
+			}
+		}
+
+        public ICommand ShowStatistics { get; private set; }
+		
 		public ICommand Previous
 		{
 			get
@@ -106,8 +258,7 @@ namespace CarService.ViewModel
 				  );
 			}
 		}
-
-		private ICommand next;
+		
 		public ICommand Next
 		{
 			get
@@ -121,21 +272,19 @@ namespace CarService.ViewModel
 			}
 		}
 
-		public MainViewModel(   IStatisticsShower statisticsShowerIn
+		public MainAlternativeViewModel(   IStatisticsShower statisticsShowerIn
                                 , IPaginalDataCreator paginalDataCreatorIn
 								, IQueriesDB queriesDBIn
-                            )
+							)
         {
             statisticsShower = statisticsShowerIn;
             queriesDB = queriesDBIn;
 			paginalDataCreator = paginalDataCreatorIn;
 
-			HasNavigation = false;   //It calls CreatePaginalData()
+			DefaultMode = true;
+			HasNavigation = true;   //It calls CreatePaginalData()
 
-			Sort = new Command(DoSort);
-            Filter = new Command(DoFilter);
-            Search = new Command(DoSearch);
-            ShowStatistics = new Command(DoShowStatistics);
+			ShowStatistics = new Command(DoShowStatistics);
 
             CreateSortFilterSearchPoperties();
         }
@@ -216,49 +365,6 @@ namespace CarService.ViewModel
             };
 
             paginalData.RefreshProperties();
-        }
-
-        public KeyValuePair<string, string> CurrentSortColumn
-        {
-            get { return currentSortColumn; }
-            set
-            {
-                currentSortColumn = value;
-                OnPropertyChanged("CurrentSortColumn");
-            }
-        }
-        
-        public KeyValuePair<string, string> CurrentFilterColumn
-        {
-            get { return currentFilterColumn; }
-            set
-            {
-                currentFilterColumn = value;
-
-                if (queriesDB != null)
-                    FilterValues = queriesDB.GetFilterValues(CurrentFilterColumn.Key);
-
-                OnPropertyChanged("FilterValues");
-                if ( !Usefully.IsNullOrEmpty(FilterValues) )
-                {
-                    CurrentFilterValue = FilterValues[0];
-                    OnPropertyChanged("CurrentFilterValue");
-                }
-                OnPropertyChanged("CurrentFilterColumn");
-            }
-        }
-                  
-        public KeyValuePair<string, string> CurrentSearchColumn
-        {
-            get { return currentSearchColumn; }
-            set
-            {
-                currentSearchColumn = value;
-                
-                OnPropertyChanged("CurrentSearchColumn");
-                SearchValue = null;
-                OnPropertyChanged("SearchValue");
-            }
         }
 
         private void DoSort()

@@ -6,28 +6,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CarService.Model;
+using System.Windows;
 
 namespace CarService
 {
     public class AllCreator: IStatisticsShower, Icar_serviceEntitiesFactory, IPaginalDataCreator
     {
-        private MainViewModel mainViewModel;
-        private StatisticsViewModel statisticsViewModel;
-        private StatisticsWindow statisticsWindow;
-        private IServiceDB serviceDB;
-        private IDataHandler dataHandler;
-
-		public MainWindow TheMainWindow { get; private set; }
+		private IServiceDB serviceDB;
+		private IDataHandler dataHandler;
+		private StatisticsViewModel statisticsViewModel;
+		private StatisticsWindow statisticsWindow;
+//		private MainViewModel mainViewModel;
+		private MainAlternativeViewModel mainAlternativeViewModel;        
+        
+		public Window TheMainWindow { get; private set; }
 
         public AllCreator()
         {
             serviceDB = new ServiceDB(this);
             dataHandler = new DataHandler(serviceDB);
+			statisticsViewModel = new StatisticsViewModel(serviceDB);
 
-			mainViewModel = new MainViewModel(this, this, serviceDB);
-			TheMainWindow = new MainWindow(mainViewModel);
-
-            statisticsViewModel = new StatisticsViewModel(serviceDB);            
+//			mainViewModel = new MainViewModel(this, this, serviceDB);			
+//			TheMainWindow = new MainWindow(mainViewModel);
+			mainAlternativeViewModel = new MainAlternativeViewModel(this, this, serviceDB);
+			TheMainWindow = new MainAlternativeWindow(mainAlternativeViewModel);			            
         }
 
         public void StatisticsShow()
