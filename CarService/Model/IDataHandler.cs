@@ -12,7 +12,7 @@ namespace CarService.Model
         List<OrderExtended> Result { get; }
 
         void Create();
-        void MakeSort(string condition, bool is_ascending);
-        void MakeSearch(string condition, string value);
+        void MakeSort(string aCondition, bool aIsAscending);
+        void MakeSearch(string aCondition, string aValue);
     }
 }

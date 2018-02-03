@@ -10,12 +10,12 @@ namespace CarService.Helpers
 {
     class Usefully
     {
-        public static bool IsNullOrEmpty<T>(IEnumerable<T> CollectionIn)
+        public static bool IsNullOrEmpty<T>(IEnumerable<T> aCollection)
         {
-            if (CollectionIn == null)
+            if (aCollection == null)
                 return true;
 
-            if (!CollectionIn.Any())
+            if (!aCollection.Any())
                 return true;
 
             return false;

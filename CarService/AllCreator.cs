@@ -10,52 +10,65 @@ using System.Windows;
 
 namespace CarService
 {
-    public class AllCreator: IStatisticsShower, Icar_serviceEntitiesFactory, IPaginalDataCreator
+	enum WindowMode : byte
+	{
+		Default = 1,
+		Alternative
+	}
+
+	public class AllCreator: IStatisticsShower, Icar_serviceEntitiesCreator, IPaginalDataCreator
     {
-		private IServiceDB serviceDB;
-		private IDataHandler dataHandler;
-		private StatisticsViewModel statisticsViewModel;
-		private StatisticsWindow statisticsWindow;
-//		private MainViewModel mainViewModel;
-		private MainAlternativeViewModel mainAlternativeViewModel;        
+		private IDataHandler mDataHandler;
+		private StatisticsViewModel mStatisticsViewModel;       
         
 		public Window TheMainWindow { get; private set; }
 
         public AllCreator()
         {
-            serviceDB = new ServiceDB(this);
-            dataHandler = new DataHandler(serviceDB);
-			statisticsViewModel = new StatisticsViewModel(serviceDB);
+			IServiceDB serviceDB = new ServiceDB(this);
+            mDataHandler = new DataHandler(serviceDB, new OrderExtendedComparisons());
+			mStatisticsViewModel = new StatisticsViewModel(serviceDB);
 
-//			mainViewModel = new MainViewModel(this, this, serviceDB);			
-//			TheMainWindow = new MainWindow(mainViewModel);
-			mainAlternativeViewModel = new MainAlternativeViewModel(this, this, serviceDB);
-			TheMainWindow = new MainAlternativeWindow(mainAlternativeViewModel);			            
+			WindowMode winMode = WindowMode.Alternative;
+
+			if (winMode == WindowMode.Default)
+			{
+				MainViewModel mainViewModel = new MainViewModel(this, this, serviceDB);
+				TheMainWindow = new MainWindow(mainViewModel);
+			}
+			if (winMode == WindowMode.Alternative)
+			{
+				MainAlternativeViewModel mainAltVM = 
+					new MainAlternativeViewModel(this, this, serviceDB);
+				TheMainWindow = new MainAlternativeWindow(mainAltVM);
+			}			            
         }
 
         public void StatisticsShow()
         {
-            statisticsWindow = new StatisticsWindow(statisticsViewModel);
+			StatisticsWindow statisticsWindow = 
+				new StatisticsWindow(mStatisticsViewModel);
+
             if (statisticsWindow == null)
                 return;
 
             statisticsWindow.Show();
         }
 
-        public car_serviceEntities Build()
+        public car_serviceEntities GetCar_serviceEntities()
         {
             return new car_serviceEntities();
         }
 
-		public IPaginalData GetPaginalData(bool IsPaginal)
+		public IPaginalData GetPaginalData(bool aIsPaginal)
 		{
-			if (dataHandler == null)
+			if (mDataHandler == null)
 				return null;
 
-			if (IsPaginal)
-				return new PaginalData(dataHandler);
+			if (aIsPaginal)
+				return new PaginalData(mDataHandler);
 			else
-				return new PaginalDataFake(dataHandler);
+				return new PaginalDataFake(mDataHandler);
 		}
 	}
 }

@@ -10,10 +10,10 @@ namespace CarService.Model
 {
 	class PaginalDataFake : IPaginalData
 	{
-		private IDataHandler myDataHandler;
-		public PaginalDataFake(IDataHandler DataHandler)
+		private IDataHandler mDataHandler;
+		public PaginalDataFake(IDataHandler aDataHandler)
 		{
-			myDataHandler = DataHandler;
+			mDataHandler = aDataHandler;
 		}
 
 		public int CurrentPageDisplayed { get { return 1; } }
@@ -37,8 +37,8 @@ namespace CarService.Model
 		{
 			get
 			{
-				if (myDataHandler != null)
-					return myDataHandler.Result;
+				if (mDataHandler != null)
+					return mDataHandler.Result;
 				else
 					return null;
 			}
@@ -46,22 +46,22 @@ namespace CarService.Model
 
 		public void Create()
 		{
-			if (myDataHandler != null)
-				myDataHandler.Create();
+			if (mDataHandler != null)
+				mDataHandler.Create();
 			OnPropertyChanged("Result");
 		}
 
-		public void MakeSearch(string condition, string value)
+		public void MakeSearch(string aCondition, string aValue)
 		{
-			if (myDataHandler != null)
-				myDataHandler.MakeSearch(condition, value);
+			if (mDataHandler != null)
+				mDataHandler.MakeSearch(aCondition, aValue);
 			OnPropertyChanged("Result");
 		}
 
-		public void MakeSort(string condition, bool is_ascending)
+		public void MakeSort(string aCondition, bool aIsAscending)
 		{
-			if (myDataHandler != null)
-				myDataHandler.MakeSort(condition, is_ascending);
+			if (mDataHandler != null)
+				mDataHandler.MakeSort(aCondition, aIsAscending);
 			OnPropertyChanged("Result");
 		}
 
@@ -77,10 +77,10 @@ namespace CarService.Model
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
-		public void OnPropertyChanged([CallerMemberName]string prop = "")
+		public void OnPropertyChanged([CallerMemberName]string aProp = "")
 		{
 			if (PropertyChanged != null)
-				PropertyChanged(this, new PropertyChangedEventArgs(prop));
+				PropertyChanged(this, new PropertyChangedEventArgs(aProp));
 		}
 	}
 }

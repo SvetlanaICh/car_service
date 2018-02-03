@@ -12,10 +12,10 @@ namespace CarService.Model
 {
     public class PaginalData : IPaginalData
     {
-        private List<List<OrderExtended>> resultAll { get; set; }
-        private IDataHandler myDataHandler;
-        private int rowCount = 10;
-        private int currentPageReal;
+		private List<List<OrderExtended>> mResultAll;
+        private IDataHandler mDataHandler;
+        private int mRowCount = 10;
+        private int mCurrentPageReal;
 
 		public List<OrderExtended> Result
 		{
@@ -24,27 +24,27 @@ namespace CarService.Model
         
         private List<OrderExtended> GetRusultCurrent()
         {
-            if (Usefully.IsNullOrEmpty(resultAll))
+            if (Usefully.IsNullOrEmpty(mResultAll))
                 return null;
 
-            if (CurrentPageReal < 0 || CurrentPageReal >= resultAll.Count)
+            if (CurrentPageReal < 0 || CurrentPageReal >= mResultAll.Count)
             {
                 CurrentPageReal = 0;
                 return GetRusultCurrent();    //Is it ok?
             }
 
-            return resultAll[CurrentPageReal];
+            return mResultAll[CurrentPageReal];
         }
 
         public int RowCount
         {
-            get { return rowCount; }
+            get { return mRowCount; }
             set
             {
                 if (value <= 0) 
                     return;
 
-                rowCount = value;
+				mRowCount = value;
                 CreateResultAll();
                 OnPropertyChanged("RowCount");
             }
@@ -52,12 +52,12 @@ namespace CarService.Model
         
         private int CurrentPageReal
         {
-            get { return currentPageReal; }
+            get { return mCurrentPageReal; }
             set
             {
-                if (Usefully.IsNullOrEmpty(resultAll))
+                if (Usefully.IsNullOrEmpty(mResultAll))
                 {
-                    currentPageReal = 0;
+					mCurrentPageReal = 0;
                     //OnPropertyChanged("CurrentPageReal");
                     OnPropertyChanged("CurrentPageDisplayed");
                     OnPropertyChanged("PageStatus");
@@ -67,15 +67,15 @@ namespace CarService.Model
                     return;
                 }
                 
-                if (value < 0 || value >= resultAll.Count)
+                if (value < 0 || value >= mResultAll.Count)
                 {
-                    if (currentPageReal >= 0 && currentPageReal < resultAll.Count) //На всякий пожарный
+                    if (mCurrentPageReal >= 0 && mCurrentPageReal < mResultAll.Count) //На всякий пожарный
                         return;
                     else
                         value = 0;
                 }
 
-                currentPageReal = value;
+				mCurrentPageReal = value;
                 //OnPropertyChanged("CurrentPageReal");
                 OnPropertyChanged("CurrentPageDisplayed");
                 OnPropertyChanged("PageStatus");
@@ -108,20 +108,20 @@ namespace CarService.Model
         {
             get
             {
-                if (myDataHandler == null)
+                if (mDataHandler == null)
                     return 0;
-                if (rowCount == 0 || myDataHandler.Result == null)
+                if (mRowCount == 0 || mDataHandler.Result == null)
                     return 0;           //
-                decimal d = (decimal)myDataHandler.Result.Count / (decimal)rowCount;
+                decimal d = (decimal)mDataHandler.Result.Count / (decimal)mRowCount;
                 decimal p_d = Math.Ceiling(d);
                 return Convert.ToInt32(p_d);
             }
         }
 
-        public PaginalData(IDataHandler DataHandler)
+        public PaginalData(IDataHandler aDataHandler)
         {
-            myDataHandler = DataHandler;
-            rowCount = 15;
+            mDataHandler = aDataHandler;
+			mRowCount = 15;
             CreateResultAll();
         }
 
@@ -136,36 +136,36 @@ namespace CarService.Model
 			//OnPropertyChanged("CurrentPageReal");
 		}
 
-		private void CreateResultAll(int page_current = 0) //Заполнение листа листов + задание текущей страницы 
+		private void CreateResultAll(int aPageCurrent = 0) //Заполнение листа листов + задание текущей страницы 
         {
-            if (myDataHandler == null)
+            if (mDataHandler == null)
                 return;
 
             if (RowCount == 0)
                 return;
             
-            if ( Usefully.IsNullOrEmpty( myDataHandler.Result) )
+            if ( Usefully.IsNullOrEmpty( mDataHandler.Result) )
             {
-                resultAll = null;
+				mResultAll = null;
                 CurrentPageReal = 0;
                 return;
             }
 
-            resultAll = new List<List<OrderExtended>>();
+			mResultAll = new List<List<OrderExtended>>();
             int k = 0;
             for (int i = 0; i < PageCount; i++)
             {
-                resultAll.Add(new List<OrderExtended>());
-                for (int j = 0; j < rowCount; j++) 
+				mResultAll.Add(new List<OrderExtended>());
+                for (int j = 0; j < mRowCount; j++) 
                 {
-                    if (k >= myDataHandler.Result.Count)
+                    if (k >= mDataHandler.Result.Count)
                         break;
-                    resultAll[i].Add(myDataHandler.Result[k]);
+					mResultAll[i].Add(mDataHandler.Result[k]);
                     k++;
                 }
             }
 
-            CurrentPageReal = page_current;
+            CurrentPageReal = aPageCurrent;
         }
 
         public void DoPrevious()
@@ -177,18 +177,18 @@ namespace CarService.Model
             CurrentPageReal++; 
         }
 
-        public void MakeSort(string condition, bool is_ascending)
+        public void MakeSort(string aCondition, bool aIsAscending)
         {
-            if (myDataHandler != null)
-                myDataHandler.MakeSort(condition, is_ascending);
+            if (mDataHandler != null)
+                mDataHandler.MakeSort(aCondition, aIsAscending);
 
             CreateResultAll();
         }
 
-        public void MakeSearch(string condition, string value)
+        public void MakeSearch(string aCondition, string aValue)
         {
-            if (myDataHandler != null)
-                myDataHandler.MakeSearch(condition, value);
+            if (mDataHandler != null)
+                mDataHandler.MakeSearch(aCondition, aValue);
 
             CreateResultAll();
         }
@@ -197,7 +197,7 @@ namespace CarService.Model
         {
             get
             {
-                if (Usefully.IsNullOrEmpty(resultAll))
+                if (Usefully.IsNullOrEmpty(mResultAll))
                     return false;
 
                 if (CurrentPageReal <= 0)
@@ -210,7 +210,7 @@ namespace CarService.Model
         {
             get
             {
-                if (Usefully.IsNullOrEmpty(resultAll))
+                if (Usefully.IsNullOrEmpty(mResultAll))
                     return false;
 
                 if (CurrentPageReal >= (PageCount - 1))
@@ -223,16 +223,16 @@ namespace CarService.Model
         
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName]string prop = "")
+        public void OnPropertyChanged([CallerMemberName]string aProp = "")
         {
             if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+                PropertyChanged(this, new PropertyChangedEventArgs(aProp));
         }
 
         public void Create()
         {
-            if (myDataHandler != null)
-                myDataHandler.Create();
+            if (mDataHandler != null)
+                mDataHandler.Create();
 
             CreateResultAll();
         }

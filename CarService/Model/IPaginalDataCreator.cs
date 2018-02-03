@@ -8,6 +8,6 @@ namespace CarService.Model
 {
 	public interface IPaginalDataCreator
 	{
-		IPaginalData GetPaginalData(bool IsPaginal);
+		IPaginalData GetPaginalData(bool aIsPaginal);
 	}
 }

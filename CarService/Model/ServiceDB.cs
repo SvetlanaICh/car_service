@@ -10,11 +10,11 @@ namespace CarService.Model
 {
     class ServiceDB : IServiceDB
     {
-        private Icar_serviceEntitiesFactory carServiceEntitiesFactory;
+        private Icar_serviceEntitiesCreator mCarServiceEntitiesCreator;
 
-        public ServiceDB(Icar_serviceEntitiesFactory carServiceEntitiesFactoryIn)
+        public ServiceDB(Icar_serviceEntitiesCreator aCarServiceEntitiesCreator)
         {
-            carServiceEntitiesFactory = carServiceEntitiesFactoryIn;
+            mCarServiceEntitiesCreator = aCarServiceEntitiesCreator;
         }
 
         public List<OrderExtended> GetResultAll()
@@ -23,7 +23,7 @@ namespace CarService.Model
 
             try
             {
-                using (car_serviceEntities db = carServiceEntitiesFactory.Build())
+                using (car_serviceEntities db = mCarServiceEntitiesCreator.GetCar_serviceEntities())
                 {
                     result = (from or in db.OrderSet
                               join c in db.CarSet on or.CarId equals c.IdCar
@@ -61,7 +61,7 @@ namespace CarService.Model
         }
 
 
-        public List<string> GetFilterValues(string filter_column)
+        public List<string> GetFilterValues(string aFilterColumn)
         {
             List<OrderExtended> result = GetResultAll();
             if ( Usefully.IsNullOrEmpty(result) )
@@ -70,7 +70,7 @@ namespace CarService.Model
             try
             {
                 var res_var = from r in result
-                              select r.GetType().GetProperty(filter_column).GetValue(r);
+                              select r.GetType().GetProperty(aFilterColumn).GetValue(r);
                 foreach (var rv in res_var)
                 {
                     if (rv == null)
@@ -152,12 +152,12 @@ namespace CarService.Model
             return data;
         }
 
-        public List<KeyValuePair<string, int>> GetDataForDiagramPrice(ref List<int> values)
+        public List<KeyValuePair<string, int>> GetDataForDiagramPrice(ref List<int> aValues)
         {
             List<OrderExtended> result = GetResultAll();
             if (Usefully.IsNullOrEmpty(result))
                 return null;
-            if (Usefully.IsNullOrEmpty(values))
+            if (Usefully.IsNullOrEmpty(aValues))
                 return null;
             List<KeyValuePair<string, int>> data = new List<KeyValuePair<string, int>>();
 
@@ -168,10 +168,10 @@ namespace CarService.Model
             if (Usefully.IsNullOrEmpty(orders_without_null))
                 return null;
 
-            for (int i = 0; i <= (values.Count - 2); i++)
+            for (int i = 0; i <= (aValues.Count - 2); i++)
             {
-                int i1 = values[i];
-                int i2 = values[i + 1];
+                int i1 = aValues[i];
+                int i2 = aValues[i + 1];
                 string s = string.Format("Цена от {0} до {1}", i1, i2);
                 int count = (from o in orders_without_null
                              where o.Price >= i1 && o.Price < i2
@@ -179,7 +179,7 @@ namespace CarService.Model
                 data.Add(new KeyValuePair<string, int>(s, count));
             }
 
-            int i3 = values[values.Count - 1];
+            int i3 = aValues[aValues.Count - 1];
             string s2 = string.Format("Цена от {0}", i3);
             int count2 = (from o in orders_without_null
                           where o.Price >= i3

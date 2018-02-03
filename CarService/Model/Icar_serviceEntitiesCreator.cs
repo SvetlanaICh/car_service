@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace CarService.Model
 {
-    public interface Icar_serviceEntitiesFactory
+    public interface Icar_serviceEntitiesCreator
     {
-        car_serviceEntities Build();
+        car_serviceEntities GetCar_serviceEntities();
     }
 }

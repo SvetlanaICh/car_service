@@ -87,10 +87,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AllCreator.cs" />
+    <Compile Include="Helpers\SimpleCommand.cs" />
     <Compile Include="Helpers\Usefully.cs" />
-    <Compile Include="Model\Icar_serviceEntitiesFactory.cs" />
+    <Compile Include="Model\Icar_serviceEntitiesCreator.cs" />
     <Compile Include="Model\IDataHandler.cs" />
     <Compile Include="Model\IDiagramData.cs" />
+    <Compile Include="Model\IOrderExtendedComparisons.cs" />
     <Compile Include="Model\IPaginalData.cs" />
     <Compile Include="Model\IPaginalDataCreator.cs" />
     <Compile Include="Model\IQueriesDB.cs" />
@@ -115,6 +117,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model2.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Model\OrderExtendedComparisons.cs" />
     <Compile Include="Model\PaginalDataFake.cs" />
     <Compile Include="Model\Operation.cs">
       <DependentUpon>Model2.tt</DependentUpon>

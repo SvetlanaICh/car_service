@@ -12,60 +12,25 @@ namespace CarService.ViewModel
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        private IStatisticsShower statisticsShower;
-        private IPaginalData paginalData;
-        private IQueriesDB queriesDB;
-		private IPaginalDataCreator paginalDataCreator;
+        private IStatisticsShower mStatisticsShower;
+        private IPaginalData mPaginalData;
+        private IQueriesDB mQueriesDB;
+		private IPaginalDataCreator mPaginalDataCreator;
 
-
-		private KeyValuePair<string, string> currentSortColumn;
-        private KeyValuePair<string, string> currentFilterColumn;
-        private KeyValuePair<string, string> currentSearchColumn;
-
-		private bool hasNavigation;
-		public bool HasNavigation
-		{
-			get { return hasNavigation; }
-			set
-			{
-				hasNavigation = value;
-
-				if (hasNavigation)
-					NavigationVisibility = Visibility.Visible;
-				else
-					NavigationVisibility = Visibility.Collapsed;
-				
-				OnPropertyChanged("NavigationVisibility");
-				OnPropertyChanged("HasNavigation");
-				CreatePaginalData();
-			}
-		}
+		private KeyValuePair<string, string> mCurrentSortColumn;
+        private KeyValuePair<string, string> mCurrentFilterColumn;
+        private KeyValuePair<string, string> mCurrentSearchColumn;
+		private bool mHasNavigation;
+		private ICommand mRefresh;
+		private ICommand mPrevious;
+		private ICommand mNext;
+		//private int mRowCount;
 
 		public Visibility NavigationVisibility { get; private set; }
-
-
-		//private int rowCount;
-		public int RowCount
-        {
-            get
-            {
-                if (paginalData != null)
-                    return paginalData.RowCount;
-                return 0;   // ?
-            }
-            set
-            {
-                if (paginalData != null)
-                    paginalData.RowCount = value;
-            }
-        }
-        public List<OrderExtended> ResultCurrent { get; set; }
+		public List<OrderExtended> ResultCurrent { get; set; }
         public string PageStatus { get; set; }
         public bool HasPrevious { get; set; }
-        public bool HasNext { get; set; }
-        
-
-
+        public bool HasNext { get; set; }        
         public ObservableCollection< KeyValuePair<string, string> > ConditionColumns { get; private set; }
         public List<string> FilterValues { get; private set; }
         public string CurrentFilterValue { get; set; }
@@ -78,64 +43,137 @@ namespace CarService.ViewModel
         public ICommand Search { get; private set; }
         public ICommand ShowStatistics { get; private set; }
 
-		private ICommand refresh;
+		public int RowCount
+		{
+			get
+			{
+				if (mPaginalData != null)
+					return mPaginalData.RowCount;
+				return 0;   // ?
+			}
+			set
+			{
+				if (mPaginalData != null)
+					mPaginalData.RowCount = value;
+			}
+		}
+
+		public bool HasNavigation
+		{
+			get { return mHasNavigation; }
+			set
+			{
+				mHasNavigation = value;
+
+				if (mHasNavigation)
+					NavigationVisibility = Visibility.Visible;
+				else
+					NavigationVisibility = Visibility.Collapsed;
+
+				OnPropertyChanged("NavigationVisibility");
+				OnPropertyChanged("HasNavigation");
+				CreatePaginalData();
+			}
+		}
+
+		public KeyValuePair<string, string> CurrentSortColumn
+		{
+			get { return mCurrentSortColumn; }
+			set
+			{
+				mCurrentSortColumn = value;
+				OnPropertyChanged("CurrentSortColumn");
+			}
+		}
+
+		public KeyValuePair<string, string> CurrentFilterColumn
+		{
+			get { return mCurrentFilterColumn; }
+			set
+			{
+				mCurrentFilterColumn = value;
+
+				if (mQueriesDB != null)
+					FilterValues = mQueriesDB.GetFilterValues(CurrentFilterColumn.Key);
+
+				OnPropertyChanged("FilterValues");
+				if (!Usefully.IsNullOrEmpty(FilterValues))
+				{
+					CurrentFilterValue = FilterValues[0];
+					OnPropertyChanged("CurrentFilterValue");
+				}
+				OnPropertyChanged("CurrentFilterColumn");
+			}
+		}
+
+		public KeyValuePair<string, string> CurrentSearchColumn
+		{
+			get { return mCurrentSearchColumn; }
+			set
+			{
+				mCurrentSearchColumn = value;
+
+				OnPropertyChanged("CurrentSearchColumn");
+				SearchValue = null;
+				OnPropertyChanged("SearchValue");
+			}
+		}
+
 		public ICommand Refresh
 		{
 			get
 			{
-				return refresh ??
-				  (refresh = new Command(() =>
+				return mRefresh ??
+				  (mRefresh = new SimpleCommand(() =>
 				  {
-					  if (paginalData != null)
-						  paginalData.Create();
+					  if (mPaginalData != null)
+						  mPaginalData.Create();
 				  }));
 			}
 		}
-
-		private ICommand previous;
+		
 		public ICommand Previous
 		{
 			get
 			{
-				return previous ??
-				  (previous = new Command( () =>
+				return mPrevious ??
+				  (mPrevious = new SimpleCommand( () =>
 				  {
-					  if (paginalData != null)
-						  paginalData.DoPrevious();
+					  if (mPaginalData != null)
+						  mPaginalData.DoPrevious();
 				  } )
 				  );
 			}
 		}
-
-		private ICommand next;
+		
 		public ICommand Next
 		{
 			get
 			{
-				return next ??
-				  (next = new Command(() =>
+				return mNext ??
+				  (mNext = new SimpleCommand(() =>
 				 {
-					 if (paginalData != null)
-						 paginalData.DoNext();
+					 if (mPaginalData != null)
+						 mPaginalData.DoNext();
 				 }));
 			}
 		}
 
-		public MainViewModel(   IStatisticsShower statisticsShowerIn
-                                , IPaginalDataCreator paginalDataCreatorIn
-								, IQueriesDB queriesDBIn
+		public MainViewModel(   IStatisticsShower aStatisticsShower
+                                , IPaginalDataCreator aPaginalDataCreator
+								, IQueriesDB aQueriesDB
                             )
         {
-            statisticsShower = statisticsShowerIn;
-            queriesDB = queriesDBIn;
-			paginalDataCreator = paginalDataCreatorIn;
+            mStatisticsShower = aStatisticsShower;
+            mQueriesDB = aQueriesDB;
+			mPaginalDataCreator = aPaginalDataCreator;
 
 			HasNavigation = false;   //It calls CreatePaginalData()
 
-			Sort = new Command(DoSort);
-            Filter = new Command(DoFilter);
-            Search = new Command(DoSearch);
-            ShowStatistics = new Command(DoShowStatistics);
+			Sort = new SimpleCommand(DoSort);
+            Filter = new SimpleCommand(DoFilter);
+            Search = new SimpleCommand(DoSearch);
+            ShowStatistics = new SimpleCommand(DoShowStatistics);
 
             CreateSortFilterSearchPoperties();
         }
@@ -175,15 +213,15 @@ namespace CarService.ViewModel
 
         private void CreatePaginalData()
         {
-			if (paginalDataCreator == null)
+			if (mPaginalDataCreator == null)
 				return;
 
-			paginalData = paginalDataCreator.GetPaginalData(HasNavigation);
+			mPaginalData = mPaginalDataCreator.GetPaginalData(HasNavigation);
 
-            if (paginalData == null)
+            if (mPaginalData == null)
                 return;
 
-            paginalData.PropertyChanged += (o, e) =>
+            mPaginalData.PropertyChanged += (o, e) =>
             {
                 if (o == null || e == null)
                     return;
@@ -191,19 +229,19 @@ namespace CarService.ViewModel
                 switch (e.PropertyName)
                 {
                     case "Result":
-                        ResultCurrent = paginalData.Result;
+                        ResultCurrent = mPaginalData.Result;
                         OnPropertyChanged("ResultCurrent");
                         break;
                     case "PageStatus":
-                        PageStatus = paginalData.PageStatus;
+                        PageStatus = mPaginalData.PageStatus;
                         OnPropertyChanged("PageStatus");
                         break;
                     case "HasPrevious":
-                        HasPrevious = paginalData.HasPrevious;
+                        HasPrevious = mPaginalData.HasPrevious;
                         OnPropertyChanged("HasPrevious");
                         break;
                     case "HasNext":
-                        HasNext = paginalData.HasNext;
+                        HasNext = mPaginalData.HasNext;
                         OnPropertyChanged("HasNext");
                         break;
                     case "RowCount":
@@ -215,56 +253,13 @@ namespace CarService.ViewModel
                 }
             };
 
-            paginalData.RefreshProperties();
-        }
-
-        public KeyValuePair<string, string> CurrentSortColumn
-        {
-            get { return currentSortColumn; }
-            set
-            {
-                currentSortColumn = value;
-                OnPropertyChanged("CurrentSortColumn");
-            }
+            mPaginalData.RefreshProperties();
         }
         
-        public KeyValuePair<string, string> CurrentFilterColumn
-        {
-            get { return currentFilterColumn; }
-            set
-            {
-                currentFilterColumn = value;
-
-                if (queriesDB != null)
-                    FilterValues = queriesDB.GetFilterValues(CurrentFilterColumn.Key);
-
-                OnPropertyChanged("FilterValues");
-                if ( !Usefully.IsNullOrEmpty(FilterValues) )
-                {
-                    CurrentFilterValue = FilterValues[0];
-                    OnPropertyChanged("CurrentFilterValue");
-                }
-                OnPropertyChanged("CurrentFilterColumn");
-            }
-        }
-                  
-        public KeyValuePair<string, string> CurrentSearchColumn
-        {
-            get { return currentSearchColumn; }
-            set
-            {
-                currentSearchColumn = value;
-                
-                OnPropertyChanged("CurrentSearchColumn");
-                SearchValue = null;
-                OnPropertyChanged("SearchValue");
-            }
-        }
-
         private void DoSort()
         {
-            if (paginalData != null)
-                paginalData.MakeSort(CurrentSortColumn.Key, CurrentSortMode.Key);
+            if (mPaginalData != null)
+                mPaginalData.MakeSort(CurrentSortColumn.Key, CurrentSortMode.Key);
         }
 
         private void DoFilter()
@@ -272,8 +267,8 @@ namespace CarService.ViewModel
             if (CurrentFilterValue == null)
                 return;
 
-            if (paginalData != null)
-                paginalData.MakeSearch(CurrentFilterColumn.Key, CurrentFilterValue);
+            if (mPaginalData != null)
+                mPaginalData.MakeSearch(CurrentFilterColumn.Key, CurrentFilterValue);
         }
 
         private void DoSearch()
@@ -281,21 +276,21 @@ namespace CarService.ViewModel
 //			if (SearchValue == null)
 //				return;
 
-            if (paginalData != null)
-                paginalData.MakeSearch(CurrentSearchColumn.Key, SearchValue);
+            if (mPaginalData != null)
+                mPaginalData.MakeSearch(CurrentSearchColumn.Key, SearchValue);
         }
 
         private void DoShowStatistics()
         {
-            if (statisticsShower != null)
-                statisticsShower.StatisticsShow();
+            if (mStatisticsShower != null)
+                mStatisticsShower.StatisticsShow();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName]string prop = "")
+        public void OnPropertyChanged([CallerMemberName]string aProp = "")
         {
             if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+                PropertyChanged(this, new PropertyChangedEventArgs(aProp));
         }
     }
 }
