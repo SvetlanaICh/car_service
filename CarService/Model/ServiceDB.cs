@@ -5,16 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using CarService.Model.Entities;
 
 namespace CarService.Model
 {
     class ServiceDB : IServiceDB
     {
-        private Icar_serviceEntitiesCreator mCarServiceEntitiesCreator;
+        private ICarServiceContextCreator mCarServiceContextCreator;
 
-        public ServiceDB(Icar_serviceEntitiesCreator aCarServiceEntitiesCreator)
+        public ServiceDB(ICarServiceContextCreator aCarServiceContextCreator)
         {
-            mCarServiceEntitiesCreator = aCarServiceEntitiesCreator;
+			mCarServiceContextCreator = aCarServiceContextCreator;
         }
 
         public List<OrderExtended> GetResultAll()
@@ -23,7 +24,7 @@ namespace CarService.Model
 
             try
             {
-                using (car_serviceEntities db = mCarServiceEntitiesCreator.GetCar_serviceEntities())
+                using (CarServiceContext db = mCarServiceContextCreator.GetCarServiceContext())
                 {
                     result = (from or in db.OrderSet
                               join c in db.CarSet on or.CarId equals c.IdCar

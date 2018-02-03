@@ -10,7 +10,5 @@
 
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("car_service.mdf")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("car_service_log.ldf")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("model/model2.context.tt")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("model/model2.tt")]
 
 

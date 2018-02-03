@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CarService.Model;
 using System.Windows;
+using CarService.Model.Entities;
 
 namespace CarService
 {
@@ -16,7 +17,7 @@ namespace CarService
 		Alternative
 	}
 
-	public class AllCreator: IStatisticsShower, Icar_serviceEntitiesCreator, IPaginalDataCreator
+	public class AllCreator: IStatisticsShower, ICarServiceContextCreator, IPaginalDataCreator
     {
 		private IDataHandler mDataHandler;
 		private StatisticsViewModel mStatisticsViewModel;       
@@ -55,9 +56,9 @@ namespace CarService
             statisticsWindow.Show();
         }
 
-        public car_serviceEntities GetCar_serviceEntities()
+        public CarServiceContext GetCarServiceContext()
         {
-            return new car_serviceEntities();
+            return new CarServiceContext();
         }
 
 		public IPaginalData GetPaginalData(bool aIsPaginal)

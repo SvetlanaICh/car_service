@@ -54,14 +54,17 @@
     <StartupObject>CarService.Startup</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Windows.Controls.DataVisualization.Toolkit, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -89,7 +92,12 @@
     <Compile Include="AllCreator.cs" />
     <Compile Include="Helpers\SimpleCommand.cs" />
     <Compile Include="Helpers\Usefully.cs" />
-    <Compile Include="Model\Icar_serviceEntitiesCreator.cs" />
+    <Compile Include="Model\Entities\Car.cs" />
+    <Compile Include="Model\Entities\CarServiceContext.cs" />
+    <Compile Include="Model\Entities\Operation.cs" />
+    <Compile Include="Model\Entities\Order.cs" />
+    <Compile Include="Model\Entities\Person.cs" />
+    <Compile Include="Model\ICarServiceContextCreator.cs" />
     <Compile Include="Model\IDataHandler.cs" />
     <Compile Include="Model\IDiagramData.cs" />
     <Compile Include="Model\IOrderExtendedComparisons.cs" />
@@ -98,37 +106,10 @@
     <Compile Include="Model\IQueriesDB.cs" />
     <Compile Include="Model\IServiceDB.cs" />
     <Compile Include="Model\IStatisticsShower.cs" />
-    <Compile Include="Model\Car.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\DataHandler.cs" />
-    <Compile Include="Model\Model2.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model2.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Model2.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model2.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Model2.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model2.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Model\OrderExtendedComparisons.cs" />
     <Compile Include="Model\PaginalDataFake.cs" />
-    <Compile Include="Model\Operation.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Order.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\PaginalData.cs" />
-    <Compile Include="Model\Person.cs">
-      <DependentUpon>Model2.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\OrderExtended.cs" />
     <Compile Include="Model\ServiceDB.cs" />
     <Compile Include="Startup.cs" />
@@ -181,13 +162,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EntityDeploy Include="Model\Model2.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model2.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="Model\Model2.edmx.diagram">
-      <DependentUpon>Model2.edmx</DependentUpon>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -207,16 +181,6 @@
     <Content Include="car_service_log.ldf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>car_service.mdf</DependentUpon>
-    </Content>
-    <Content Include="Model\Model2.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model2.edmx</DependentUpon>
-      <LastGenOutput>Model2.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Model\Model2.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model2.edmx</DependentUpon>
-      <LastGenOutput>Model2.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>
