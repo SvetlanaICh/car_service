@@ -26,9 +26,10 @@ namespace CarService
 
         public AllCreator()
         {
-			IServiceDB serviceDB = new ServiceDB(this);
+			ServiceDB serviceDB = new ServiceDB(this);
             mDataHandler = new DataHandler(serviceDB, new OrderExtendedComparisons());
-			mStatisticsViewModel = new StatisticsViewModel(serviceDB);
+			IDiagramData diagramData = new DiagramData(serviceDB);
+			mStatisticsViewModel = new StatisticsViewModel(diagramData);
 
 			WindowMode winMode = WindowMode.Alternative;
 

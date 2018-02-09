@@ -14,7 +14,7 @@ namespace CarService.ViewModel
     {
         private IStatisticsShower mStatisticsShower;
         private IPaginalData mPaginalData;
-        private IQueriesDB mQueriesDB;
+        private IServiceDB mQueriesDB;
 		private IPaginalDataCreator mPaginalDataCreator;
 
 		private KeyValuePair<string, string> mCurrentSortColumn;
@@ -161,7 +161,7 @@ namespace CarService.ViewModel
 
 		public MainViewModel(   IStatisticsShower aStatisticsShower
                                 , IPaginalDataCreator aPaginalDataCreator
-								, IQueriesDB aQueriesDB
+								, IServiceDB aQueriesDB
                             )
         {
             mStatisticsShower = aStatisticsShower;

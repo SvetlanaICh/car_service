@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace CarService.Model
 {
-    public interface IServiceDB : IQueriesDB, IDiagramData
+    public interface IServiceDB
     {
-        
-    }
+		List<string> GetFilterValues(string aFilterColumn);
+	}
 }

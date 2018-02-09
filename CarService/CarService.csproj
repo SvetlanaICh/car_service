@@ -92,6 +92,7 @@
     <Compile Include="AllCreator.cs" />
     <Compile Include="Helpers\SimpleCommand.cs" />
     <Compile Include="Helpers\Usefully.cs" />
+    <Compile Include="Model\DiagramData.cs" />
     <Compile Include="Model\Entities\Car.cs" />
     <Compile Include="Model\Entities\CarServiceContext.cs" />
     <Compile Include="Model\Entities\Operation.cs" />

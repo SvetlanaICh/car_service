@@ -9,6 +9,5 @@ namespace CarService.Model
     public interface IQueriesDB
     {
         List<OrderExtended> GetResultAll();
-        List<string> GetFilterValues(string aFilterColumn);
     }
 }

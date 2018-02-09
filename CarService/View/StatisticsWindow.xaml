@@ -10,15 +10,22 @@
         Title="Автосервис: статистика" Height="400" Width="600">
     <Grid Margin="10, 10, 10, 10">
 		<DockPanel Width="Auto" Height="Auto" LastChildFill="True">
-			
-			<StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-				<ComboBox ItemsSource="{Binding DiagramTypes}" DisplayMemberPath="Value" 
-                          SelectedItem="{Binding CurrentDiagramType, UpdateSourceTrigger=PropertyChanged}"
-						  Margin="0, 0, 5, 5"/>
-				<ComboBox ItemsSource="{Binding DiagramModes}" DisplayMemberPath="Value" 
-                          SelectedItem="{Binding CurrentDiagramMode, UpdateSourceTrigger=PropertyChanged}"
-						  Margin="0, 0, 5, 5"/>
-			</StackPanel>
+
+			<DockPanel DockPanel.Dock="Left" Height="Auto" LastChildFill="False">
+				<StackPanel DockPanel.Dock="Top" Orientation="Vertical">
+					<ListBox ItemsSource="{Binding DiagramTypes, Mode=OneWay}" DisplayMemberPath="Value" 
+							  SelectedItem="{Binding CurrentDiagramType, UpdateSourceTrigger=PropertyChanged}"
+							  Margin="0, 0, 5, 5"/>
+					<ListBox ItemsSource="{Binding DiagramModes, Mode=OneWay}" DisplayMemberPath="Value" 
+							  SelectedItem="{Binding CurrentDiagramMode, UpdateSourceTrigger=PropertyChanged}"
+							  Margin="0, 0, 5, 5"/>
+				</StackPanel>
+				<StackPanel DockPanel.Dock="Bottom" Orientation="Vertical"
+							Visibility="{Binding YearVisibility, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}">
+					<Label Content="Год" Margin="0, 0, 5, 0"/>
+					<TextBox Text="{Binding Year, UpdateSourceTrigger=LostFocus}" Margin="0, 0, 5, 0"/>
+				</StackPanel>
+			</DockPanel>
 
 			<Grid MinWidth="300" MinHeight="300">
                 <Grid.RowDefinitions>
