@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CarService.Model
+namespace CarService.Model.Experiments
 {
-	class OrderExtendedComparisons : IOrderExtendedComparisons
+	class OrderExtendedComparisons_1 : IOrderExtendedComparisons_1
 	{
 		public int OrderExtendedCompareIdOrder(OrderExtended aOE1, OrderExtended aOE2)
 		{

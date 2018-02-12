@@ -7,17 +7,17 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CarService.Model
+namespace CarService.Model.Experiments
 {
-    class DataHandler : IDataHandler
+    class DataHandler_1 : IDataHandler
     {
         private IQueriesDB mQueriesDB;
         private List<OrderExtended> mResultAll;
-		private IOrderExtendedComparisons mOrderExtendedComparisons;
+		private IOrderExtendedComparisons_1 mOrderExtendedComparisons;
 
 		public List<OrderExtended> Result { get; private set; }
 
-		public DataHandler(IQueriesDB aQueriesDB, IOrderExtendedComparisons aOrderExtendedComparisons)
+		public DataHandler_1(IQueriesDB aQueriesDB, IOrderExtendedComparisons_1 aOrderExtendedComparisons)
         {
             mQueriesDB = aQueriesDB;
             Create();
@@ -32,9 +32,10 @@ namespace CarService.Model
 
         public void MakeSort(string aCondition, bool aIsAscending)
         {
+			Result = null;
 			mResultAll = mQueriesDB.GetResultAll();
-
-			if (aCondition == null)
+			
+			if (string.IsNullOrEmpty(aCondition))
                 return;
             if (mResultAll == null)
                 return;

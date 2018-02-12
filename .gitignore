@@ -240,3 +240,8 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+
+Hidden/
+/CarService/Model/Hidden
+/CarService.Tests
+/CarService/CarService.Tests

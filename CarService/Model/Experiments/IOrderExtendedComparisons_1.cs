@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CarService.Model
+namespace CarService.Model.Experiments
 {
-	public interface IOrderExtendedComparisons
+	public interface IOrderExtendedComparisons_1
 	{
 		int OrderExtendedCompareIdOrder(OrderExtended aOE1, OrderExtended aOE2);
 		int OrderExtendedCompareCarBrand(OrderExtended aOE1, OrderExtended aOE2);

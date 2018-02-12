@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using CarService.Model;
 using System.Windows;
 using CarService.Model.Entities;
+using CarService.Model.Experiments;
 
 namespace CarService
 {
@@ -27,7 +28,7 @@ namespace CarService
         public AllCreator()
         {
 			ServiceDB serviceDB = new ServiceDB(this);
-            mDataHandler = new DataHandler(serviceDB, new OrderExtendedComparisons());
+            mDataHandler = GetDataHandler(serviceDB);
 			IDiagramData diagramData = new DiagramData(serviceDB);
 			mStatisticsViewModel = new StatisticsViewModel(diagramData);
 
@@ -71,6 +72,32 @@ namespace CarService
 				return new PaginalData(mDataHandler);
 			else
 				return new PaginalDataFake(mDataHandler);
+		}
+
+		// Experiments
+		private IDataHandler GetDataHandler(IQueriesDB aQueriesDB, int aMode = 3)
+		{
+			IDataHandler dataHandler = null;
+
+			switch (aMode)
+			{
+				case 1:
+					dataHandler = new DataHandler_1(aQueriesDB, 
+						new OrderExtendedComparisons_1());
+					break;
+				case 2:
+					dataHandler = new DataHandler_2(aQueriesDB,
+						new OrderExtendedComparisons_2(),
+						new OrderExtendedPredicats() );
+					break;
+				case 3:
+					dataHandler = new DataHandler_3(this);
+					break;
+				default:
+					dataHandler = null;
+					break;
+			}
+			return dataHandler;
 		}
 	}
 }

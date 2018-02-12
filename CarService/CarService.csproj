@@ -98,17 +98,23 @@
     <Compile Include="Model\Entities\Operation.cs" />
     <Compile Include="Model\Entities\Order.cs" />
     <Compile Include="Model\Entities\Person.cs" />
+    <Compile Include="Model\Experiments\DataHandler_2.cs" />
+    <Compile Include="Model\Experiments\DataHandler_3.cs" />
+    <Compile Include="Model\Experiments\IOrderExtendedComparisons_2.cs" />
+    <Compile Include="Model\Experiments\IOrderExtendedPredicats.cs" />
+    <Compile Include="Model\Experiments\OrderExtendedComparisons_2.cs" />
+    <Compile Include="Model\Experiments\OrderExtendedPredicats.cs" />
     <Compile Include="Model\ICarServiceContextCreator.cs" />
     <Compile Include="Model\IDataHandler.cs" />
     <Compile Include="Model\IDiagramData.cs" />
-    <Compile Include="Model\IOrderExtendedComparisons.cs" />
+    <Compile Include="Model\Experiments\IOrderExtendedComparisons_1.cs" />
     <Compile Include="Model\IPaginalData.cs" />
     <Compile Include="Model\IPaginalDataCreator.cs" />
     <Compile Include="Model\IQueriesDB.cs" />
     <Compile Include="Model\IServiceDB.cs" />
     <Compile Include="Model\IStatisticsShower.cs" />
-    <Compile Include="Model\DataHandler.cs" />
-    <Compile Include="Model\OrderExtendedComparisons.cs" />
+    <Compile Include="Model\Experiments\DataHandler_1.cs" />
+    <Compile Include="Model\Experiments\OrderExtendedComparisons_1.cs" />
     <Compile Include="Model\PaginalDataFake.cs" />
     <Compile Include="Model\PaginalData.cs" />
     <Compile Include="Model\OrderExtended.cs" />
@@ -183,6 +189,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>car_service.mdf</DependentUpon>
     </Content>
+    <Resource Include="Hidden\CarServiceNotes.txt" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -199,6 +206,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
