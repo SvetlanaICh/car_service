@@ -9,7 +9,7 @@ using CarService.Model.Entities;
 
 namespace CarService.Model
 {
-    class ServiceDB : IQueriesDB, IServiceDB
+    public class ServiceDB : IQueriesDB, IServiceDB
     {
         private ICarServiceContextCreator mCarServiceContextCreator;
 

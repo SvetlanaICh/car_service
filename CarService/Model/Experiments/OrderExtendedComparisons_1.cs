@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CarService.Model.Experiments
 {
-	class OrderExtendedComparisons_1 : IOrderExtendedComparisons_1
+	public class OrderExtendedComparisons_1 : IOrderExtendedComparisons_1
 	{
 		public int OrderExtendedCompareIdOrder(OrderExtended aOE1, OrderExtended aOE2)
 		{

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CarService.Model.Experiments
 {
-	class DataHandler_2 : IDataHandler
+	public class DataHandler_2 : IDataHandler
 	{
 		IQueriesDB mQueriesDB;
 		IOrderExtendedComparisons_2 mOrderExtendedComparisons;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CarService.Model.Experiments
 {
-	class OrderExtendedComparisons_2 : IOrderExtendedComparisons_2
+	public class OrderExtendedComparisons_2 : IOrderExtendedComparisons_2
 	{
 		private Dictionary<string, Comparison<OrderExtended>> mComparisons;
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CarService.Model.Experiments
 {
-	class OrderExtendedPredicats : IOrderExtendedPredicats
+	public class OrderExtendedPredicats : IOrderExtendedPredicats
 	{
 		private Dictionary<string, Func<string, Predicate<OrderExtended>>> mPredicats;
 

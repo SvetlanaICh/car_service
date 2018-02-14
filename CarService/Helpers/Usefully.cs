@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CarService.Helpers
 {
-    class Usefully
+    public class Usefully
     {
         public static bool IsNullOrEmpty<T>(IEnumerable<T> aCollection)
         {

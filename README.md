@@ -8,8 +8,8 @@
 
 ## Подробнее
 
-* [Описание пользовательского интерфейса](./docs/ExteriorAbout.md).
-* [Что под капотом](./docs/InteriorAbout.md).
+* [Описание пользовательского интерфейса](./docs/ExteriorAbout.md)
+* [Что под капотом](./docs/InteriorAbout.md)
 
 ## Используемые инструменты
 * [EntityFramework, v6.2.0][]

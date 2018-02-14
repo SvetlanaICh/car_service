@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CarService.Model.Experiments
 {
-    class DataHandler_1 : IDataHandler
+    public class DataHandler_1 : IDataHandler
     {
         private IQueriesDB mQueriesDB;
         private List<OrderExtended> mResultAll;
