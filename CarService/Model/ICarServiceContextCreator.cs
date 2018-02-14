@@ -9,6 +9,6 @@ namespace CarService.Model
 {
     public interface ICarServiceContextCreator
 	{
-        CarServiceContext GetCarServiceContext();
+        ICarServiceContext GetCarServiceContext();
     }
 }

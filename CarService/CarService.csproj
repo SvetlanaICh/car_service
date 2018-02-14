@@ -95,6 +95,7 @@
     <Compile Include="Model\DiagramData.cs" />
     <Compile Include="Model\Entities\Car.cs" />
     <Compile Include="Model\Entities\CarServiceContext.cs" />
+    <Compile Include="Model\Entities\ICarServiceContext.cs" />
     <Compile Include="Model\Entities\Operation.cs" />
     <Compile Include="Model\Entities\Order.cs" />
     <Compile Include="Model\Entities\Person.cs" />

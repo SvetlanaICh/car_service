@@ -5,17 +5,17 @@ namespace CarService.Model.Entities
 	using System.ComponentModel.DataAnnotations.Schema;
 	using System.Linq;
 
-	public partial class CarServiceContext : DbContext
+	public partial class CarServiceContext : DbContext, ICarServiceContext
 	{
 		public CarServiceContext()
 			: base("name=CarServiceContext")
 		{
 		}
 
-		public virtual DbSet<Car> CarSet { get; set; }
-		public virtual DbSet<Operation> OperationSet { get; set; }
-		public virtual DbSet<Order> OrderSet { get; set; }
-		public virtual DbSet<Person> PersonSet { get; set; }
+		public virtual IDbSet<Car> CarSet { get; set; }
+		public virtual IDbSet<Operation> OperationSet { get; set; }
+		public virtual IDbSet<Order> OrderSet { get; set; }
+		public virtual IDbSet<Person> PersonSet { get; set; }
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{

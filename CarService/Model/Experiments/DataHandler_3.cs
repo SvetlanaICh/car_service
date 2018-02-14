@@ -72,7 +72,7 @@ namespace CarService.Model.Experiments
 
 			try
 			{
-				using (CarServiceContext db = mCarServiceContextCreator.GetCarServiceContext())
+				using (ICarServiceContext db = mCarServiceContextCreator.GetCarServiceContext())
 				{
 					result = from or in db.OrderSet
 							 join c in db.CarSet on or.CarId equals c.IdCar

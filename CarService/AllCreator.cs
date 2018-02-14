@@ -58,7 +58,7 @@ namespace CarService
             statisticsWindow.Show();
         }
 
-        public CarServiceContext GetCarServiceContext()
+        public ICarServiceContext GetCarServiceContext()
         {
             return new CarServiceContext();
         }
