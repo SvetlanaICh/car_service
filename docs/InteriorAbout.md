@@ -24,7 +24,7 @@
 
 ### IServiceDB
 Реализация - ServiceDB.
-* List<string> GetFilterValues(string aFilterColumn) - Возвращает все значения из базы под выбранному полю.
+* List<string> GetFilterValues(string aFilterColumn) - Возвращает все значения из базы по выбранному полю.
 
 ### IDiagramData
 Данные для построения диаграмм.
@@ -41,6 +41,7 @@
 * void Create() - сброс фильтров
 * void MakeSort(string aCondition, bool aIsAscending)
 * void MakeSearch(string aCondition, string aValue)
+---
 Реализии: DataHandler_1, DataHandler_2, DataHandler_3.
 DataHandler_1 и DataHandler_2 - сортировка и поиск данных производятся в экземпляре класса List<OrderExtended>. Используется экземпляр класса, реализующего интерфейс IQueriesDB (подается в конструктор).
 DataHandler_3 получает на вход экземпляр класса, реализующего ICarServiceContextCreator для доступа к данным. Сортировка/фильтрация/поиск производятся в запросе LINQ to SQL.
