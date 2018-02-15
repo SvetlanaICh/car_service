@@ -58,10 +58,11 @@ namespace CarService
             statisticsWindow.Show();
         }
 
-        public ICarServiceContext GetCarServiceContext()
-        {
-            return new CarServiceContext();
-        }
+		public ICarServiceContext GetCarServiceContext()
+		{
+			return new CarServiceContext();
+			//return new CarServiceContextTrial();
+		}
 
 		public IPaginalData GetPaginalData(bool aIsPaginal)
 		{

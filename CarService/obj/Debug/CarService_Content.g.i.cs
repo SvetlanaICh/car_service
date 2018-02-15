@@ -8,7 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("car_service.mdf")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("car_service_log.ldf")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("data/car_service.mdf")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("data/car_service_log.ldf")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("data/car_service_trial.mdf")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("data/car_service_trial_log.ldf")]
 
 

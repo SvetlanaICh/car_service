@@ -14,7 +14,7 @@ namespace CarService.Model
 		public DiagramData (IQueriesDB aQueriesDB)
 		{
 			mQueriesDB = aQueriesDB;
-			Values = new List<int> { 0, 1001, 5000, 10000 };
+			Values = new List<int> { 0, 1000, 5000, 10000 };
 			Year = DateTime.Now.Year;
 		}
 
