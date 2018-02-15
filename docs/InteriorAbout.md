@@ -40,8 +40,7 @@
 * List<OrderExtended> Result { get; } - результат обработок.
 * void Create() - сброс фильтров
 * void MakeSort(string aCondition, bool aIsAscending)
-* void MakeSearch(string aCondition, string aValue)
----
+* void MakeSearch(string aCondition, string aValue)  
 –еализии: DataHandler_1, DataHandler_2, DataHandler_3.
 DataHandler_1 и DataHandler_2 - сортировка и поиск данных производ€тс€ в экземпл€ре класса List<OrderExtended>. »спользуетс€ экземпл€р класса, реализующего интерфейс IQueriesDB (подаетс€ в конструктор).
 DataHandler_3 получает на вход экземпл€р класса, реализующего ICarServiceContextCreator дл€ доступа к данным. —ортировка/фильтраци€/поиск производ€тс€ в запросе LINQ to SQL.
