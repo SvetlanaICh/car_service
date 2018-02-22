@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace CarService.Model.Experiments
 {
-	delegate void DelegateSearch(ref IEnumerable<OrderExtended> aResult, string aValue);
-	delegate void DelegateSort(ref IEnumerable<OrderExtended> aResult, bool aIsAscending);
+	delegate void DelegateSearch(ref IQueryable<OrderExtended> aResult, string aValue);
+	delegate void DelegateSort(ref IQueryable<OrderExtended> aResult, bool aIsAscending);
 
 	class DataHandler_3 : IDataHandler
 	{
@@ -68,7 +68,7 @@ namespace CarService.Model.Experiments
 		public void GetResultAll(DelegateSearch aSearch = null, string aValue = null, 
 			DelegateSort aSort = null, bool aIsAscending = false)
 		{
-			IEnumerable<OrderExtended> result;
+			IQueryable<OrderExtended> result;
 
 			try
 			{
@@ -137,7 +137,7 @@ namespace CarService.Model.Experiments
 			}
 		}
 
-		private void SearchByIdOrder(ref IEnumerable<OrderExtended> aResult, string aValue)
+		private void SearchByIdOrder(ref IQueryable<OrderExtended> aResult, string aValue)
 		{
 			int value;
 			if (!int.TryParse(aValue, out value))
@@ -148,21 +148,21 @@ namespace CarService.Model.Experiments
 					  select r;
 		}
 
-		private void SearchByCarBrand(ref IEnumerable<OrderExtended> aResult, string aValue)
+		private void SearchByCarBrand(ref IQueryable<OrderExtended> aResult, string aValue)
 		{
 			aResult = from r in aResult
 					  where r.CarBrand == aValue
 					  select r;
 		}
 
-		private void SearchByCarModel(ref IEnumerable<OrderExtended> aResult, string aValue)
+		private void SearchByCarModel(ref IQueryable<OrderExtended> aResult, string aValue)
 		{
 			aResult = from r in aResult
 					  where r.CarModel == aValue
 					  select r;
 		}
 
-		private void SearchByReleaseYear(ref IEnumerable<OrderExtended> aResult, string aValue)
+		private void SearchByReleaseYear(ref IQueryable<OrderExtended> aResult, string aValue)
 		{
 			short value;
 			if (!short.TryParse(aValue, out value))
@@ -173,14 +173,14 @@ namespace CarService.Model.Experiments
 					  select r;
 		}
 
-		private void SearchByTransmissionType(ref IEnumerable<OrderExtended> aResult, string aValue)
+		private void SearchByTransmissionType(ref IQueryable<OrderExtended> aResult, string aValue)
 		{
 			aResult = from r in aResult
 					  where r.TransmissionType == aValue
 					  select r;
 		}
 
-		private void SearchByEnginePower(ref IEnumerable<OrderExtended> aResult, string aValue)
+		private void SearchByEnginePower(ref IQueryable<OrderExtended> aResult, string aValue)
 		{
 			short value;
 			if (!short.TryParse(aValue, out value))
@@ -191,14 +191,14 @@ namespace CarService.Model.Experiments
 					  select r;
 		}
 
-		private void SearchByNameOperation(ref IEnumerable<OrderExtended> aResult, string aValue)
+		private void SearchByNameOperation(ref IQueryable<OrderExtended> aResult, string aValue)
 		{
 			aResult = from r in aResult
 					  where r.NameOperation == aValue
 					  select r;
 		}
 
-		private void SearchByBeginTime(ref IEnumerable<OrderExtended> aResult, string aValue)
+		private void SearchByBeginTime(ref IQueryable<OrderExtended> aResult, string aValue)
 		{
 			DateTime value;
 			if (!DateTime.TryParse(aValue, out value))
@@ -209,7 +209,7 @@ namespace CarService.Model.Experiments
 					  select r;
 		}
 
-		private void SearchByEndTime(ref IEnumerable<OrderExtended> aResult, string aValue)
+		private void SearchByEndTime(ref IQueryable<OrderExtended> aResult, string aValue)
 		{
 			DateTime value;
 			if (!DateTime.TryParse(aValue, out value))
@@ -220,7 +220,7 @@ namespace CarService.Model.Experiments
 					  select r;
 		}
 
-		private void SearchByPrice(ref IEnumerable<OrderExtended> aResult, string aValue)
+		private void SearchByPrice(ref IQueryable<OrderExtended> aResult, string aValue)
 		{
 			decimal value;
 			if (!decimal.TryParse(aValue, out value))
@@ -249,7 +249,7 @@ namespace CarService.Model.Experiments
 			}
 		}
 
-		private void SortByIdOrder(ref IEnumerable<OrderExtended> aResult, bool aIsAscending)
+		private void SortByIdOrder(ref IQueryable<OrderExtended> aResult, bool aIsAscending)
 		{
 			if (aIsAscending)
 				aResult = from r in aResult
@@ -261,7 +261,7 @@ namespace CarService.Model.Experiments
 						  select r;
 		}
 
-		private void SortByCarBrand(ref IEnumerable<OrderExtended> aResult, bool aIsAscending)
+		private void SortByCarBrand(ref IQueryable<OrderExtended> aResult, bool aIsAscending)
 		{
 			if (aIsAscending)
 				aResult = from r in aResult
@@ -273,7 +273,7 @@ namespace CarService.Model.Experiments
 					  select r;
 		}
 
-		private void SortByCarModel(ref IEnumerable<OrderExtended> aResult, bool aIsAscending)
+		private void SortByCarModel(ref IQueryable<OrderExtended> aResult, bool aIsAscending)
 		{
 			if (aIsAscending)
 				aResult = from r in aResult
@@ -285,7 +285,7 @@ namespace CarService.Model.Experiments
 						  select r;
 		}
 
-		private void SortByReleaseYear(ref IEnumerable<OrderExtended> aResult, bool aIsAscending)
+		private void SortByReleaseYear(ref IQueryable<OrderExtended> aResult, bool aIsAscending)
 		{
 			if (aIsAscending)
 				aResult = from r in aResult
@@ -297,7 +297,7 @@ namespace CarService.Model.Experiments
 						  select r;
 		}
 
-		private void SortByTransmissionType(ref IEnumerable<OrderExtended> aResult, bool aIsAscending)
+		private void SortByTransmissionType(ref IQueryable<OrderExtended> aResult, bool aIsAscending)
 		{
 			if (aIsAscending)
 				aResult = from r in aResult
@@ -309,7 +309,7 @@ namespace CarService.Model.Experiments
 						  select r;
 		}
 
-		private void SortByEnginePower(ref IEnumerable<OrderExtended> aResult, bool aIsAscending)
+		private void SortByEnginePower(ref IQueryable<OrderExtended> aResult, bool aIsAscending)
 		{
 			if (aIsAscending)
 				aResult = from r in aResult
@@ -321,7 +321,7 @@ namespace CarService.Model.Experiments
 						  select r;
 		}
 
-		private void SortByNameOperation(ref IEnumerable<OrderExtended> aResult, bool aIsAscending)
+		private void SortByNameOperation(ref IQueryable<OrderExtended> aResult, bool aIsAscending)
 		{
 			if (aIsAscending)
 				aResult = from r in aResult
@@ -332,7 +332,7 @@ namespace CarService.Model.Experiments
 						  orderby r.NameOperation descending
 						  select r;
 		}
-		private void SortByBeginTime(ref IEnumerable<OrderExtended> aResult, bool aIsAscending)
+		private void SortByBeginTime(ref IQueryable<OrderExtended> aResult, bool aIsAscending)
 		{
 			if (aIsAscending)
 				aResult = from r in aResult
@@ -344,7 +344,7 @@ namespace CarService.Model.Experiments
 						  select r;
 		}
 
-		private void SortByEndTime(ref IEnumerable<OrderExtended> aResult, bool aIsAscending)
+		private void SortByEndTime(ref IQueryable<OrderExtended> aResult, bool aIsAscending)
 		{
 			if (aIsAscending)
 				aResult = from r in aResult
@@ -356,7 +356,7 @@ namespace CarService.Model.Experiments
 						  select r;
 		}
 
-		private void SortByPrice(ref IEnumerable<OrderExtended> aResult, bool aIsAscending)
+		private void SortByPrice(ref IQueryable<OrderExtended> aResult, bool aIsAscending)
 		{
 			if (aIsAscending)
 				aResult = from r in aResult

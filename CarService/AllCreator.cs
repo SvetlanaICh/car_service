@@ -60,8 +60,8 @@ namespace CarService
 
 		public ICarServiceContext GetCarServiceContext()
 		{
-			return new CarServiceContext();
-			//return new CarServiceContextTrial();
+			return new CarServiceContext("name=CarServiceContext");
+			//return new CarServiceContext("name=CarServiceContextTrial");
 		}
 
 		public IPaginalData GetPaginalData(bool aIsPaginal)

@@ -5,10 +5,10 @@ namespace CarService.Model.Entities
 	using System.ComponentModel.DataAnnotations.Schema;
 	using System.Linq;
 
-	public partial class CarServiceContext : DbContext, ICarServiceContext
+	public /*partial*/ class CarServiceContext : DbContext, ICarServiceContext
 	{
-		public CarServiceContext()
-			: base("name=CarServiceContext")
+		public CarServiceContext(string aConnection)
+			: base(aConnection)
 		{
 		}
 
@@ -21,16 +21,16 @@ namespace CarService.Model.Entities
 		{
 			modelBuilder.Entity<Car>()
 				.Property(e => e.CarBrand)
-				.IsUnicode(false);
+				.IsUnicode(true);
 
 			modelBuilder.Entity<Car>()
 				.Property(e => e.CarModel)
-				.IsUnicode(false);
+				.IsUnicode(true);
 
 			modelBuilder.Entity<Car>()
 				.Property(e => e.TransmissionType)
 				.IsFixedLength()
-				.IsUnicode(false);
+				.IsUnicode(true);
 
 			modelBuilder.Entity<Car>()
 				.HasMany(e => e.Orders)
@@ -40,7 +40,7 @@ namespace CarService.Model.Entities
 
 			modelBuilder.Entity<Operation>()
 				.Property(e => e.NameOperation)
-				.IsUnicode(false);
+				.IsUnicode(true);
 
 			modelBuilder.Entity<Operation>()
 				.Property(e => e.Price)
@@ -54,15 +54,15 @@ namespace CarService.Model.Entities
 
 			modelBuilder.Entity<Person>()
 				.Property(e => e.LastName)
-				.IsUnicode(false);
+				.IsUnicode(true);
 
 			modelBuilder.Entity<Person>()
 				.Property(e => e.FirstName)
-				.IsUnicode(false);
+				.IsUnicode(true);
 
 			modelBuilder.Entity<Person>()
 				.Property(e => e.MiddleName)
-				.IsUnicode(false);
+				.IsUnicode(true);
 
 			modelBuilder.Entity<Person>()
 				.Property(e => e.Phone)

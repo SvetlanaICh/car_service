@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace CarService.Model.Entities
 {
     class CarServiceTrialInitializer :
-		DropCreateDatabaseAlways<CarServiceContextTrial>
+		DropCreateDatabaseAlways<CarServiceContext>
 	{
-		protected override void Seed(CarServiceContextTrial db)
+		protected override void Seed(CarServiceContext db)
         {
 			Person person1 = new Person
 			{
