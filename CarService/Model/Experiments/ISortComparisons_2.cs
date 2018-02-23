@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CarService.Model.Experiments
 {
-	public interface IOrderExtendedComparisons_2
+	public interface ISortComparisons_2
 	{
 		Comparison<OrderExtended> GetComparison(string aName, bool aIsAscending);
 	}

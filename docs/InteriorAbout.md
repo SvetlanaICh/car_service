@@ -46,23 +46,23 @@ DataHandler_1 и DataHandler_2 - сортировка и поиск данных производятся в экземпл
 DataHandler_3 получает на вход экземпляр класса, реализующего ICarServiceContextCreator для доступа к данным. Сортировка/фильтрация/поиск производятся в запросе LINQ to SQL.
 * public DataHandler_1(
 			IQueriesDB aQueriesDB, 
-			IOrderExtendedComparisons_1 aOrderExtendedComparisons)
+			ISortComparisons_1 aSortComparisons)
 * public DataHandler_2(
 			IQueriesDB aQueriesDB
-			, IOrderExtendedComparisons_2 aOrderExtendedComparisons
-			, IOrderExtendedPredicats aOrderExtendedPredicats)
+			, ISortComparisons_2 aSortComparisons
+			, ISearchPredicats aSearchPredicats)
 * public DataHandler_3(ICarServiceContextCreator aCarServiceContextCreator)
 
-### IOrderExtendedComparisons_1
+### ISortComparisons_1
 Используется для сортировки данных о заказах в классе DataHandler_1.
-Реализация - OrderExtendedComparisons_1.
+Реализация - SortComparisons_1.
 
-### IOrderExtendedComparisons_2
+### ISortComparisons_2
 Используется для сортировки данных о заказах в классе DataHandler_2.
-Реализация - OrderExtendedComparisons_2.
+Реализация - SortComparisons_2.
 
-### IOrderExtendedPredicats
-Реализация - OrderExtendedPredicats.
+### ISearchPredicats
+Реализация - SearchPredicats.
 Используется для поиска данных о заказах в классе DataHandler_2.
 
 ### IPaginalData

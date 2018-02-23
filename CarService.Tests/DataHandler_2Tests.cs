@@ -16,19 +16,19 @@ namespace CarService.Tests
 			var mockIQueriesDB = new Mock<IQueriesDB>();
 			mockIQueriesDB.Setup(a => a.GetResultAll()).Returns(new List<OrderExtended>());
 
-			var mockIOrderExtendedComparisons_2 = new Mock<IOrderExtendedComparisons_2>();
+			var mockISortComparisons_2 = new Mock<ISortComparisons_2>();
 
-			var mockIOrderExtendedPredicats = new Mock<IOrderExtendedPredicats>();
+			var mockISearchPredicats = new Mock<ISearchPredicats>();
 
 			DataHandler_2 dataHandler_2 = new DataHandler_2(
 				mockIQueriesDB.Object,
-				mockIOrderExtendedComparisons_2.Object,
-				mockIOrderExtendedPredicats.Object
+				mockISortComparisons_2.Object,
+				mockISearchPredicats.Object
 				);
 
 			dataHandler_2.MakeSort("IdOrder", true);
 
-			mockIOrderExtendedComparisons_2.Verify(
+			mockISortComparisons_2.Verify(
 				a => a.GetComparison("IdOrder", true), Times.Once);
 		}
 
@@ -38,19 +38,19 @@ namespace CarService.Tests
 			var mockIQueriesDB = new Mock<IQueriesDB>();
 			mockIQueriesDB.Setup(a => a.GetResultAll()).Returns(new List<OrderExtended>());
 
-			var mockIOrderExtendedComparisons_2 = new Mock<IOrderExtendedComparisons_2>();
+			var mockISortComparisons_2 = new Mock<ISortComparisons_2>();
 
-			var mockIOrderExtendedPredicats = new Mock<IOrderExtendedPredicats>();
+			var mockISearchPredicats = new Mock<ISearchPredicats>();
 
 			DataHandler_2 dataHandler_2 = new DataHandler_2(
 				mockIQueriesDB.Object,
-				mockIOrderExtendedComparisons_2.Object,
-				mockIOrderExtendedPredicats.Object
+				mockISortComparisons_2.Object,
+				mockISearchPredicats.Object
 				);
 
 			dataHandler_2.MakeSort(null, true);
 
-			mockIOrderExtendedComparisons_2.Verify(
+			mockISortComparisons_2.Verify(
 				a => a.GetComparison(null, true), Times.Never);
 		}
 
@@ -60,19 +60,19 @@ namespace CarService.Tests
 			var mockIQueriesDB = new Mock<IQueriesDB>();
 			mockIQueriesDB.Setup(a => a.GetResultAll()).Returns(new List<OrderExtended>());
 
-			var mockIOrderExtendedComparisons_2 = new Mock<IOrderExtendedComparisons_2>();
+			var mockISortComparisons_2 = new Mock<ISortComparisons_2>();
 
-			var mockIOrderExtendedPredicats = new Mock<IOrderExtendedPredicats>();
+			var mockISearchPredicats = new Mock<ISearchPredicats>();
 
 			DataHandler_2 dataHandler_2 = new DataHandler_2(
 				mockIQueriesDB.Object,
-				mockIOrderExtendedComparisons_2.Object,
-				mockIOrderExtendedPredicats.Object
+				mockISortComparisons_2.Object,
+				mockISearchPredicats.Object
 				);
 
 			dataHandler_2.MakeSearch("IdOrder", "1");
 
-			mockIOrderExtendedPredicats.Verify(
+			mockISearchPredicats.Verify(
 				a => a.GetPredicate("IdOrder", "1"), Times.Once);
 		}
 
@@ -82,19 +82,19 @@ namespace CarService.Tests
 			var mockIQueriesDB = new Mock<IQueriesDB>();
 			mockIQueriesDB.Setup(a => a.GetResultAll()).Returns(new List<OrderExtended>());
 
-			var mockIOrderExtendedComparisons_2 = new Mock<IOrderExtendedComparisons_2>();
+			var mockISortComparisons_2 = new Mock<ISortComparisons_2>();
 
-			var mockIOrderExtendedPredicats = new Mock<IOrderExtendedPredicats>();
+			var mockISearchPredicats = new Mock<ISearchPredicats>();
 
 			DataHandler_2 dataHandler_2 = new DataHandler_2(
 				mockIQueriesDB.Object,
-				mockIOrderExtendedComparisons_2.Object,
-				mockIOrderExtendedPredicats.Object
+				mockISortComparisons_2.Object,
+				mockISearchPredicats.Object
 				);
 
 			dataHandler_2.MakeSearch(null, null);
 
-			mockIOrderExtendedPredicats.Verify(
+			mockISearchPredicats.Verify(
 				a => a.GetPredicate(null, null), Times.Never);
 		}
 	}

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace CarService.Model.Experiments
 {
-	public class OrderExtendedPredicats : IOrderExtendedPredicats
+	public class SearchPredicats : ISearchPredicats
 	{
 		private Dictionary<string, Func<string, Predicate<OrderExtended>>> mPredicats;
 
-		public OrderExtendedPredicats()
+		public SearchPredicats()
 		{
 			mPredicats = new Dictionary<string, Func<string, Predicate<OrderExtended>>>
 			{

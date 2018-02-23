@@ -78,9 +78,9 @@
   <ItemGroup>
     <Compile Include="DataHandler_1Tests.cs" />
     <Compile Include="DataHandler_2Tests.cs" />
-    <Compile Include="OrderExtendedComparisons_1Tests.cs" />
-    <Compile Include="OrderExtendedComparisons_2Tests.cs" />
-    <Compile Include="OrderExtendedPredicatsTests.cs" />
+    <Compile Include="SortComparisons_1Tests.cs" />
+    <Compile Include="SortComparisons_2Tests.cs" />
+    <Compile Include="SearchPredicatsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceDBTests.cs" />
     <Compile Include="UsefullyTests.cs" />

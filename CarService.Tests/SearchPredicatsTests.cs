@@ -6,15 +6,15 @@ using CarService.Model;
 namespace CarService.Tests
 {
 	[TestClass]
-	public class OrderExtendedPredicatsTests
+	public class SearchPredicatsTests
 	{
 		[TestMethod]
 		public void GetPredicate_when_null_and_null_then_null()
 		{
-			OrderExtendedPredicats orderExtendedPredicats = new OrderExtendedPredicats();
+			SearchPredicats searchPredicats = new SearchPredicats();
 
-			Predicate<OrderExtended> predicate = 
-				orderExtendedPredicats.GetPredicate(null, null);
+			Predicate<OrderExtended> predicate =
+				searchPredicats.GetPredicate(null, null);
 
 			Assert.IsNull(predicate);
 		}
@@ -23,11 +23,11 @@ namespace CarService.Tests
 		[TestMethod]
 		public void GetPredicate_when_IdOrder_and_1_then_result_works_1()	
 		{
-			OrderExtendedPredicats orderExtendedPredicats = new OrderExtendedPredicats();
+			SearchPredicats searchPredicats = new SearchPredicats();
 			OrderExtended oe_1 = new OrderExtended { IdOrder = 1 };
 
-			Predicate<OrderExtended> predicate = 
-				orderExtendedPredicats.GetPredicate("IdOrder", "1");
+			Predicate<OrderExtended> predicate =
+				searchPredicats.GetPredicate("IdOrder", "1");
 			bool act = predicate.Invoke(oe_1);
 
 			Assert.IsTrue(act);
@@ -37,11 +37,11 @@ namespace CarService.Tests
 		[TestMethod]
 		public void GetPredicate_when_IdOrder_and_1_then_result_works_2()
 		{
-			OrderExtendedPredicats orderExtendedPredicats = new OrderExtendedPredicats();
+			SearchPredicats searchPredicats = new SearchPredicats();
 			OrderExtended oe_1 = new OrderExtended { IdOrder = 2 };
 
 			Predicate<OrderExtended> predicate =
-				orderExtendedPredicats.GetPredicate("IdOrder", "1");
+				searchPredicats.GetPredicate("IdOrder", "1");
 			bool act = predicate.Invoke(oe_1);
 
 			Assert.IsFalse(act);

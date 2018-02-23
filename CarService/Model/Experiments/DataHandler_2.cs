@@ -11,20 +11,20 @@ namespace CarService.Model.Experiments
 	public class DataHandler_2 : IDataHandler
 	{
 		IQueriesDB mQueriesDB;
-		IOrderExtendedComparisons_2 mOrderExtendedComparisons;
+		ISortComparisons_2 mSortComparisons;
 		private List<OrderExtended> mResultAll;
-		private IOrderExtendedPredicats mOrderExtendedPredicats;
+		private ISearchPredicats mSearchPredicats;
 
 		public List<OrderExtended> Result { get; private set; }
 
 		public DataHandler_2(
 			IQueriesDB aQueriesDB
-			, IOrderExtendedComparisons_2 aOrderExtendedComparisons
-			, IOrderExtendedPredicats aOrderExtendedPredicats)
+			, ISortComparisons_2 aSortComparisons
+			, ISearchPredicats aSearchPredicats)
 		{
 			mQueriesDB = aQueriesDB;
-			mOrderExtendedComparisons = aOrderExtendedComparisons;
-			mOrderExtendedPredicats = aOrderExtendedPredicats;
+			mSortComparisons = aSortComparisons;
+			mSearchPredicats = aSearchPredicats;
 			Create();
 		}
 
@@ -43,11 +43,11 @@ namespace CarService.Model.Experiments
 				return;
 			if (mResultAll == null)
 				return;
-			if (mOrderExtendedComparisons == null)
+			if (mSortComparisons == null)
 				return;
 
-			Comparison<OrderExtended> comparison = 
-				mOrderExtendedComparisons.GetComparison(aCondition, aIsAscending);
+			Comparison<OrderExtended> comparison =
+				mSortComparisons.GetComparison(aCondition, aIsAscending);
 
 			if (comparison == null)
 				return;
@@ -67,11 +67,11 @@ namespace CarService.Model.Experiments
 			if (mResultAll == null)
 				return;
 
-			if (mOrderExtendedPredicats == null)
+			if (mSearchPredicats == null)
 				return;
 
 			Predicate<OrderExtended> predicate =
-				mOrderExtendedPredicats.GetPredicate(aCondition, aValue);
+				mSearchPredicats.GetPredicate(aCondition, aValue);
 
 			if (predicate != null)
 				Result = mResultAll.FindAll(predicate);

@@ -13,15 +13,15 @@ namespace CarService.Model.Experiments
     {
         private IQueriesDB mQueriesDB;
         private List<OrderExtended> mResultAll;
-		private IOrderExtendedComparisons_1 mOrderExtendedComparisons;
+		private ISortComparisons_1 mSortComparisons;
 
 		public List<OrderExtended> Result { get; private set; }
 
-		public DataHandler_1(IQueriesDB aQueriesDB, IOrderExtendedComparisons_1 aOrderExtendedComparisons)
+		public DataHandler_1(IQueriesDB aQueriesDB, ISortComparisons_1 aSortComparisons)
         {
             mQueriesDB = aQueriesDB;
             Create();
-			mOrderExtendedComparisons = aOrderExtendedComparisons;
+			mSortComparisons = aSortComparisons;
 		}
 
         public void Create()
@@ -43,34 +43,34 @@ namespace CarService.Model.Experiments
             switch (aCondition)
             {
                 case "IdOrder":
-					mResultAll.Sort(mOrderExtendedComparisons.OrderExtendedCompareIdOrder);
+					mResultAll.Sort(mSortComparisons.CompareIdOrder);
                     break;
                 case "CarBrand":
-					mResultAll.Sort(mOrderExtendedComparisons.OrderExtendedCompareCarBrand);
+					mResultAll.Sort(mSortComparisons.CompareCarBrand);
                     break;
                 case "CarModel":
-					mResultAll.Sort(mOrderExtendedComparisons.OrderExtendedCompareCarModel);
+					mResultAll.Sort(mSortComparisons.CompareCarModel);
                     break;
                 case "ReleaseYear":
-					mResultAll.Sort(mOrderExtendedComparisons.OrderExtendedCompareReleaseYear);
+					mResultAll.Sort(mSortComparisons.CompareReleaseYear);
                     break;
                 case "TransmissionType":
-					mResultAll.Sort(mOrderExtendedComparisons.OrderExtendedCompareTransmissionType);
+					mResultAll.Sort(mSortComparisons.CompareTransmissionType);
                     break;
                 case "EnginePower":
-					mResultAll.Sort(mOrderExtendedComparisons.OrderExtendedCompareEnginePower);
+					mResultAll.Sort(mSortComparisons.CompareEnginePower);
                     break;
                 case "NameOperation":
-					mResultAll.Sort(mOrderExtendedComparisons.OrderExtendedCompareNameOperation);
+					mResultAll.Sort(mSortComparisons.CompareNameOperation);
                     break;
                 case "BeginTime":
-					mResultAll.Sort(mOrderExtendedComparisons.OrderExtendedCompareBeginTime);
+					mResultAll.Sort(mSortComparisons.CompareBeginTime);
                     break;
                 case "EndTime":
-					mResultAll.Sort(mOrderExtendedComparisons.OrderExtendedCompareEndTime);
+					mResultAll.Sort(mSortComparisons.CompareEndTime);
                     break;
                 case "Price":
-					mResultAll.Sort(mOrderExtendedComparisons.OrderExtendedComparePrice);
+					mResultAll.Sort(mSortComparisons.ComparePrice);
                     break;
                 default:
                     Console.WriteLine("Не сработало...");

@@ -84,12 +84,13 @@ namespace CarService
 			{
 				case 1:
 					dataHandler = new DataHandler_1(aQueriesDB, 
-						new OrderExtendedComparisons_1());
+						new SortComparisons_1());
 					break;
 				case 2:
 					dataHandler = new DataHandler_2(aQueriesDB,
-						new OrderExtendedComparisons_2(),
-						new OrderExtendedPredicats() );
+						new SortComparisons_2(
+							new SortComparisons_1()),
+						new SearchPredicats() );
 					break;
 				case 3:
 					dataHandler = new DataHandler_3(this);

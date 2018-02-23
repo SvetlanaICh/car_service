@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CarService.Model.Experiments
 {
-	public interface IOrderExtendedPredicats
+	public interface ISearchPredicats
 	{
 		Predicate<OrderExtended> GetPredicate(string aCondition, string aValue);
 	}
