@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CarService.Model.Experiments;
-using CarService.Model;
+using CarServiceCore.Experiments;
+using CarServiceCore;
 
-namespace CarService.Tests
+namespace CarServiceCore.Tests
 {
 	[TestClass]
 	public class SortComparisons_1Tests

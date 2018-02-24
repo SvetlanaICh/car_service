@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using CarService.Helpers;
+using CarServiceCore.Helpers;
 
-namespace CarService.Tests
+namespace CarServiceCore.Tests
 {
     [TestClass]
     public class UsefullyTests

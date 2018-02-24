@@ -1,11 +1,11 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CarService.Model;
+using CarServiceCore;
 using System.Collections.Generic;
 using Moq;
-using CarService.Model.Experiments;
+using CarServiceCore.Experiments;
 
-namespace CarService.Tests
+namespace CarServiceCore.Tests
 {
 	[TestClass]
 	public class DataHandler_1Tests

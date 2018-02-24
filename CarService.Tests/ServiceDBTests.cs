@@ -1,13 +1,13 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CarService.Model;
+using CarServiceCore;
 using Moq;
 using System.Collections.Generic;
-using CarService.Model.Entities;
+using CarServiceCore.Entities;
 using System.Data.Entity;
 using System.Linq;
 
-namespace CarService.Tests
+namespace CarServiceCore.Tests
 {
     [TestClass]
     public class ServiceDBTests
