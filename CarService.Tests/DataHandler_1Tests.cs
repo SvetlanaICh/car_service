@@ -4,6 +4,7 @@ using CarServiceCore;
 using System.Collections.Generic;
 using Moq;
 using CarServiceCore.Experiments;
+using CarServiceCore.Interfaces;
 
 namespace CarServiceCore.Tests
 {

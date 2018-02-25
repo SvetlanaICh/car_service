@@ -7,6 +7,7 @@ using CarServiceCore.Helpers;
 using CarServiceCore;
 using System.Windows;
 using CarServiceWPF;
+using CarServiceCore.Interfaces;
 
 namespace CarServiceWPF.ViewModel
 {

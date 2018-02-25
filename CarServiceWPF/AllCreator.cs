@@ -9,6 +9,7 @@ using CarServiceCore;
 using System.Windows;
 using CarServiceCore.Entities;
 using CarServiceCore.Experiments;
+using CarServiceCore.Interfaces;
 
 namespace CarServiceWPF
 {

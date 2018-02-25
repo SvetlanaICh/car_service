@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CarServiceCore
+namespace CarServiceCore.Interfaces
 {
-    public interface IServiceDB
+    public interface IQueriesDB
     {
-		List<string> GetFilterValues(string aFilterColumn);
-	}
+        List<OrderExtended> GetResultAll();
+    }
 }

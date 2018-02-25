@@ -6,6 +6,7 @@ using System.Windows.Input;
 using CarServiceCore.Helpers;
 using CarServiceCore;
 using System.Windows;
+using CarServiceCore.Interfaces;
 //using CarServiceWPF;
 
 namespace CarServiceWPF.ViewModel

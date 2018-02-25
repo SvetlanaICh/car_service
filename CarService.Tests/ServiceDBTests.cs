@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using CarServiceCore.Entities;
 using System.Data.Entity;
 using System.Linq;
+using CarServiceCore.Interfaces;
 
 namespace CarServiceCore.Tests
 {

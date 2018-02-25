@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CarServiceCore.Experiments;
 using CarServiceCore;
 using Moq;
+using CarServiceCore.Interfaces;
 
 namespace CarServiceCore.Tests
 {
