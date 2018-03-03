@@ -10,20 +10,63 @@ namespace CarServiceCore
 {
 	public class DiagramData : IDiagramData
 	{
+		private ICarServiceContextCreator mCarServiceContextCreator;
 		private IQueriesDB mQueriesDB;
+		private Dictionary<int, string> mMonthStr;
 
-		public DiagramData (IQueriesDB aQueriesDB)
+		public DiagramData(
+			ICarServiceContextCreator aCarServiceContextCreator,
+			IQueriesDB aQueriesDB)
 		{
-			mQueriesDB = aQueriesDB;
-			Values = new List<int> { 0, 1000, 5000, 10000 };
-			Year = DateTime.Now.Year;
+			Builder(
+				aCarServiceContextCreator,
+				aQueriesDB,
+				DateTime.Now.Year,
+				new List<int> { 0, 1000, 5000, 10000 }
+				);
 		}
 
-		public DiagramData(IQueriesDB aQueriesDB, int aYear, List<int> aValues)
+		public DiagramData(
+			ICarServiceContextCreator aCarServiceContextCreator,
+			IQueriesDB aQueriesDB, 
+			int aYear, 
+			List<int> aValues)
 		{
+			Builder(aCarServiceContextCreator, 
+				aQueriesDB, aYear, aValues);
+		}
+
+		private void Builder(
+			ICarServiceContextCreator aCarServiceContextCreator,
+			IQueriesDB aQueriesDB, 
+			int aYear, 
+			List<int> aValues)
+		{
+			mCarServiceContextCreator = aCarServiceContextCreator;
 			mQueriesDB = aQueriesDB;
 			Values = aValues;
 			Year = aYear;
+
+			InitMonthStr();
+		}
+
+		private void InitMonthStr()
+		{
+			mMonthStr = new Dictionary<int, string>
+			{
+				{ 1, "Январь" },
+				{ 2, "Февраль" },
+				{ 3, "Март" },
+				{ 4, "Апрель" },
+				{ 5, "Май" },
+				{ 6, "Июнь" },
+				{ 7, "Июль" },
+				{ 8, "Август" },
+				{ 9, "Сентябрь" },
+				{ 10, "Октябрь" },
+				{ 11, "Ноябрь" },
+				{ 12, "Декабрь" },
+			};
 		}
 
 		public int Year { get; set; }
@@ -34,29 +77,8 @@ namespace CarServiceCore
 		{
 			get
 			{
-				if (mQueriesDB == null)
-					return null;
-				List<OrderExtended> result = mQueriesDB.GetResultAll();
-				if (Usefully.IsNullOrEmpty(result))
-					return null;
-
-				var query = from r in result
-							group r by r.CarBrand into g
-							select new
-							{
-								CarBrandCount = g.Count(),
-								CarBrand = g.Key
-							};
-
-				if (Usefully.IsNullOrEmpty(query))
-					return null;
-
-				List<KeyValuePair<string, int>> data = new List<KeyValuePair<string, int>>();
-
-				foreach (var x in query)
-					data.Add(new KeyValuePair<string, int>(x.CarBrand, x.CarBrandCount));
-
-				return data;
+				return GetDataForDiagram(
+					TryGetDataCarBrand);
 			}
 		}
 
@@ -64,41 +86,8 @@ namespace CarServiceCore
 		{
 			get
 			{
-				if (mQueriesDB == null)
-					return null;
-				List<OrderExtended> result = mQueriesDB.GetResultAll();
-				if (Usefully.IsNullOrEmpty(result))
-					return null;
-
-				var orders_without_null = from r in result
-										  where r.BeginTime != null
-										  select r;
-
-				var orders_new = from o in orders_without_null
-								 where o.BeginTime.Value.Year == Year
-								 select new
-								 {
-									 MonthInt = o.BeginTime.Value.Month,
-									 ID = o.IdOrder,
-									 MonthStr = ((DateTime)o.BeginTime).ToString("MMMM")
-								 };
-
-				if (Usefully.IsNullOrEmpty(orders_new))
-					return null;
-
-				var query = from o in orders_new
-							group o by o.MonthStr into g
-							select new { Month = g.Key, MonthCount = g.Count() };
-
-				if (Usefully.IsNullOrEmpty(query))
-					return null;
-
-				List<KeyValuePair<string, int>> data = new List<KeyValuePair<string, int>>();
-
-				foreach (var x in query)
-					data.Add(new KeyValuePair<string, int>(x.Month, x.MonthCount));
-
-				return data;
+				return GetDataForDiagram(					
+					TryGetDataMonth);
 			}
 		}
 
@@ -106,42 +95,123 @@ namespace CarServiceCore
 		{
 			get
 			{
-				if (mQueriesDB == null)
-					return null;
-				List<OrderExtended> result = mQueriesDB.GetResultAll();
-				if (Usefully.IsNullOrEmpty(result))
-					return null;
-				if (Usefully.IsNullOrEmpty(Values))
-					return null;
-				List<KeyValuePair<string, int>> data = new List<KeyValuePair<string, int>>();
+				return GetDataForDiagram(
+					TryGetDataPrice);
+			}
+		}
 
-				var orders_without_null = from r in result
-										  where r.Price != null
-										  select r;
+		private List<KeyValuePair<string, int>> GetDataForDiagram(
+			Func<List<KeyValuePair<string, int>>> aFunc)
+		{
+			try
+			{
+				return aFunc.Invoke();				
+			}
+			catch (Exception ex)
+			{
+				if (ex != null)
+					Console.WriteLine(ex.Message);
+				return null;
+			}
+		}
 
-				if (Usefully.IsNullOrEmpty(orders_without_null))
-					return null;
+		private List<KeyValuePair<string, int>> TryGetDataCarBrand()
+		{
+			List<KeyValuePair<string, int>> result =
+				new List<KeyValuePair<string, int>>();
+
+			using (ICarServiceContext db =
+			mCarServiceContextCreator.GetCarServiceContext())
+			{
+				var res =
+					(from or in db.OrderSet
+					 join c in db.CarSet
+							on or.CarId equals c.IdCar
+					 group or by c.CarBrand into g
+					 select new { CarBrand = g.Key, Count = g.Count() })
+					.ToList();
+
+				db.Dispose();
+
+				foreach (var r in res)
+					result.Add(new KeyValuePair<string, int>(
+						r.CarBrand, r.Count));
+			}
+			return result;
+		}
+
+		private List<KeyValuePair<string, int>> TryGetDataMonth()
+		{
+			List<KeyValuePair<string, int>> result = 
+				new List<KeyValuePair<string, int>>();
+
+			using (ICarServiceContext db =
+					mCarServiceContextCreator.GetCarServiceContext())
+			{
+				var orders_valid =
+					from o in db.OrderSet
+					where o.BeginTime != null
+					select o;
+
+				var res =
+					(from o in orders_valid
+					 where o.BeginTime.Value.Year == Year
+					 group o.BeginTime by o.BeginTime.Value.Month into g
+					 select new { Month = g.Key, Count = g.Count() })
+					.ToList();
+
+				db.Dispose();
+
+				foreach (var r in res)
+					result.Add(new KeyValuePair<string, int>(
+						mMonthStr[r.Month], r.Count));
+			}
+
+			return result;
+		}
+
+		private List<KeyValuePair<string, int>> TryGetDataPrice()
+		{
+			List<KeyValuePair<string, int>> result = 
+				new List<KeyValuePair<string, int>>();
+
+			using (ICarServiceContext db =
+					mCarServiceContextCreator.GetCarServiceContext())
+			{
+				var operations_valid =
+					from op in db.OperationSet
+					where op.Price != null
+					select op;
+
+				var res =
+					(from or in db.OrderSet
+					 join op in operations_valid
+							 on or.OperationId equals op.IdOperation
+					 group or by op.Price into g
+					 select new { Price = g.Key, Count = g.Count() })
+					.ToList();
+
+				db.Dispose();
 
 				for (int i = 0; i <= (Values.Count - 2); i++)
 				{
-					int i1 = Values[i];
-					int i2 = Values[i + 1];
-					string s = string.Format("Цена от {0} до {1}", i1, i2);
-					int count = (from o in orders_without_null
-								 where o.Price >= i1 && o.Price < i2
-								 select o).Count();
-					data.Add(new KeyValuePair<string, int>(s, count));
+					int p1 = Values[i];
+					int p2 = Values[i + 1];
+					string s = string.Format("Цена от {0} до {1}", p1, p2);
+					int count = (from r in res
+								 where r.Price >= p1 && r.Price < p2
+								 select r.Count).Sum();
+					result.Add(new KeyValuePair<string, int>(s, count));
 				}
-
-				int i3 = Values[Values.Count - 1];
-				string s2 = string.Format("Цена от {0}", i3);
-				int count2 = (from o in orders_without_null
-							  where o.Price >= i3
-							  select o).Count();
-				data.Add(new KeyValuePair<string, int>(s2, count2));
-
-				return data;
+				int p3 = Values[Values.Count - 1];
+				string s2 = string.Format("Цена от {0}", p3);
+				int count2 = (from r in res
+							  where r.Price >= p3
+							  select r.Count).Sum();
+				result.Add(new KeyValuePair<string, int>(s2, count2));
 			}
+
+			return result;
 		}
 	}
 }

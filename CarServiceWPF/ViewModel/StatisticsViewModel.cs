@@ -49,9 +49,7 @@ namespace CarServiceWPF.ViewModel
                 CurrentDiagramMode = DiagramModes[0];
 
             if (!Usefully.IsNullOrEmpty(DiagramTypes))
-                CurrentDiagramType = DiagramTypes[0];
-
-			Year = 2017;    //It calls SetDiagramData();
+                CurrentDiagramType = DiagramTypes[0];  //It calls SetDiagramData();  
 		}
 
 		private void SetDefaultState()

@@ -74,7 +74,7 @@
 									  SelectedItem="{Binding CurrentSearchColumn, UpdateSourceTrigger=PropertyChanged}"/>
 							<Label Content="Значение" Grid.Row="0" Grid.Column="1"/>
 							<TextBox x:Name="textBox" Grid.Row="1" Grid.Column="1" Margin="0, 0, 5, 0"
-									 Text="{Binding SearchValue, UpdateSourceTrigger=PropertyChanged}"/>
+									 Text="{Binding SearchValue, UpdateSourceTrigger=LostFocus}"/>
 							<Button Command="{Binding Search}" Content="Применить" 
 									Grid.Row="0" Grid.RowSpan="2" Grid.Column="2"/>
 						</Grid>

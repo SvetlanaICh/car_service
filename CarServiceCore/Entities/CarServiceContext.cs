@@ -4,6 +4,7 @@ namespace CarServiceCore.Entities
 	using System.Data.Entity;
 	using System.ComponentModel.DataAnnotations.Schema;
 	using System.Linq;
+	using Interfaces;
 
 	public /*partial*/ class CarServiceContext : DbContext, ICarServiceContext
 	{

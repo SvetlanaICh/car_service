@@ -10,7 +10,7 @@ using CarServiceCore.Interfaces;
 
 namespace CarServiceCore
 {
-    public class PaginalData : IPaginalData
+    public class PaginalDataRAM : IPaginalData
     {
 		private List<List<OrderExtended>> mResultAll;
         private IDataHandler mDataHandler;
@@ -118,7 +118,7 @@ namespace CarServiceCore
             }
         }
 
-        public PaginalData(IDataHandler aDataHandler)
+        public PaginalDataRAM(IDataHandler aDataHandler)
         {
             mDataHandler = aDataHandler;
 			mRowCount = 15;

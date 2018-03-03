@@ -165,6 +165,8 @@ namespace CarServiceWPF.ViewModel
 
 				if (FilterMode)
 					DoFilter();
+
+				OnPropertyChanged("CurrentFilterValue");
 			}
 		}
 		
@@ -214,17 +216,12 @@ namespace CarServiceWPF.ViewModel
 
 				if (mQueriesDB != null)
 					FilterValues = mQueriesDB.GetFilterValues(CurrentFilterColumn.Key);
+				
+				if (!Usefully.IsNullOrEmpty(FilterValues))
+					CurrentFilterValue = FilterValues[0];
 
 				OnPropertyChanged("FilterValues");
-				if (!Usefully.IsNullOrEmpty(FilterValues))
-				{
-					CurrentFilterValue = FilterValues[0];
-					OnPropertyChanged("CurrentFilterValue");
-				}
 				OnPropertyChanged("CurrentFilterColumn");
-
-				if (FilterMode)
-					DoFilter();
 			}
 		}
 
@@ -376,8 +373,8 @@ namespace CarServiceWPF.ViewModel
 
         private void DoFilter()
         {
-            if (CurrentFilterValue == null)
-                return;
+//			if (CurrentFilterValue == null)
+//				return;
 
             if (mPaginalData != null)
                 mPaginalData.MakeSearch(CurrentFilterColumn.Key, CurrentFilterValue);

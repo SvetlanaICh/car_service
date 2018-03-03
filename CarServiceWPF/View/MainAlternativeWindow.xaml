@@ -101,7 +101,7 @@
 							Margin="0, 0, 5, 0"/>
 						<Label Content="Значение" Grid.Row="0" Grid.Column="2"/>
 						<TextBox x:Name="textBox" Grid.Row="1" Grid.Column="2" Width="120"
-                             Text="{Binding SearchValue, UpdateSourceTrigger=PropertyChanged}"/>
+                             Text="{Binding SearchValue, UpdateSourceTrigger=LostFocus}"/>
 					</Grid>
 
 				</Grid>

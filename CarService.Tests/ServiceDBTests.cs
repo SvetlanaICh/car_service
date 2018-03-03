@@ -194,12 +194,12 @@ namespace CarServiceCore.Tests
 		}
 
 		[TestMethod]
-		public void GetFilterValues_given_context_when_IdOrder_then_result0_is_2()//
+		public void GetFilterValues_given_context_when_IdOrder_then_result0_is_1()//
 		{
 			var mockICarServiceContextCreator =
 				GetMockICarServiceContextCreator_2_OE();
 			ServiceDB serviceDB = new ServiceDB(mockICarServiceContextCreator.Object);
-			string expected = "2";
+			string expected = "1";
 
 			List<string> res = serviceDB.GetFilterValues("IdOrder");
 			string actual = res[0];
@@ -208,12 +208,12 @@ namespace CarServiceCore.Tests
 		}
 
 		[TestMethod]
-		public void GetFilterValues_given_context_when_IdOrder_then_result1_is_1()//
+		public void GetFilterValues_given_context_when_IdOrder_then_result1_is_2()//
 		{
 			var mockICarServiceContextCreator =
 				GetMockICarServiceContextCreator_2_OE();
 			ServiceDB serviceDB = new ServiceDB(mockICarServiceContextCreator.Object);
-			string expected = "1";
+			string expected = "2";
 
 			List<string> res = serviceDB.GetFilterValues("IdOrder");
 			string actual = res[1];

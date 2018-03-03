@@ -21,34 +21,42 @@ namespace CarServiceWPF
 
 	public class AllCreator: IStatisticsShower, ICarServiceContextCreator, IPaginalDataCreator
     {
-		private IDataHandler mDataHandler;
-		private StatisticsViewModel mStatisticsViewModel;       
-        
+		private StatisticsViewModel mStatisticsViewModel;
+		private ServiceDB mServiceDB;
+		
+		// Если истинно - постраничная загрузка из БД,
+		// если ложно - все данные из БД - в память
+		bool mIsPaginalFromBD = true;	
+
+
 		public Window TheMainWindow { get; private set; }
 
         public AllCreator()
         {
-			ServiceDB serviceDB = new ServiceDB(this);
-            mDataHandler = GetDataHandler(serviceDB);
-			IDiagramData diagramData = new DiagramData(serviceDB);
+			mServiceDB =  new ServiceDB(this);
+
+			IDiagramData diagramData = new DiagramData(this, mServiceDB);
 			mStatisticsViewModel = new StatisticsViewModel(diagramData);
 
 			WindowMode winMode = WindowMode.Alternative;
-
-			if (winMode == WindowMode.Default)
-			{
-				MainViewModel mainViewModel = new MainViewModel(this, this, serviceDB);
-				TheMainWindow = new MainWindow(mainViewModel);
-			}
-			if (winMode == WindowMode.Alternative)
-			{
-				MainAlternativeViewModel mainAltVM = 
-					new MainAlternativeViewModel(this, this, serviceDB);
-				TheMainWindow = new MainAlternativeWindow(mainAltVM);
-			}			            
+			TheMainWindow = GetTheMainWindow(winMode);			            
         }
 
-        public void StatisticsShow()
+		private Window GetTheMainWindow(WindowMode aWinMode)
+		{
+			if (aWinMode == WindowMode.Alternative)
+			{
+				MainAlternativeViewModel mainAltVM =
+					new MainAlternativeViewModel(this, this, mServiceDB);
+				return new MainAlternativeWindow(mainAltVM);
+			}
+
+			MainViewModel mainViewModel =
+					new MainViewModel(this, this, mServiceDB);
+			return new MainWindow(mainViewModel);
+		}
+
+		public void StatisticsShow()
         {
 			StatisticsWindow statisticsWindow = 
 				new StatisticsWindow(mStatisticsViewModel);
@@ -65,30 +73,39 @@ namespace CarServiceWPF
 			//return new CarServiceContext("name=CarServiceContextTrial");
 		}
 
-		public IPaginalData GetPaginalData(bool aIsPaginal)
+		// Experiments
+		public IPaginalData GetPaginalData(
+			bool aIsPaginal)
 		{
-			if (mDataHandler == null)
-				return null;
+			if (!aIsPaginal) 
+				return new PaginalDataFake(GetDataHandler());
 
-			if (aIsPaginal)
-				return new PaginalData(mDataHandler);
-			else
-				return new PaginalDataFake(mDataHandler);
+			if (aIsPaginal && mIsPaginalFromBD)
+			{
+				IDataHandlerDB dataHandlerDB = 
+					new DataHandlerDB(mServiceDB);
+				return new PaginalDataDB(this, dataHandlerDB);
+			}
+
+			if (aIsPaginal && !mIsPaginalFromBD)
+				return new PaginalDataRAM(GetDataHandler());
+
+			return null;
 		}
 
 		// Experiments
-		private IDataHandler GetDataHandler(IQueriesDB aQueriesDB, int aMode = 3)
+		private IDataHandler GetDataHandler(int aMode = 2)
 		{
 			IDataHandler dataHandler = null;
 
 			switch (aMode)
 			{
 				case 1:
-					dataHandler = new DataHandler_1(aQueriesDB, 
+					dataHandler = new DataHandler_1(mServiceDB, 
 						new SortComparisons_1());
 					break;
 				case 2:
-					dataHandler = new DataHandler_2(aQueriesDB,
+					dataHandler = new DataHandler_2(mServiceDB,
 						new SortComparisons_2(
 							new SortComparisons_1()),
 						new SearchPredicats() );
